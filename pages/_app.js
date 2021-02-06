@@ -8,7 +8,11 @@ function MyToDoApp({ Component, pageProps }) {
   const router = useRouter();
 
   if (router.pathname === '/') {
-    return <Component {...pageProps} />;
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Component {...pageProps} />
+      </div>
+    );
   }
   else {
     return (
