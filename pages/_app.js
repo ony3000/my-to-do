@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import '@fortawesome/fontawesome-free/css/all.css';
 import 'tailwindcss/tailwind.css';
 import AppHeader from '../components/layouts/AppHeader';
 import AppLeftColumn from '../components/layouts/AppLeftColumn';
