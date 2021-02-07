@@ -21,10 +21,12 @@
   @apply text-sm;
   flex: 1;
   min-width: 0;
-  margin: 0 10px;
+  padding: 0 10px;
 }
 
 .button {
+  display: inline-flex;
+  align-items: center;
   width: 2rem;
   height: 2rem;
   color: theme("colors.blue.500");
@@ -32,5 +34,24 @@
   &:focus {
     outline: 2px solid theme("colors.blue.900");
     outline-offset: -2px;
+  }
+}
+
+.icon-wrapper {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 2rem;
+  height: 2rem;
+}
+
+.container:not(.is-active) {
+  .button.is-opener {
+    flex: 1;
+  }
+
+  .input,
+  .button.is-closer {
+    display: none;
   }
 }

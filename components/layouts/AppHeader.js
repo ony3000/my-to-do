@@ -1,9 +1,15 @@
 import React from 'react';
 import classNames from 'classnames/bind';
+import { connect } from 'react-redux';
+import { toggleSettingPanel } from '../../store/todoSlice';
 import styles from './AppHeader.module.scss';
 import SearchBox from '../SearchBox';
 
 const cx = classNames.bind(styles);
+
+const mapStateToProps = ({ todo: state }) => ({
+  isActiveSettingPanel: state.isActiveSettingPanel,
+});
 
 class AppHeader extends React.Component {
   render() {
@@ -16,10 +22,10 @@ class AppHeader extends React.Component {
         <button
           className={cx(
             'button',
-            { 'is-active': false },
+            { 'is-active': this.props.isActiveSettingPanel },
           )}
           title="설정"
-          onClick={() => this.toggleContainer()}
+          onClick={() => this.props.dispatch(toggleSettingPanel())}
         >
           <i className="fas fa-cog"></i>
           <span className="sr-only">설정</span>
@@ -27,10 +33,6 @@ class AppHeader extends React.Component {
       </div>
     );
   }
-
-  toggleContainer() {
-    console.log('Toggle setting container');
-  }
 }
 
-export default AppHeader;
+export default connect(mapStateToProps)(AppHeader);

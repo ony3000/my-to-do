@@ -29,6 +29,7 @@
   &:hover {
     background-color: theme("colors.blue.700");
     color: theme("colors.white");
+    transition: all 0.2s ease-in-out;
   }
 
   &:focus {
