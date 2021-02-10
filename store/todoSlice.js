@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   isActiveSearchBox: false,
+  isActiveSidebar: true,
   isActiveSettingPanel: false,
 };
 
@@ -15,6 +16,12 @@ const todoSlice = createSlice({
     closeSearchBox(state) {
       state.isActiveSearchBox = false;
     },
+    openSidebar(state) {
+      state.isActiveSidebar = true;
+    },
+    closeSidebar(state) {
+      state.isActiveSidebar = false;
+    },
     toggleSettingPanel(state) {
       state.isActiveSettingPanel = !state.isActiveSettingPanel;
     },
@@ -24,6 +31,8 @@ const todoSlice = createSlice({
 export const {
   openSearchBox,
   closeSearchBox,
+  openSidebar,
+  closeSidebar,
   toggleSettingPanel,
 } = todoSlice.actions;
 

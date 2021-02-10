@@ -2,11 +2,25 @@ import React from 'react';
 import Link from 'next/link';
 import { withRouter } from 'next/router';
 import classNames from 'classnames/bind';
+import { connect } from 'react-redux';
+import { openSidebar, closeSidebar } from '../../store/todoSlice';
 import styles from './AppLeftColumn.module.scss';
 
 const cx = classNames.bind(styles);
 
+const mapStateToProps = ({ todo: state }) => ({
+  isActiveSidebar: state.isActiveSidebar,
+});
+
 class AppLeftColumn extends React.Component {
+  componentDidMount() {
+    const { dispatch } = this.props;
+
+    if (window.innerWidth < 920) {
+      dispatch(closeSidebar());
+    }
+  }
+
   render() {
     const { router } = this.props;
     const anchors = [
@@ -74,53 +88,74 @@ class AppLeftColumn extends React.Component {
     ];
 
     return (
-      <div
-        className={cx(
-          'container',
-          { 'is-active': true },
-        )}
-      >
-        <div className={cx('sidebar-header')}>
-          <button
-            className={cx('button')}
-            title="사이드바 표시/숨기기"
-          >
-            <span className={cx('icon-wrapper')}>
-              <i className="fas fa-bars"></i>
-              <span className="sr-only">사이드바 표시/숨기기</span>
-            </span>
-          </button>
-        </div>
-        <ul className="mt-2">
-          {anchors.map((anchorItem) => (
-            <li
-              key={anchorItem.key}
-              className={cx(
-                'sidebar-item',
-                { 'is-active': router.pathname === anchorItem.href || anchorItem.hrefAliases?.includes(router.pathname) },
-              )}
+      <>
+        <div
+          className={cx(
+            'container',
+            { 'is-active': this.props.isActiveSidebar },
+          )}
+        >
+          <div className={cx('sidebar-header')}>
+            <button
+              className={cx('button')}
+              title="사이드바 표시/숨기기"
+              onClick={() => this.toggleSidebar()}
             >
-              <Link href={anchorItem.href}>
-                <a className={cx('sidebar-link')}>
-                  <span className={cx('icon-wrapper')}>
-                    <i className={anchorItem.icon.className}></i>
-                  </span>
-                  <span className={cx('link-text', 'is-title', anchorItem.textColor)}>
-                    {anchorItem.text}
-                  </span>
-                  {anchorItem.count ? (
-                    <span className={cx('link-text', anchorItem.textColor)}>
-                      {anchorItem.count}
+              <span className={cx('icon-wrapper')}>
+                <i className="fas fa-bars"></i>
+                <span className="sr-only">사이드바 표시/숨기기</span>
+              </span>
+            </button>
+          </div>
+          <ul className="mt-2">
+            {anchors.map((anchorItem) => (
+              <li
+                key={anchorItem.key}
+                className={cx(
+                  'sidebar-item',
+                  { 'is-active': router.pathname === anchorItem.href || anchorItem.hrefAliases?.includes(router.pathname) },
+                )}
+              >
+                <Link href={anchorItem.href}>
+                  <a className={cx('sidebar-link')}>
+                    <span className={cx('icon-wrapper')}>
+                      <i className={anchorItem.icon.className}></i>
                     </span>
-                  ) : null}
-                </a>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </div>
+                    <span className={cx('link-text', 'is-title', anchorItem.textColor)}>
+                      {anchorItem.text}
+                    </span>
+                    {anchorItem.count ? (
+                      <span className={cx('link-text', anchorItem.textColor)}>
+                        {anchorItem.count}
+                      </span>
+                    ) : null}
+                  </a>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div
+          className={cx(
+            'overlay',
+            { 'is-active': this.props.isActiveSidebar },
+          )}
+          onClick={() => this.props.dispatch(closeSidebar())}
+        />
+      </>
     );
+  }
+
+  toggleSidebar() {
+    const { dispatch } = this.props;
+
+    if (this.props.isActiveSidebar) {
+      dispatch(closeSidebar());
+    }
+    else {
+      dispatch(openSidebar());
+    }
   }
 }
 
-export default withRouter(AppLeftColumn);
+export default withRouter(connect(mapStateToProps)(AppLeftColumn));
