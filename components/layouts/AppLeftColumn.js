@@ -16,7 +16,7 @@ class AppLeftColumn extends React.Component {
   componentDidMount() {
     const { dispatch } = this.props;
 
-    if (window.innerWidth < 920) {
+    if (window.innerWidth < 920 && this.props.isActiveSidebar) {
       dispatch(closeSidebar());
     }
   }
