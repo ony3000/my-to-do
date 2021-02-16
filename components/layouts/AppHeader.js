@@ -13,6 +13,8 @@ const mapStateToProps = ({ todo: state }) => ({
 
 class AppHeader extends React.Component {
   render() {
+    const { dispatch, isActiveSettingPanel } = this.props;
+
     return (
       <div className="bg-blue-500 h-12 flex items-center justify-between">
         <a className={cx('home-link')} href="/">
@@ -22,10 +24,10 @@ class AppHeader extends React.Component {
         <button
           className={cx(
             'button',
-            { 'is-active': this.props.isActiveSettingPanel },
+            { 'is-active': isActiveSettingPanel },
           )}
           title="설정"
-          onClick={() => this.props.dispatch(toggleSettingPanel())}
+          onClick={() => dispatch(toggleSettingPanel())}
         >
           <i className="fas fa-cog"></i>
           <span className="sr-only">설정</span>

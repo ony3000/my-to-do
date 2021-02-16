@@ -20,11 +20,13 @@ class SearchBox extends React.Component {
   }
 
   render() {
+    const { isActiveSearchBox } = this.props;
+
     return (
       <div
         className={cx(
           'container',
-          { 'is-active': this.props.isActiveSearchBox },
+          { 'is-active': isActiveSearchBox },
         )}
       >
         <button
@@ -42,14 +44,14 @@ class SearchBox extends React.Component {
           className={cx('input')}
           type="text"
           placeholder="검색"
-          disabled={!this.props.isActiveSearchBox}
+          disabled={!isActiveSearchBox}
           onInput={e => this.inputHandler(e)}
           onBlur={e => this.blurHandler(e)}
         />
         <button
           className={cx('button', 'is-closer')}
           title="검색 종료"
-          disabled={!this.props.isActiveSearchBox}
+          disabled={!isActiveSearchBox}
           onClick={() => this.close()}
         >
           <span className={cx('icon-wrapper')}>
@@ -62,18 +64,22 @@ class SearchBox extends React.Component {
   }
 
   open() {
-    if (!this.props.isActiveSearchBox) {
-      this.props.dispatch(openSearchBox());
+    const { dispatch, isActiveSearchBox } = this.props;
+
+    if (!isActiveSearchBox) {
+      dispatch(openSearchBox());
     }
 
     setTimeout(() => this.$refs.input.current.focus());
   }
 
   close() {
+    const { dispatch, isActiveSearchBox } = this.props;
+
     this.$refs.input.current.value = '';
 
-    if (this.props.isActiveSearchBox) {
-      this.props.dispatch(closeSearchBox());
+    if (isActiveSearchBox) {
+      dispatch(closeSearchBox());
     }
   }
 

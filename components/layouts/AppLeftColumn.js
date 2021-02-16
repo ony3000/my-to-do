@@ -14,15 +14,15 @@ const mapStateToProps = ({ todo: state }) => ({
 
 class AppLeftColumn extends React.Component {
   componentDidMount() {
-    const { dispatch } = this.props;
+    const { dispatch, isActiveSidebar } = this.props;
 
-    if (window.innerWidth < 920 && this.props.isActiveSidebar) {
+    if (window.innerWidth < 920 && isActiveSidebar) {
       dispatch(closeSidebar());
     }
   }
 
   render() {
-    const { router } = this.props;
+    const { router, dispatch, isActiveSidebar } = this.props;
     const anchors = [
       {
         key: 'myday',
@@ -92,7 +92,7 @@ class AppLeftColumn extends React.Component {
         <div
           className={cx(
             'container',
-            { 'is-active': this.props.isActiveSidebar },
+            { 'is-active': isActiveSidebar },
           )}
         >
           <div className={cx('sidebar-header')}>
@@ -138,18 +138,18 @@ class AppLeftColumn extends React.Component {
         <div
           className={cx(
             'overlay',
-            { 'is-active': this.props.isActiveSidebar },
+            { 'is-active': isActiveSidebar },
           )}
-          onClick={() => this.props.dispatch(closeSidebar())}
+          onClick={() => dispatch(closeSidebar())}
         />
       </>
     );
   }
 
   toggleSidebar() {
-    const { dispatch } = this.props;
+    const { dispatch, isActiveSidebar } = this.props;
 
-    if (this.props.isActiveSidebar) {
+    if (isActiveSidebar) {
       dispatch(closeSidebar());
     }
     else {
