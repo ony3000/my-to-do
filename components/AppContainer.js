@@ -8,6 +8,7 @@ import AppSplash from './AppSplash';
 import AppHeader from './layouts/AppHeader';
 import AppLeftColumn from './layouts/AppLeftColumn';
 import AppRightColumn from './layouts/AppRightColumn';
+import SettingPanel from './SettingPanel';
 
 const cx = classNames.bind(styles);
 
@@ -36,6 +37,8 @@ class AppContainer extends React.Component {
         {isAppReady ? (
           <>
             <AppHeader />
+
+            <SettingPanel />
 
             <div className={cx('body')}>
               <AppLeftColumn />

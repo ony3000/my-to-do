@@ -40,8 +40,11 @@ const todoSlice = createSlice({
     closeSidebar(state) {
       state.isActiveSidebar = false;
     },
-    toggleSettingPanel(state) {
-      state.isActiveSettingPanel = !state.isActiveSettingPanel;
+    openSettingPanel(state) {
+      state.isActiveSettingPanel = true;
+    },
+    closeSettingPanel(state) {
+      state.isActiveSettingPanel = false;
     },
   },
   extraReducers: builder => {
@@ -56,7 +59,8 @@ export const {
   closeSearchBox,
   openSidebar,
   closeSidebar,
-  toggleSettingPanel,
+  openSettingPanel,
+  closeSettingPanel,
 } = todoSlice.actions;
 
 export default todoSlice.reducer;

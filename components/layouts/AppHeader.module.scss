@@ -18,7 +18,7 @@
   color: theme("colors.white");
 
   &.is-active {
-    background-color: theme("colors.white");
+    background-color: theme("colors.gray.100");
     color: theme("colors.blue.500");
 
     &:focus {

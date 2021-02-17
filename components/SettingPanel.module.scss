@@ -1,0 +1,123 @@
+.container {
+  position: absolute;
+  z-index: 5000;
+  top: 48px;
+  right: 0;
+  width: 320px;
+  height: calc(100vh - 48px);
+  box-sizing: content-box;
+  border-left: 1px solid theme("colors.gray.200");
+  background-color: theme("colors.gray.50");
+  box-shadow: 0 2px 4px rgba(#000, 0.2);
+
+  @media (min-width: 25em) {
+    width: 360px;
+  }
+}
+
+.setting-section {
+  padding-bottom: 10px;
+}
+
+.title {
+  font-weight: 600;
+  font-size: 18px;
+  padding: 8px 0;
+}
+
+.togglable-item {
+  margin-top: 16px;
+
+  .top-label {
+    padding: 4px 0;
+    font-size: 14px;
+    font-weight: 600;
+    display: block;
+  }
+
+  .switch {
+    display: flex;
+    width: 40px;
+    height: 20px;
+    outline-color: theme("colors.blue.500");
+    border: 1px solid theme("colors.gray.500");
+    border-radius: 10px;
+    padding: 0 3px;
+    background-color: theme("colors.white");
+    align-items: center;
+
+    .switch-thumb {
+      display: inline-flex;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: theme("colors.gray.500");
+    }
+
+    &:hover {
+      border-color: theme("colors.gray.700");
+
+      .switch-thumb {
+        background-color: theme("colors.gray.800");
+      }
+    }
+  }
+
+  .side-label {
+    margin: 0 8px;
+    font-size: 14px;
+  }
+
+  &:first-child {
+    margin-top: 8px;
+  }
+
+  &:last-child {
+    margin-bottom: 8px;
+  }
+
+  &.is-active {
+    .switch {
+      border-color: theme("colors.blue.500");
+      background-color: theme("colors.blue.500");
+      justify-content: flex-end;
+
+      .switch-thumb {
+        background-color: theme("colors.white");
+      }
+
+      &:hover {
+        border-color: theme("colors.blue.600");
+        background-color: theme("colors.blue.600");
+
+        .switch-thumb {
+          background-color: theme("colors.white");
+        }
+      }
+    }
+  }
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  color: theme("colors.gray.600");
+  padding: 0.25rem;
+  position: absolute;
+  top: 12px;
+  right: 4px;
+
+  &:hover {
+    background-color: theme("colors.gray.200");
+  }
+}
+
+.icon-wrapper {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 2rem;
+  height: 2rem;
+}

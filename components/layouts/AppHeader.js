@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames/bind';
 import { connect } from 'react-redux';
-import { toggleSettingPanel } from '../../store/todoSlice';
+import { openSettingPanel, closeSettingPanel } from '../../store/todoSlice';
 import styles from './AppHeader.module.scss';
 import SearchBox from '../SearchBox';
 
@@ -13,7 +13,7 @@ const mapStateToProps = ({ todo: state }) => ({
 
 class AppHeader extends React.Component {
   render() {
-    const { dispatch, isActiveSettingPanel } = this.props;
+    const { isActiveSettingPanel } = this.props;
 
     return (
       <div className="bg-blue-500 h-12 flex items-center justify-between">
@@ -27,13 +27,24 @@ class AppHeader extends React.Component {
             { 'is-active': isActiveSettingPanel },
           )}
           title="설정"
-          onClick={() => dispatch(toggleSettingPanel())}
+          onClick={() => this.toggleSettingPanel()}
         >
           <i className="fas fa-cog"></i>
           <span className="sr-only">설정</span>
         </button>
       </div>
     );
+  }
+
+  toggleSettingPanel() {
+    const { dispatch, isActiveSettingPanel } = this.props;
+
+    if (isActiveSettingPanel) {
+      dispatch(closeSettingPanel());
+    }
+    else {
+      dispatch(openSettingPanel());
+    }
   }
 }
 
