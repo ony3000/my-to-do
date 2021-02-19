@@ -5,6 +5,7 @@ export default function Inbox() {
     <main>
       <Head>
         <title>Tasks - To Do</title>
+        <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <h1>Tasks</h1>

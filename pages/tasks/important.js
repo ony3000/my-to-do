@@ -5,6 +5,7 @@ export default function Important() {
     <main>
       <Head>
         <title>중요 - To Do</title>
+        <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <h1>중요</h1>
