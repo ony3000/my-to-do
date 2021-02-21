@@ -9,6 +9,7 @@
   border-left: 1px solid theme("colors.gray.200");
   background-color: theme("colors.gray.50");
   box-shadow: 0 2px 4px rgba(#000, 0.2);
+  overflow-y: auto;
 
   @media (min-width: 25em) {
     width: 360px;
@@ -27,6 +28,8 @@
 
 .togglable-item {
   margin-top: 16px;
+  display: flex;
+  flex-direction: column;
 
   .top-label {
     padding: 4px 0;

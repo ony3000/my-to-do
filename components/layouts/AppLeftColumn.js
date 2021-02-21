@@ -10,6 +10,7 @@ const cx = classNames.bind(styles);
 
 const mapStateToProps = ({ todo: state }) => ({
   isActiveSidebar: state.isActiveSidebar,
+  smartListSettings: state.settings.smartList,
 });
 
 class AppLeftColumn extends React.Component {
@@ -22,7 +23,7 @@ class AppLeftColumn extends React.Component {
   }
 
   render() {
-    const { router, dispatch, isActiveSidebar } = this.props;
+    const { router, dispatch, isActiveSidebar, smartListSettings } = this.props;
     const anchors = [
       {
         key: 'myday',
@@ -108,31 +109,35 @@ class AppLeftColumn extends React.Component {
             </button>
           </div>
           <ul className="mt-2">
-            {anchors.map((anchorItem) => (
-              <li
-                key={anchorItem.key}
-                className={cx(
-                  'sidebar-item',
-                  { 'is-active': router.pathname === anchorItem.href || anchorItem.hrefAliases?.includes(router.pathname) },
-                )}
-              >
-                <Link href={anchorItem.href}>
-                  <a className={cx('sidebar-link')}>
-                    <span className={cx('icon-wrapper')}>
-                      <i className={anchorItem.icon.className}></i>
-                    </span>
-                    <span className={cx('link-text', 'is-title', anchorItem.textColor)}>
-                      {anchorItem.text}
-                    </span>
-                    {anchorItem.count ? (
-                      <span className={cx('link-text', anchorItem.textColor)}>
-                        {anchorItem.count}
+            {anchors.map((anchorItem) => {
+              const isActiveSmartList = (smartListSettings[anchorItem.key] !== false);
+
+              return (isActiveSmartList ? (
+                <li
+                  key={anchorItem.key}
+                  className={cx(
+                    'sidebar-item',
+                    { 'is-active': router.pathname === anchorItem.href || anchorItem.hrefAliases?.includes(router.pathname) },
+                  )}
+                >
+                  <Link href={anchorItem.href}>
+                    <a className={cx('sidebar-link')}>
+                      <span className={cx('icon-wrapper')}>
+                        <i className={anchorItem.icon.className}></i>
                       </span>
-                    ) : null}
-                  </a>
-                </Link>
-              </li>
-            ))}
+                      <span className={cx('link-text', 'is-title', anchorItem.textColor)}>
+                        {anchorItem.text}
+                      </span>
+                      {anchorItem.count ? (
+                        <span className={cx('link-text', anchorItem.textColor)}>
+                          {anchorItem.count}
+                        </span>
+                      ) : null}
+                    </a>
+                  </Link>
+                </li>
+              ) : null);
+            })}
           </ul>
         </div>
         <div

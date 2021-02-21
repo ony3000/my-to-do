@@ -5,6 +5,15 @@ const initialState = {
   isActiveSearchBox: false,
   isActiveSidebar: true,
   isActiveSettingPanel: false,
+  settings: {
+    smartList: {
+      important: true,
+      planned: true,
+      all: false,
+      completed: false,
+      autoHideEmptyLists: false,
+    },
+  },
 };
 
 export const launchApp = createAsyncThunk('todo/launchApp', async () => {
@@ -46,6 +55,12 @@ const todoSlice = createSlice({
     closeSettingPanel(state) {
       state.isActiveSettingPanel = false;
     },
+    turnOnSmartList(state, { payload }) {
+      state.settings.smartList[payload] = true;
+    },
+    turnOffSmartList(state, { payload }) {
+      state.settings.smartList[payload] = false;
+    },
   },
   extraReducers: builder => {
     builder.addCase(launchApp.fulfilled, (state, { payload }) => {
@@ -61,6 +76,8 @@ export const {
   closeSidebar,
   openSettingPanel,
   closeSettingPanel,
+  turnOnSmartList,
+  turnOffSmartList,
 } = todoSlice.actions;
 
 export default todoSlice.reducer;
