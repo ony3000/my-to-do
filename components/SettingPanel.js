@@ -72,7 +72,7 @@ class SettingPanel extends React.Component {
 
             <div className="flex">
               <div>
-                <img className="w-20 h-20" src="https://via.placeholder.com/80" alt="" />
+                <img className="w-20 h-20" src="/images/todo_check.png" alt="" />
               </div>
               <div className="ml-4">
                 <p>
