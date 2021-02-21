@@ -1,18 +1,40 @@
 .container {
   position: absolute;
-  z-index: 5000;
+  z-index: -1;
   top: 48px;
   right: 0;
-  width: 320px;
+  width: 280px;
   height: calc(100vh - 48px);
+  opacity: 0;
   box-sizing: content-box;
   border-left: 1px solid theme("colors.gray.200");
   background-color: theme("colors.gray.50");
   box-shadow: 0 2px 4px rgba(#000, 0.2);
+  overflow-x: hidden;
   overflow-y: auto;
+  transition: all 0.2s ease-in-out;
+
+  .body {
+    transition: transform 0.2s ease-in-out;
+    transform: translateX(80px);
+  }
+
+  &.is-active {
+    z-index: 5000;
+    width: 320px;
+    opacity: 1;
+
+    .body {
+      transform: translateX(0);
+    }
+  }
 
   @media (min-width: 25em) {
-    width: 360px;
+    width: 320px;
+
+    &.is-active {
+      width: 360px;
+    }
   }
 }
 

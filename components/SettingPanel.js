@@ -37,55 +37,63 @@ class SettingPanel extends React.Component {
       },
     ];
 
-    return (isActiveSettingPanel ? (
-      <div className={cx('container')}>
-        <h1 className="inline-flex px-4 py-5 text-xl font-semibold">설정</h1>
+    return (
+      <div
+        className={cx(
+          'container',
+          { 'is-active': isActiveSettingPanel },
+        )}
+      >
+        <div className={cx('body')}>
+          <h1 className="inline-flex px-4 py-5 text-xl font-semibold">설정</h1>
 
-        <div className="px-4">
-          <div className={cx('setting-section')}>
-            <h2 className={cx('title')}>스마트 목록</h2>
+          <div className="px-4">
+            <div className={cx('setting-section')}>
+              <h2 className={cx('title')}>스마트 목록</h2>
 
-            <div className="flex flex-col items-start">
-              {smartLists.map((smartListItem) => {
-                const isActiveSmartList = smartListSettings[smartListItem.key];
+              <div className="flex flex-col items-start">
+                {smartLists.map((smartListItem) => {
+                  const isActiveSmartList = smartListSettings[smartListItem.key];
 
-                return (
-                  <div
-                    key={smartListItem.key}
-                    className={cx(
-                      'togglable-item',
-                      { 'is-active': isActiveSmartList },
-                    )}
-                  >
-                    <label className={cx('top-label')}>{smartListItem.text}</label>
-                    <div className="inline-flex">
-                      <button
-                        className={cx('switch')}
-                        title={isActiveSmartList ? '끄기' : '켜기'}
-                        onClick={() => this.toggleSmartList(smartListItem.key)}
-                      >
-                        <span className={cx('switch-thumb')}></span>
-                        <span className="sr-only">{isActiveSmartList ? '끄기' : '켜기'}</span>
-                      </button>
-                      <label className={cx('side-label')}>{isActiveSmartList ? '켬' : '끔'}</label>
+                  return (
+                    <div
+                      key={smartListItem.key}
+                      className={cx(
+                        'togglable-item',
+                        { 'is-active': isActiveSmartList },
+                      )}
+                    >
+                      <label className={cx('top-label')}>{smartListItem.text}</label>
+                      <div className="inline-flex">
+                        <button
+                          className={cx('switch')}
+                          title={isActiveSmartList ? '끄기' : '켜기'}
+                          disabled={!isActiveSettingPanel}
+                          onClick={() => this.toggleSmartList(smartListItem.key)}
+                        >
+                          <span className={cx('switch-thumb')}></span>
+                          <span className="sr-only">{isActiveSmartList ? '끄기' : '켜기'}</span>
+                        </button>
+                        <label className={cx('side-label')}>{isActiveSmartList ? '켬' : '끔'}</label>
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          <div className={cx('setting-section')}>
-            <h2 className={cx('title')}>정보</h2>
-
-            <div className="flex">
-              <div>
-                <img className="w-20 h-20" src="/images/todo_check.png" alt="" />
+                  );
+                })}
               </div>
-              <div className="ml-4">
-                <p>
-                  <span className="text-sm font-bold">My To Do</span>
-                </p>
+            </div>
+
+            <div className={cx('setting-section')}>
+              <h2 className={cx('title')}>정보</h2>
+
+              <div className="flex">
+                <div>
+                  <img className="w-20 h-20" src="/images/todo_check.png" alt="" />
+                </div>
+                <div className="ml-4">
+                  <p>
+                    <span className="text-sm font-bold">My To Do</span>
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -94,6 +102,7 @@ class SettingPanel extends React.Component {
         <button
           className={cx('button')}
           title="창 닫기"
+          disabled={!isActiveSettingPanel}
           onClick={() => dispatch(closeSettingPanel())}
         >
           <span className={cx('icon-wrapper')}>
@@ -102,7 +111,7 @@ class SettingPanel extends React.Component {
           </span>
         </button>
       </div>
-    ) : null);
+    );
   }
 
   toggleSmartList(key) {
