@@ -47,7 +47,7 @@ class AppContainer extends React.Component {
                 {children}
               </div>
 
-              <AppRightColumn />
+              {/* <AppRightColumn /> */}
             </div>
           </>
         ) : (
