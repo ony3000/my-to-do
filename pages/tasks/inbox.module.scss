@@ -56,3 +56,98 @@
   width: 1.5rem;
   height: 1.5rem;
 }
+
+.body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.input-section {
+  height: 52px;
+  margin: 0 8px;
+  padding: 0 16px;
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  box-shadow: 0 1px 0 0 black;
+}
+
+.input {
+  flex: 1;
+}
+
+.list-section {
+  flex: 1;
+  max-height: calc(100vh - 160px);
+  overflow-x: hidden;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.list-container {
+  position: relative;
+  margin: 0 8px;
+}
+
+.list-background {
+  margin: 0 24px;
+  flex: 1;
+  background-image: linear-gradient(180deg, salmon 0 1px, gold 1px);
+  background-size: 100% 54px;
+}
+
+.todo-item {
+  min-height: 52px;
+  padding: 0 16px;
+
+  &:hover {
+    background-color: pink;
+    box-shadow: 0 1px 0 0 pink;
+
+    & .todo-item-body,
+    & + .todo-item .todo-item-body {
+      box-shadow: none;
+    }
+  }
+}
+
+.todo-item-body {
+  display: flex;
+  align-items: center;
+  box-shadow: inset 0 1px 0 0 black;
+}
+
+.item-summary {
+  flex: 1;
+  text-align: left;
+  padding: 8px 12px;
+}
+
+.item-title {
+  font-size: 14px;
+}
+
+.item-metadata {
+  font-size: 12px;
+  line-height: 16px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.meta-icon-wrapper {
+  display: inline-flex;
+  width: 16px;
+  height: 16px;
+  justify-content: center;
+  align-items: center;
+}
+
+.meta-delimiter {
+  margin: 0 6px;
+}
