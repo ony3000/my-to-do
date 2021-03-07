@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import classNames from 'classnames/bind';
 import styles from './inbox.module.scss';
+import TaskInput from '../../components/TaskInput';
 
 const cx = classNames.bind(styles);
 
@@ -53,41 +54,7 @@ export default function Inbox() {
 
       <div className={cx('body')}>
         <div className={cx('input-section')}>
-          <div className={cx('input-container')}>
-            {/* 테마 색상 */}
-            <button
-              className={cx('list-button', 'is-left')}
-              title="작업 추가"
-              onClick={() => console.log('작업 추가')}
-            >
-              <span className={cx('icon-wrapper')}>
-                <i className="fas fa-plus"></i>
-                <span className="sr-only">작업 추가</span>
-              </span>
-            </button>
-
-            {/* 엔터 입력 또는 input blur 시, trim 결과가 비어있지 않으면 작업 추가 */}
-            <input
-              className={cx('input')}
-              type="text"
-              placeholder="작업 추가"
-            />
-
-            {/* 테마 색상, 작업 입력창의 값이 비어있지 않을 때만 노출됨 */}
-            <button
-              className={cx('list-button', 'is-right')}
-              title="추가"
-              onClick={() => console.log('추가')}
-              style={{
-                display: 'none',
-                fontSize: '12px',
-              }}
-            >
-              <span className={cx('icon-wrapper')}>
-                <span>추가</span>
-              </span>
-            </button>
-          </div>
+          <TaskInput />
         </div>
 
         <div className={cx('list-section')}>

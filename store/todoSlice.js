@@ -14,6 +14,7 @@ const initialState = {
       autoHideEmptyLists: false,
     },
   },
+  todoItems: [],
 };
 
 export const launchApp = createAsyncThunk('todo/launchApp', async () => {
@@ -61,6 +62,18 @@ const todoSlice = createSlice({
     turnOffSmartList(state, { payload }) {
       state.settings.smartList[payload] = false;
     },
+    createTodoItem(state, { payload }) {
+      state.todoItems.push(Object.assign({}, {
+        title: '',
+        isComplete: false,
+        subSteps: [],
+        isImportant: false,
+        isMarkedAsTodayTask: false,
+        deadline: null,
+        memo: '',
+        createdAt: new Date().getTime(),
+      }, payload));
+    }
   },
   extraReducers: builder => {
     builder.addCase(launchApp.fulfilled, (state, { payload }) => {
@@ -78,6 +91,7 @@ export const {
   closeSettingPanel,
   turnOnSmartList,
   turnOffSmartList,
+  createTodoItem,
 } = todoSlice.actions;
 
 export default todoSlice.reducer;

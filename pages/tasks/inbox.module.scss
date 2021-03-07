@@ -85,27 +85,6 @@
   padding: 0 16px;
 }
 
-.input-container {
-  display: flex;
-  align-items: center;
-  height: 100%;
-  box-shadow: 0 1px 0 0 theme("colors.gray.200");
-}
-
-.input {
-  flex: 1;
-  height: 100%;
-  margin: 0 4px;
-  padding: 8px;
-  font-size: 14px;
-  color: theme("colors.gray.700");
-
-  &::placeholder {
-    // 테마 색상
-    color: theme("colors.blue.500");
-  }
-}
-
 .list-section {
   flex: 1;
   max-height: calc(100vh - 160px);
