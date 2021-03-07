@@ -20,7 +20,7 @@ export default function Inbox() {
 
             {/* gray-500 색상 고정 */}
             <button
-              className={cx('button')}
+              className={cx('toolbar-button')}
               title="목록 옵션"
               onClick={() => console.log('목록 옵션')}
             >
@@ -36,7 +36,7 @@ export default function Inbox() {
           {/* 테마 색상 */}
           <button
             className={cx(
-              'button',
+              'toolbar-button',
               'transform',
               'rotate-90',
             )}
@@ -56,7 +56,7 @@ export default function Inbox() {
           <div className={cx('input-container')}>
             {/* 테마 색상 */}
             <button
-              className={cx('button')}
+              className={cx('list-button', 'is-left')}
               title="작업 추가"
               onClick={() => console.log('작업 추가')}
             >
@@ -70,15 +70,17 @@ export default function Inbox() {
             <input
               className={cx('input')}
               type="text"
+              placeholder="작업 추가"
             />
 
             {/* 테마 색상, 작업 입력창의 값이 비어있지 않을 때만 노출됨 */}
             <button
-              className={cx('button')}
+              className={cx('list-button', 'is-right')}
               title="추가"
               onClick={() => console.log('추가')}
               style={{
                 display: 'none',
+                fontSize: '12px',
               }}
             >
               <span className={cx('icon-wrapper')}>
@@ -98,7 +100,7 @@ export default function Inbox() {
                 <div className={cx('todo-item-body')}>
                   {/* 테마 색상 */}
                   <button
-                    className={cx('button')}
+                    className={cx('list-button', 'is-left')}
                     title={/* 완료되지 않았으면 */ true ? '완료됨으로 표시' : '완료되지 않음으로 표시'}
                     onClick={() => console.log('toggle completion')}
                   >
@@ -145,7 +147,7 @@ export default function Inbox() {
 
                   {/* 테마 색상 */}
                   <button
-                    className={cx('button')}
+                    className={cx('list-button', 'is-right')}
                     title={/* 중요도가 없으면 */ true ? '작업을 중요로 표시합니다.' : '중요도를 제거합니다.'}
                     onClick={() => console.log('toggle importance')}
                   >
