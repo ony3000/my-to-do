@@ -132,6 +132,7 @@
   text-align: left;
   padding: 8px;
   margin: 0 4px;
+  min-height: 54px;
 }
 
 .item-title {
@@ -148,14 +149,19 @@
   color: theme("colors.gray.500");
 }
 
+.meta-indicator {
+  & + & {
+    &:before {
+      content: "\2022";
+      margin: 0 6px;
+    }
+  }
+}
+
 .meta-icon-wrapper {
   display: inline-flex;
   width: 16px;
   height: 16px;
   justify-content: center;
   align-items: center;
-}
-
-.meta-delimiter {
-  margin: 0 6px;
 }

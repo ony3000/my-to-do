@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { v4 as uuid } from 'uuid';
 
 const initialState = {
   isAppReady: false,
@@ -64,6 +65,7 @@ const todoSlice = createSlice({
     },
     createTodoItem(state, { payload }) {
       state.todoItems.push(Object.assign({}, {
+        id: uuid(),
         title: '',
         isComplete: false,
         subSteps: [],
