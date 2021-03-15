@@ -75,7 +75,13 @@ const todoSlice = createSlice({
         memo: '',
         createdAt: new Date().getTime(),
       }, payload));
-    }
+    },
+    markAsComplete(state, { payload }) {
+      state.todoItems.find(({ id }) => (id === payload)).isComplete = true;
+    },
+    markAsIncomplete(state, { payload }) {
+      state.todoItems.find(({ id }) => (id === payload)).isComplete = false;
+    },
   },
   extraReducers: builder => {
     builder.addCase(launchApp.fulfilled, (state, { payload }) => {
@@ -94,6 +100,8 @@ export const {
   turnOnSmartList,
   turnOffSmartList,
   createTodoItem,
+  markAsComplete,
+  markAsIncomplete,
 } = todoSlice.actions;
 
 export default todoSlice.reducer;

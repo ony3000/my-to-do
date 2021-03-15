@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import classNames from 'classnames/bind';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { markAsComplete, markAsIncomplete } from '../../store/todoSlice';
 import dayjs from '../../plugins/dayjs';
 import styles from './inbox.module.scss';
 import TaskInput from '../../components/TaskInput';
@@ -9,6 +10,7 @@ const cx = classNames.bind(styles);
 
 export default function Inbox() {
   const todoItems = useSelector(({ todo: state }) => state.todoItems);
+  const dispatch = useDispatch();
 
   const midnightOfToday = dayjs().startOf('day');
   const midnightOfTomorrow = midnightOfToday.add(1, 'day');
@@ -106,7 +108,9 @@ export default function Inbox() {
                     <button
                       className={cx('list-button', 'is-left')}
                       title={isComplete ? '완료되지 않음으로 표시' : '완료됨으로 표시'}
-                      onClick={() => console.log('toggle completion')}
+                      onClick={() => dispatch(
+                        isComplete ? markAsIncomplete(id) : markAsComplete(id)
+                      )}
                     >
                       <span className={cx('icon-wrapper')}>
                         {isComplete ? (
