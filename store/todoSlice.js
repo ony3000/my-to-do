@@ -82,6 +82,12 @@ const todoSlice = createSlice({
     markAsIncomplete(state, { payload }) {
       state.todoItems.find(({ id }) => (id === payload)).isComplete = false;
     },
+    markAsImportant(state, { payload }) {
+      state.todoItems.find(({ id }) => (id === payload)).isImportant = true;
+    },
+    markAsUnimportant(state, { payload }) {
+      state.todoItems.find(({ id }) => (id === payload)).isImportant = false;
+    },
   },
   extraReducers: builder => {
     builder.addCase(launchApp.fulfilled, (state, { payload }) => {
@@ -102,6 +108,8 @@ export const {
   createTodoItem,
   markAsComplete,
   markAsIncomplete,
+  markAsImportant,
+  markAsUnimportant,
 } = todoSlice.actions;
 
 export default todoSlice.reducer;

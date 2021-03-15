@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import classNames from 'classnames/bind';
 import { useSelector, useDispatch } from 'react-redux';
-import { markAsComplete, markAsIncomplete } from '../../store/todoSlice';
+import { markAsComplete, markAsIncomplete, markAsImportant, markAsUnimportant } from '../../store/todoSlice';
 import dayjs from '../../plugins/dayjs';
 import styles from './inbox.module.scss';
 import TaskInput from '../../components/TaskInput';
@@ -162,7 +162,9 @@ export default function Inbox() {
                     <button
                       className={cx('list-button', 'is-right')}
                       title={isImportant ? '중요도를 제거합니다.' : '작업을 중요로 표시합니다.'}
-                      onClick={() => console.log('toggle importance')}
+                      onClick={() => dispatch(
+                        isImportant ? markAsUnimportant(id) : markAsImportant(id)
+                      )}
                     >
                       <span className={cx('icon-wrapper')}>
                         {isImportant ? (
