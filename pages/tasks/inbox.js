@@ -60,7 +60,6 @@ export default function Inbox() {
 
         <div className={cx('list-section')}>
           <TaskList
-            title="작업"
             isCollapsible={false}
             filter={{
               isComplete: false,
@@ -69,7 +68,6 @@ export default function Inbox() {
 
           <TaskList
             title="완료됨"
-            isCollapsible={true}
             filter={{
               isComplete: true,
             }}

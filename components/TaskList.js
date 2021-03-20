@@ -8,19 +8,36 @@ import styles from './TaskList.module.scss';
 const cx = classNames.bind(styles);
 
 export default function TaskList({
-  title,
-  isCollapsible,
-  filter,
+  title = '작업',
+  isCollapsible = true,
+  isCollapsedInitially = false,
+  isHideForEmptyList = false,
+  isHideTodayIndicator = false,
+  filter = {},
 }) {
-  const [ isCollapsed, setIsCollapsed ] = useState(false);
-  const todoItems = useSelector(({ todo: state }) => state.todoItems.filter((item) => Object.keys(filter).every((key) => (item[key] === filter[key]))));
+  const [ isCollapsed, setIsCollapsed ] = useState(isCollapsedInitially || false);
+  const todoItems = useSelector(({ todo: state }) => state.todoItems.filter((item) => Object.keys(filter).every((key) => {
+    if (key === 'deadline') {
+      const { $gt, $gte, $lt, $lte } = filter.deadline;
+
+      return (
+        item.deadline > ($gt ?? -Infinity)
+          && item.deadline >= ($gte ?? -Infinity)
+          && item.deadline < ($lt ?? Infinity)
+          && item.deadline <= ($lte ?? Infinity)
+      );
+    }
+    else {
+      return item[key] === filter[key];
+    }
+  })));
   const dispatch = useDispatch();
 
-  const midnightOfToday = dayjs().startOf('day');
-  const midnightOfTomorrow = midnightOfToday.add(1, 'day');
-  const midnightOfTheDayAfterTomorrow = midnightOfTomorrow.add(1, 'day');
+  const midnightToday = dayjs().startOf('day');
+  const midnightTomorrow = midnightToday.add(1, 'day');
+  const midnightAfter2Days = midnightToday.add(2, 'day');
 
-  return (
+  return isHideForEmptyList && todoItems.length === 0 ? null : (
     <div className={cx('container')}>
       <div
         className={cx(
@@ -57,13 +74,13 @@ export default function TaskList({
         let deadlineElement = null;
 
         if (deadline) {
-          if (deadline < Number(midnightOfToday.format('x'))) {
+          if (deadline < Number(midnightToday.format('x'))) {
             deadlineElement = <span>지연, {dayjs(deadline, 'x').format('M월 D일, ddd')}</span>;
           }
-          else if (deadline < Number(midnightOfTomorrow.format('x'))) {
+          else if (deadline < Number(midnightTomorrow.format('x'))) {
             deadlineElement = <span>오늘까지</span>;
           }
-          else if (deadline < Number(midnightOfTheDayAfterTomorrow.format('x'))) {
+          else if (deadline < Number(midnightAfter2Days.format('x'))) {
             deadlineElement = <span>내일까지</span>;
           }
           else {
@@ -98,7 +115,7 @@ export default function TaskList({
               <button className={cx('item-summary')}>
                 <div className={cx('item-title')}>{title}</div>
                 <div className={cx('item-metadata')}>
-                  {isMarkedAsTodayTask ? (
+                  {isMarkedAsTodayTask && !isHideTodayIndicator ? (
                     <span className={cx('meta-indicator')}>
                       <span className={cx('meta-icon-wrapper')}>
                         <i className="far fa-sun" />
