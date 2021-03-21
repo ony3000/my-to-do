@@ -21,7 +21,8 @@ export default function TaskList({
       const { $gt, $gte, $lt, $lte } = filter.deadline;
 
       return (
-        item.deadline > ($gt ?? -Infinity)
+        item.deadline
+          && item.deadline > ($gt ?? -Infinity)
           && item.deadline >= ($gte ?? -Infinity)
           && item.deadline < ($lt ?? Infinity)
           && item.deadline <= ($lte ?? Infinity)
