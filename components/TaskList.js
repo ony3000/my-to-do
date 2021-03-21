@@ -38,6 +38,8 @@ export default function TaskList({
   const midnightTomorrow = midnightToday.add(1, 'day');
   const midnightAfter2Days = midnightToday.add(2, 'day');
 
+  todoItems.sort((former, latter) => (latter.createdAt - former.createdAt));
+
   return isHideForEmptyList && todoItems.length === 0 ? null : (
     <div className={cx('container')}>
       <div
