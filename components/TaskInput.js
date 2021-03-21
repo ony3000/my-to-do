@@ -84,7 +84,8 @@ class TaskInput extends React.Component {
 
   createTask() {
     const { dispatch } = this.props;
-    const trimmedTitle = this.$refs.input.current.value.trim();
+    const inputElement = this.$refs.input.current;
+    const trimmedTitle = inputElement.value.trim();
 
     if (trimmedTitle) {
       dispatch(createTodoItem({
@@ -92,7 +93,8 @@ class TaskInput extends React.Component {
         ...this.props.itemProps,
       }));
 
-      this.$refs.input.current.value = '';
+      inputElement.value = '';
+      inputElement.dataset.isEmpty = true;
     }
   }
 }
