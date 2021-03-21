@@ -35,7 +35,7 @@ class TaskInput extends React.Component {
           ref={this.$refs.input}
           className={cx('input')}
           type="text"
-          placeholder="작업 추가"
+          placeholder={this.props.placeholder ?? '작업 추가'}
           data-is-empty={true}
           onKeyUp={e => this.keyUpHandler(e)}
           onInput={e => this.inputHandler(e)}
@@ -89,6 +89,7 @@ class TaskInput extends React.Component {
     if (trimmedTitle) {
       dispatch(createTodoItem({
         title: trimmedTitle,
+        ...this.props.itemProps,
       }));
 
       this.$refs.input.current.value = '';

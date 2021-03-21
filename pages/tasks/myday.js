@@ -83,7 +83,11 @@ export default function Myday() {
 
       <div className={cx('body')}>
         <div className={cx('input-section')}>
-          <TaskInput />
+          <TaskInput
+            itemProps={{
+              isMarkedAsTodayTask: true,
+            }}
+          />
         </div>
 
         <div className={cx('list-section')}>

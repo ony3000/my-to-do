@@ -37,7 +37,11 @@ export default function Important() {
 
       <div className={cx('body')}>
         <div className={cx('input-section')}>
-          <TaskInput />
+          <TaskInput
+            itemProps={{
+              isImportant: true,
+            }}
+          />
         </div>
 
         <div className={cx('list-section')}>

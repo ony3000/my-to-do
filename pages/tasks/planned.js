@@ -44,7 +44,12 @@ export default function Planned() {
 
       <div className={cx('body')}>
         <div className={cx('input-section')}>
-          <TaskInput />
+          <TaskInput
+            placeholder="기한이 오늘인 작업 추가"
+            itemProps={{
+              deadline: Number(midnightTomorrow.format('x')) - 1,
+            }}
+          />
         </div>
 
         <div className={cx('list-section')}>
