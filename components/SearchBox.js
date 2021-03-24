@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames/bind';
 import { connect } from 'react-redux';
-import { openSearchBox, closeSearchBox } from '../store/todoSlice';
+import { openSearchBox, closeSearchBox } from '@/store/todoSlice';
 import styles from './SearchBox.module.scss';
 
 const cx = classNames.bind(styles);

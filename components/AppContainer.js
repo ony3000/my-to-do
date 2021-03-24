@@ -2,13 +2,13 @@ import React from 'react';
 import { withRouter } from 'next/router';
 import classNames from 'classnames/bind';
 import { connect } from 'react-redux';
-import { launchApp } from '../store/todoSlice';
+import { launchApp } from '@/store/todoSlice';
 import styles from './AppContainer.module.scss';
-import AppSplash from './AppSplash';
-import AppHeader from './layouts/AppHeader';
-import AppLeftColumn from './layouts/AppLeftColumn';
-import AppRightColumn from './layouts/AppRightColumn';
-import SettingPanel from './SettingPanel';
+import AppSplash from '@/components/AppSplash';
+import AppHeader from '@/components/layouts/AppHeader';
+import AppLeftColumn from '@/components/layouts/AppLeftColumn';
+import AppRightColumn from '@/components/layouts/AppRightColumn';
+import SettingPanel from '@/components/SettingPanel';
 
 const cx = classNames.bind(styles);
 

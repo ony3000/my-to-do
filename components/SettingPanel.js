@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames/bind';
 import { connect } from 'react-redux';
-import { closeSettingPanel, turnOnSmartList, turnOffSmartList } from '../store/todoSlice';
+import { closeSettingPanel, turnOnSmartList, turnOffSmartList } from '@/store/todoSlice';
 import styles from './SettingPanel.module.scss';
 
 const cx = classNames.bind(styles);

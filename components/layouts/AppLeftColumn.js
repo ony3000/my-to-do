@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { withRouter } from 'next/router';
 import classNames from 'classnames/bind';
 import { connect } from 'react-redux';
-import { openSidebar, closeSidebar } from '../../store/todoSlice';
+import { openSidebar, closeSidebar } from '@/store/todoSlice';
 import styles from './AppLeftColumn.module.scss';
 
 const cx = classNames.bind(styles);

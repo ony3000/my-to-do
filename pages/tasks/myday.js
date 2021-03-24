@@ -1,9 +1,9 @@
 import Head from 'next/head';
 import classNames from 'classnames/bind';
-import dayjs from '../../plugins/dayjs';
+import dayjs from '@/plugins/dayjs';
 import styles from './inbox.module.scss'; // shared
-import TaskInput from '../../components/TaskInput';
-import TaskList from '../../components/TaskList';
+import TaskInput from '@/components/TaskInput';
+import TaskList from '@/components/TaskList';
 
 const cx = classNames.bind(styles);
 

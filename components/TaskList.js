@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import classNames from 'classnames/bind';
 import { useSelector, useDispatch } from 'react-redux';
-import { markAsComplete, markAsIncomplete, markAsImportant, markAsUnimportant } from '../store/todoSlice';
-import dayjs from '../plugins/dayjs';
+import { markAsComplete, markAsIncomplete, markAsImportant, markAsUnimportant } from '@/store/todoSlice';
+import dayjs from '@/plugins/dayjs';
 import styles from './TaskList.module.scss';
 
 const cx = classNames.bind(styles);

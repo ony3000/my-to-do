@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames/bind';
 import { connect } from 'react-redux';
-import { createTodoItem } from '../store/todoSlice';
+import { createTodoItem } from '@/store/todoSlice';
 import styles from './TaskInput.module.scss';
 
 const cx = classNames.bind(styles);

@@ -1,9 +1,9 @@
 import React from 'react';
 import classNames from 'classnames/bind';
 import { connect } from 'react-redux';
-import { openSettingPanel, closeSettingPanel } from '../../store/todoSlice';
+import { openSettingPanel, closeSettingPanel } from '@/store/todoSlice';
 import styles from './AppHeader.module.scss';
-import SearchBox from '../SearchBox';
+import SearchBox from '@/components/SearchBox';
 
 const cx = classNames.bind(styles);
 
