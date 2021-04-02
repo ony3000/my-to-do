@@ -4,7 +4,7 @@ import { withRouter } from 'next/router';
 import classNames from 'classnames/bind';
 import { connect } from 'react-redux';
 import { openSidebar, closeSidebar } from '@/store/todoSlice';
-import styles from './AppLeftColumn.module.scss';
+import styles from './NavigationDrawer.module.scss';
 
 const cx = classNames.bind(styles);
 
@@ -13,7 +13,7 @@ const mapStateToProps = ({ todo: state }) => ({
   smartListSettings: state.settings.smartList,
 });
 
-class AppLeftColumn extends React.Component {
+class NavigationDrawer extends React.Component {
   componentDidMount() {
     const { dispatch, isActiveSidebar } = this.props;
 
@@ -163,4 +163,4 @@ class AppLeftColumn extends React.Component {
   }
 }
 
-export default withRouter(connect(mapStateToProps)(AppLeftColumn));
+export default withRouter(connect(mapStateToProps)(NavigationDrawer));

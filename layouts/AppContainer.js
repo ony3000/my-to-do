@@ -6,7 +6,7 @@ import { launchApp } from '@/store/todoSlice';
 import styles from './AppContainer.module.scss';
 import AppSplash from '@/components/AppSplash';
 import AppHeader from '@/components/AppHeader';
-import AppLeftColumn from '@/components/AppLeftColumn';
+import NavigationDrawer from '@/components/NavigationDrawer';
 import AppRightColumn from '@/components/AppRightColumn';
 import SettingPanel from '@/components/SettingPanel';
 
@@ -41,7 +41,7 @@ class AppContainer extends React.Component {
             <SettingPanel />
 
             <div className={cx('body')}>
-              <AppLeftColumn />
+              <NavigationDrawer />
 
               <div className="flex-1">
                 {children}
