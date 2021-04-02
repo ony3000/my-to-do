@@ -3,7 +3,7 @@ import 'tailwindcss/tailwind.css';
 import { Provider } from 'react-redux';
 import store from '@/store/index';
 import './_app.scss';
-import AppContainer from '@/components/AppContainer';
+import AppContainer from '@/layouts/AppContainer';
 
 function MyToDoApp({ Component, pageProps }) {
   return (

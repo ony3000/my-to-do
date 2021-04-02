@@ -5,9 +5,9 @@ import { connect } from 'react-redux';
 import { launchApp } from '@/store/todoSlice';
 import styles from './AppContainer.module.scss';
 import AppSplash from '@/components/AppSplash';
-import AppHeader from '@/components/layouts/AppHeader';
-import AppLeftColumn from '@/components/layouts/AppLeftColumn';
-import AppRightColumn from '@/components/layouts/AppRightColumn';
+import AppHeader from '@/components/AppHeader';
+import AppLeftColumn from '@/components/AppLeftColumn';
+import AppRightColumn from '@/components/AppRightColumn';
 import SettingPanel from '@/components/SettingPanel';
 
 const cx = classNames.bind(styles);
