@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import classNames from 'classnames/bind';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { markAsComplete, markAsIncomplete, markAsImportant, markAsUnimportant } from '@/store/todoSlice';
 import dayjs from '@/plugins/dayjs';
 import styles from './TaskList.module.scss';
@@ -15,7 +15,7 @@ export default function TaskList({
   isHideTodayIndicator = false,
   filter = {},
 }) {
-  const [ isCollapsed, setIsCollapsed ] = useState(isCollapsedInitially || false);
+  const dispatch = useDispatch();
   const todoItems = useSelector(({ todo: state }) => state.todoItems.filter((item) => Object.keys(filter).every((key) => {
     if (key === 'deadline') {
       const { $gt, $gte, $lt, $lte } = filter.deadline;
@@ -32,7 +32,7 @@ export default function TaskList({
       return item[key] === filter[key];
     }
   })));
-  const dispatch = useDispatch();
+  const [ isCollapsed, setIsCollapsed ] = useState(isCollapsedInitially || false);
 
   const midnightToday = dayjs().startOf('day');
   const midnightTomorrow = midnightToday.add(1, 'day');

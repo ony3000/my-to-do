@@ -1,7 +1,7 @@
-import React from 'react';
-import { withRouter } from 'next/router';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import classNames from 'classnames/bind';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { launchApp } from '@/store/todoSlice';
 import styles from './AppContainer.module.scss';
 import AppSplash from '@/components/AppSplash';
@@ -12,50 +12,47 @@ import SettingPanel from '@/components/SettingPanel';
 
 const cx = classNames.bind(styles);
 
-const mapStateToProps = ({ todo: state }) => ({
-  isAppReady: state.isAppReady,
-});
+export default function AppContainer({ children }) {
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const isAppReady = useSelector(({ todo: state }) => state.isAppReady);
+  const [ isMounted, setIsMounted ] = useState(false);
 
-class AppContainer extends React.Component {
-  componentDidMount() {
-    const { router, dispatch, isAppReady } = this.props;
+  useEffect(() => {
+    if (!isMounted) {
+      if (router.pathname === '/') {
+        router.replace('/tasks');
+      }
 
-    if (router.pathname === '/') {
-      router.replace('/tasks');
+      if (!isAppReady) {
+        dispatch(launchApp());
+      }
+
+      setIsMounted(true);
     }
+  });
 
-    if (!isAppReady) {
-      dispatch(launchApp());
-    }
-  }
+  return (
+    <div className="min-h-screen flex flex-col">
+      {isAppReady ? (
+        <>
+          <AppHeader />
 
-  render() {
-    const { isAppReady, children } = this.props;
+          <SettingPanel />
 
-    return (
-      <div className="min-h-screen flex flex-col">
-        {isAppReady ? (
-          <>
-            <AppHeader />
+          <div className={cx('body')}>
+            <NavigationDrawer />
 
-            <SettingPanel />
-
-            <div className={cx('body')}>
-              <NavigationDrawer />
-
-              <div className="flex-1">
-                {children}
-              </div>
-
-              {/* <AppRightColumn /> */}
+            <div className="flex-1">
+              {children}
             </div>
-          </>
-        ) : (
-          <AppSplash />
-        )}
-      </div>
-    );
-  }
-}
 
-export default withRouter(connect(mapStateToProps)(AppContainer));
+            {/* <AppRightColumn /> */}
+          </div>
+        </>
+      ) : (
+        <AppSplash />
+      )}
+    </div>
+  );
+}
