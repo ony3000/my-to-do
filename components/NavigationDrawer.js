@@ -13,6 +13,7 @@ export default function NavigationDrawer() {
   const dispatch = useDispatch();
   const isActiveSidebar = useSelector(({ todo: state }) => state.isActiveSidebar);
   const smartListSettings = useSelector(({ todo: state }) => state.settings.smartList);
+  const incompleteTodoItems = useSelector(({ todo: state }) => state.todoItems.filter(item => !item.isComplete));
   const [ isMounted, setIsMounted ] = useState(false);
 
   const anchors = [
@@ -23,7 +24,7 @@ export default function NavigationDrawer() {
       icon: {
         className: 'far fa-sun',
       },
-      count: 0,
+      count: incompleteTodoItems.filter(item => item.isMarkedAsTodayTask).length,
     },
     {
       key: 'important',
@@ -32,7 +33,7 @@ export default function NavigationDrawer() {
       icon: {
         className: 'far fa-star',
       },
-      count: 1,
+      count: incompleteTodoItems.filter(item => item.isImportant).length,
       textColor: 'text-blue-700',
     },
     {
@@ -42,7 +43,7 @@ export default function NavigationDrawer() {
       icon: {
         className: 'far fa-calendar-alt',
       },
-      count: 2,
+      count: incompleteTodoItems.filter(item => item.deadline).length,
       textColor: 'text-blue-700',
     },
     {
@@ -52,7 +53,7 @@ export default function NavigationDrawer() {
       icon: {
         className: 'fas fa-infinity',
       },
-      count: 4,
+      count: incompleteTodoItems.length,
       textColor: 'text-blue-700', // 테마 설정 가능
     },
     {
@@ -74,7 +75,7 @@ export default function NavigationDrawer() {
       icon: {
         className: 'fas fa-home text-blue-500', // 테마 설정 가능
       },
-      count: 4,
+      count: incompleteTodoItems.length,
       textColor: 'text-blue-700', // 테마 설정 가능
     },
   ];
@@ -104,7 +105,11 @@ export default function NavigationDrawer() {
             onClick={() => isActiveSidebar ? dispatch(closeSidebar()) : dispatch(openSidebar())}
           >
             <span className={cx('icon-wrapper')}>
-              <i className="fas fa-bars"></i>
+              {isActiveSidebar ? (
+                <i className="fas fa-chevron-left"></i>
+              ) : (
+                <i className="fas fa-chevron-right"></i>
+              )}
               <span className="sr-only">사이드바 표시/숨기기</span>
             </span>
           </button>

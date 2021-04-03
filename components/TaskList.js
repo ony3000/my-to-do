@@ -16,7 +16,7 @@ export default function TaskList({
   filter = {},
 }) {
   const dispatch = useDispatch();
-  const todoItems = useSelector(({ todo: state }) => state.todoItems.filter((item) => Object.keys(filter).every((key) => {
+  const filteredTodoItems = useSelector(({ todo: state }) => state.todoItems.filter((item) => Object.keys(filter).every((key) => {
     if (key === 'deadline') {
       const { $gt, $gte, $lt, $lte } = filter.deadline;
 
@@ -38,9 +38,9 @@ export default function TaskList({
   const midnightTomorrow = midnightToday.add(1, 'day');
   const midnightAfter2Days = midnightToday.add(2, 'day');
 
-  todoItems.sort((former, latter) => (latter.createdAt - former.createdAt));
+  filteredTodoItems.sort((former, latter) => (latter.createdAt - former.createdAt));
 
-  return isHideForEmptyList && todoItems.length === 0 ? null : (
+  return isHideForEmptyList && filteredTodoItems.length === 0 ? null : (
     <div className={cx('container')}>
       <div
         className={cx(
@@ -62,7 +62,7 @@ export default function TaskList({
         </div>
       </div>
 
-      {todoItems.map(({
+      {filteredTodoItems.map(({
         id,
         title,
         isComplete,
