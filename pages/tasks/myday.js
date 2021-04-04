@@ -90,7 +90,12 @@ export default function Myday() {
           />
         </div>
 
-        <div className={cx('list-section')}>
+        <div
+          className={cx('list-section')}
+          style={{
+            maxHeight: 'calc(100vh - 182px)',
+          }}
+        >
           <TaskList
             isCollapsible={false}
             isHideTodayIndicator={true}
