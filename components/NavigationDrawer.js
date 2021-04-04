@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import classNames from 'classnames/bind';
 import { useDispatch, useSelector } from 'react-redux';
 import { openSidebar, closeSidebar } from '@/store/todoSlice';
+import dayjs from '@/plugins/dayjs';
 import styles from './NavigationDrawer.module.scss';
 
 const cx = classNames.bind(styles);
@@ -13,11 +14,15 @@ export default function NavigationDrawer() {
   const dispatch = useDispatch();
   const isActiveSidebar = useSelector(({ todo: state }) => state.isActiveSidebar);
   const smartListSettings = useSelector(({ todo: state }) => state.settings.smartList);
-  const incompleteTodoItems = useSelector(({ todo: state }) => state.todoItems.filter(item => !item.isComplete));
+  const todoItems = useSelector(({ todo: state }) => state.todoItems);
   const [ isMounted, setIsMounted ] = useState(false);
 
+  const midnightToday = dayjs().startOf('day');
+  const { autoHideEmptyLists } = smartListSettings;
+  const incompleteTodoItems = todoItems.filter(item => !item.isComplete);
   const anchors = [
     {
+      isHideAutomatically: false,
       key: 'myday',
       text: '오늘 할 일',
       href: '/tasks/myday',
@@ -27,6 +32,7 @@ export default function NavigationDrawer() {
       count: incompleteTodoItems.filter(item => item.isMarkedAsTodayTask).length,
     },
     {
+      isHideAutomatically: todoItems.filter(item => item.isImportant).length === 0,
       key: 'important',
       text: '중요',
       href: '/tasks/important',
@@ -37,6 +43,7 @@ export default function NavigationDrawer() {
       textColor: 'text-blue-700',
     },
     {
+      isHideAutomatically: todoItems.filter(item => item.deadline && item.deadline < Number(midnightToday.format('x')) && !item.isComplete).length === 0,
       key: 'planned',
       text: '계획된 일정',
       href: '/tasks/planned',
@@ -47,6 +54,7 @@ export default function NavigationDrawer() {
       textColor: 'text-blue-700',
     },
     {
+      isHideAutomatically: todoItems.filter(item => !item.isComplete).length === 0,
       key: 'all',
       text: '모두',
       href: '/tasks/all',
@@ -57,6 +65,7 @@ export default function NavigationDrawer() {
       textColor: 'text-blue-700', // 테마 설정 가능
     },
     {
+      isHideAutomatically: todoItems.filter(item => item.isComplete).length === 0,
       key: 'completed',
       text: '완료됨',
       href: '/tasks/completed',
@@ -66,6 +75,7 @@ export default function NavigationDrawer() {
       textColor: 'text-blue-700', // 테마 설정 가능
     },
     {
+      isHideAutomatically: false,
       key: 'inbox',
       text: 'Tasks',
       href: '/tasks/inbox',
@@ -116,7 +126,7 @@ export default function NavigationDrawer() {
         </div>
         <ul className="mt-2">
           {anchors.map((anchorItem) => {
-            const isActiveSmartList = (smartListSettings[anchorItem.key] !== false);
+            const isActiveSmartList = (smartListSettings[anchorItem.key] !== false) && !(autoHideEmptyLists && anchorItem.isHideAutomatically);
 
             return (isActiveSmartList ? (
               <li
