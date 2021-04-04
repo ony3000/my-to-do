@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { v4 as uuid } from 'uuid';
+import dayjs from '@/plugins/dayjs';
 
 const initialState = {
   isAppReady: false,
@@ -23,14 +24,40 @@ const saveState = (state) => localStorage.setItem('cloneCoding:my-to-do', JSON.s
 const loadState = () => JSON.parse(localStorage.getItem('cloneCoding:my-to-do')) || {};
 
 export const launchApp = createAsyncThunk('todo/launchApp', async () => {
-  const promise = new Promise((resolve) => {
+  const promise = new Promise(async (resolve) => {
     // API 호출로 데이터를 가져온다고 가정했을 때, 요청 완료되는 시간이 고정되어있지 않음을 나타냄
     const delay = 500 + Math.floor(Math.random() * 100);
 
-    // 실제로는 localStorage에 저장된 데이터를 가져와서 resolve()에 전달할 예정
+    const combinedState = Object.assign({}, initialState, loadState());
+
+    if (combinedState.todoItems.length === 0) {
+      const getRandomInt = (min, max) => (min + Math.floor(Math.random() * (max + 1)));
+
+      const response = await fetch('https://jsonplaceholder.typicode.com/users/1/todos');
+      const dummyItems = await response.json();
+
+      const now = dayjs();
+      const midnightToday = now.startOf('day');
+
+      combinedState.todoItems = dummyItems.map(({ id, title, completed }) => ({
+        id: uuid(),
+        title,
+        isComplete: completed,
+        subSteps: Array(getRandomInt(0, 3)).fill(null).map(() => ({
+          title: 'test',
+          isComplete: Boolean(getRandomInt(0, 1)),
+        })),
+        isImportant: Boolean(getRandomInt(0, 1)),
+        isMarkedAsTodayTask: Boolean(getRandomInt(0, 1)),
+        deadline: Boolean(getRandomInt(0, 1)) ? Number(midnightToday.add(getRandomInt(-3, 7), 'day').format('x')) - 1 : null,
+        memo: Boolean(getRandomInt(0, 1)) ? 'this is a memo' : '',
+        createdAt: Number(now.format('x')) - (20 - id) * 1000,
+      }));
+    }
+
     setTimeout(() => {
       resolve({
-        data: Object.assign({}, initialState, loadState()),
+        data: combinedState,
       });
     }, delay);
   });
