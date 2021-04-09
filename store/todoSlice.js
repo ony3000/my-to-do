@@ -6,6 +6,7 @@ const initialState = {
   isAppReady: false,
   isActiveSearchBox: false,
   isActiveSidebar: true,
+  isActiveListOption: false,
   isActiveSettingPanel: false,
   settings: {
     smartList: {
@@ -17,6 +18,7 @@ const initialState = {
     },
   },
   todoItems: [],
+  listOptionPosition: {},
 };
 
 const saveState = (state) => localStorage.setItem('cloneCoding:my-to-do', JSON.stringify(state));
@@ -66,6 +68,17 @@ export const launchApp = createAsyncThunk('todo/launchApp', async () => {
   return response.data;
 });
 
+export const openListOption = createAsyncThunk('todo/openListOption', ({ event, selector }) => {
+  const button = event.target.closest(selector);
+  const { top, left, width, height } = button.getBoundingClientRect();
+  const optionPosition = {
+    top: Math.floor(top + height - 2),
+    left: Math.floor(left + width / 2 - 100),
+  };
+
+  return Promise.resolve(optionPosition);
+});
+
 const todoSlice = createSlice({
   name: 'todo',
   initialState,
@@ -84,6 +97,11 @@ const todoSlice = createSlice({
     },
     closeSidebar(state) {
       state.isActiveSidebar = false;
+      saveState(state);
+    },
+    closeListOption(state) {
+      state.listOptionPosition = {};
+      state.isActiveListOption = false;
       saveState(state);
     },
     openSettingPanel(state) {
@@ -141,6 +159,11 @@ const todoSlice = createSlice({
       state.isAppReady = true;
       saveState(state);
     });
+    builder.addCase(openListOption.fulfilled, (state, { payload }) => {
+      state.listOptionPosition = payload;
+      state.isActiveListOption = true;
+      saveState(state);
+    });
   },
 });
 
@@ -149,6 +172,7 @@ export const {
   closeSearchBox,
   openSidebar,
   closeSidebar,
+  closeListOption,
   openSettingPanel,
   closeSettingPanel,
   turnOnSmartList,

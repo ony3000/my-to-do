@@ -1,11 +1,17 @@
 import Head from 'next/head';
 import classNames from 'classnames/bind';
+import { useDispatch, useSelector } from 'react-redux';
+import { openListOption } from '@/store/todoSlice';
 import styles from './inbox.module.scss'; // shared
+import ListOption from '@/components/ListOption';
 import TaskList from '@/components/TaskList';
 
 const cx = classNames.bind(styles);
 
 export default function Completed() {
+  const dispatch = useDispatch();
+  const isActiveListOption = useSelector(({ todo: state }) => state.isActiveListOption);
+
   return (
     <main className={cx('main')}>
       <Head>
@@ -23,13 +29,18 @@ export default function Completed() {
             <button
               className={cx('toolbar-button')}
               title="목록 옵션"
-              onClick={() => console.log('목록 옵션')}
+              onClick={(event) => !isActiveListOption && dispatch(openListOption({
+                event,
+                selector: `.${cx('toolbar-button')}`,
+              }))}
             >
               <span className={cx('icon-wrapper')}>
                 <i className="fas fa-ellipsis-h"></i>
                 <span className="sr-only">목록 옵션</span>
               </span>
             </button>
+
+            <ListOption />
           </div>
         </div>
       </div>
