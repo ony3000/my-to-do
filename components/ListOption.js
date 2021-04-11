@@ -1,12 +1,14 @@
 import { useRef, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import { useDispatch, useSelector } from 'react-redux';
-import { closeListOption } from '@/store/todoSlice';
+import { CHANGE_THEME, HIDE_COMPLETED_ITEMS, closeListOption } from '@/store/todoSlice';
 import styles from './ListOption.module.scss';
 
 const cx = classNames.bind(styles);
 
-export default function ListOption() {
+export default function ListOption({
+  availableOptions = [],
+}) {
   const dispatch = useDispatch();
   const isActiveListOption = useSelector(({ todo: state }) => state.isActiveListOption);
   const { top: topPosition, left: leftPosition } = useSelector(({ todo: state }) => state.listOptionPosition);
@@ -16,10 +18,12 @@ export default function ListOption() {
 
   useEffect(() => {
     function clickHandler(event) {
-      const optionContainer = event.target.closest(`.${cx('container')}`);
+      if (isActiveListOption) {
+        const optionContainer = event.target.closest(`.${$refs.container.current.className}`);
 
-      if (isActiveListOption && optionContainer === null) {
-        dispatch(closeListOption());
+        if (optionContainer === null) {
+          dispatch(closeListOption());
+        }
       }
     }
 
@@ -43,25 +47,43 @@ export default function ListOption() {
         >
           <div className={cx('title')}>목록 옵션</div>
           <ul>
-            <li className={cx('option-item')}>
-              <button className={cx('option-button')}>
-                <span className={cx('icon-wrapper')}>
-                  <i className="fas fa-palette"></i>
-                </span>
-                <span className={cx('option-text')}>테마 변경</span>
-                <span className={cx('icon-wrapper')}>
-                  <i className="fas fa-chevron-right"></i>
-                </span>
-              </button>
-            </li>
-            <li className={cx('option-item')}>
-              <button className={cx('option-button')}>
-                <span className={cx('icon-wrapper')}>
-                  <i className="far fa-check-circle"></i>
-                </span>
-                <span className={cx('option-text')}>완료된 작업 숨기기</span>
-              </button>
-            </li>
+            {availableOptions.map((option) => {
+              let elements = null;
+
+              switch (option) {
+                case CHANGE_THEME:
+                  elements = (
+                    <button className={cx('option-button')}>
+                      <span className={cx('icon-wrapper')}>
+                        <i className="fas fa-palette"></i>
+                      </span>
+                      <span className={cx('option-text')}>테마 변경</span>
+                      <span className={cx('icon-wrapper')}>
+                        <i className="fas fa-chevron-right"></i>
+                      </span>
+                    </button>
+                  );
+                  break;
+                case HIDE_COMPLETED_ITEMS:
+                  elements = (
+                    <button className={cx('option-button')}>
+                      <span className={cx('icon-wrapper')}>
+                        <i className="far fa-check-circle"></i>
+                      </span>
+                      <span className={cx('option-text')}>완료된 작업 숨기기</span>
+                    </button>
+                  );
+                  break;
+                default:
+                  // nothing to do
+              }
+
+              return (
+                <li key={option} className={cx('option-item')}>
+                  {elements}
+                </li>
+              );
+            })}
           </ul>
         </div>
       </div>

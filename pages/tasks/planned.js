@@ -1,19 +1,14 @@
 import Head from 'next/head';
 import classNames from 'classnames/bind';
-import { useDispatch, useSelector } from 'react-redux';
-import { openListOption } from '@/store/todoSlice';
 import dayjs from '@/plugins/dayjs';
 import styles from './inbox.module.scss'; // shared
-import ListOption from '@/components/ListOption';
+import PageToolbar from '@/components/PageToolbar';
 import TaskInput from '@/components/TaskInput';
 import TaskList from '@/components/TaskList';
 
 const cx = classNames.bind(styles);
 
 export default function Planned() {
-  const dispatch = useDispatch();
-  const isActiveListOption = useSelector(({ todo: state }) => state.isActiveListOption);
-
   const midnightToday = dayjs().startOf('day');
   const midnightTomorrow = midnightToday.add(1, 'day');
   const midnightAfter2Days = midnightToday.add(2, 'day');
@@ -27,31 +22,9 @@ export default function Planned() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className={cx('toolbar')}>
-        <div className={cx('toolbar-headline')}>
-          <div className={cx('toolbar-title-container')}>
-            {/* 테마 색상 */}
-            <h1 className={cx('list-title')}>계획된 일정</h1>
-
-            {/* gray-500 색상 고정 */}
-            <button
-              className={cx('toolbar-button')}
-              title="목록 옵션"
-              onClick={(event) => !isActiveListOption && dispatch(openListOption({
-                event,
-                selector: `.${cx('toolbar-button')}`,
-              }))}
-            >
-              <span className={cx('icon-wrapper')}>
-                <i className="fas fa-ellipsis-h"></i>
-                <span className="sr-only">목록 옵션</span>
-              </span>
-            </button>
-
-            <ListOption />
-          </div>
-        </div>
-      </div>
+      <PageToolbar
+        title="계획된 일정"
+      />
 
       <div className={cx('body')}>
         <div className={cx('input-section')}>

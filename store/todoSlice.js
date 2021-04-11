@@ -2,6 +2,9 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { v4 as uuid } from 'uuid';
 import dayjs from '@/plugins/dayjs';
 
+export const CHANGE_THEME = 'CHANGE_THEME';
+export const HIDE_COMPLETED_ITEMS = 'HIDE_COMPLETED_ITEMS';
+
 const initialState = {
   isAppReady: false,
   isActiveSearchBox: false,
@@ -19,6 +22,32 @@ const initialState = {
   },
   todoItems: [],
   listOptionPosition: {},
+  toolbarFunctions: {
+    myday: {
+      listOption: null,
+      listOrdering: [],
+    },
+    important: {
+      listOption: [HIDE_COMPLETED_ITEMS],
+      listOrdering: null,
+    },
+    planned: {
+      listOption: [HIDE_COMPLETED_ITEMS],
+      listOrdering: null,
+    },
+    all: {
+      listOption: [CHANGE_THEME],
+      listOrdering: null,
+    },
+    completed: {
+      listOption: [CHANGE_THEME],
+      listOrdering: null,
+    },
+    inbox: {
+      listOption: [CHANGE_THEME],
+      listOrdering: [],
+    },
+  },
 };
 
 const saveState = (state) => localStorage.setItem('cloneCoding:my-to-do', JSON.stringify(state));

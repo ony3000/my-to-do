@@ -1,15 +1,13 @@
 import Head from 'next/head';
 import classNames from 'classnames/bind';
-import dayjs from '@/plugins/dayjs';
 import styles from './inbox.module.scss'; // shared
+import PageToolbar from '@/components/PageToolbar';
 import TaskInput from '@/components/TaskInput';
 import TaskList from '@/components/TaskList';
 
 const cx = classNames.bind(styles);
 
 export default function Myday() {
-  const midnightToday = dayjs().startOf('day');
-
   return (
     <main className={cx('main')}>
       <Head>
@@ -17,57 +15,10 @@ export default function Myday() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div
-        className={cx('toolbar')}
-        style={{
-          height: 'auto',
-          minHeight: 60,
-          alignItems: 'flex-start',
-        }}
-      >
-        <div
-          className={cx('toolbar-headline')}
-          style={{
-            margin: '3px 0',
-          }}
-        >
-          <div className={cx('toolbar-title-container')}>
-            {/* 테마 색상 */}
-            <h1 className={cx('list-title')}>오늘 할 일</h1>
-          </div>
-
-          <div
-            style={{
-              padding: '0 8px 4px',
-              fontSize: 12,
-              fontWeight: 200,
-            }}
-          >
-            {midnightToday.format('M월 D일, dddd')}
-          </div>
-        </div>
-
-        <div>
-          {/* 테마 색상 */}
-          <button
-            className={cx(
-              'toolbar-button',
-              'transform',
-              'rotate-90',
-            )}
-            title="정렬 기준"
-            onClick={() => console.log('정렬 기준')}
-            style={{
-              margin: '8px 0',
-            }}
-          >
-            <span className={cx('icon-wrapper')}>
-              <i className="fas fa-exchange-alt"></i>
-              <span className="sr-only">정렬 기준</span>
-            </span>
-          </button>
-        </div>
-      </div>
+      <PageToolbar
+        title="오늘 할 일"
+        displayToday={true}
+      />
 
       <div className={cx('body')}>
         <div className={cx('input-section')}>
