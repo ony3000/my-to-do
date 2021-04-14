@@ -3,7 +3,7 @@ import { v4 as uuid } from 'uuid';
 import dayjs from '@/plugins/dayjs';
 
 export const CHANGE_THEME = 'CHANGE_THEME';
-export const HIDE_COMPLETED_ITEMS = 'HIDE_COMPLETED_ITEMS';
+export const TOGGLE_COMPLETED_ITEMS = 'TOGGLE_COMPLETED_ITEMS';
 
 const initialState = {
   isAppReady: false,
@@ -28,11 +28,11 @@ const initialState = {
       listOrdering: [],
     },
     important: {
-      listOption: [HIDE_COMPLETED_ITEMS],
+      listOption: [TOGGLE_COMPLETED_ITEMS],
       listOrdering: null,
     },
     planned: {
-      listOption: [HIDE_COMPLETED_ITEMS],
+      listOption: [TOGGLE_COMPLETED_ITEMS],
       listOrdering: null,
     },
     all: {
@@ -46,6 +46,27 @@ const initialState = {
     inbox: {
       listOption: [CHANGE_THEME],
       listOrdering: [],
+    },
+  },
+  pageSettings: {
+    myday: {
+      ordering: [],
+    },
+    important: {
+      isHideCompletedItems: false,
+    },
+    planned: {
+      isHideCompletedItems: false,
+    },
+    all: {
+      themeColor: null,
+    },
+    completed: {
+      themeColor: null,
+    },
+    inbox: {
+      themeColor: null,
+      ordering: [],
     },
   },
 };
@@ -179,6 +200,14 @@ const todoSlice = createSlice({
       state.todoItems.find(({ id }) => (id === payload)).isImportant = false;
       saveState(state);
     },
+    showCompletedItems(state, { payload }) {
+      state.pageSettings[payload].isHideCompletedItems = false;
+      saveState(state);
+    },
+    hideCompletedItems(state, { payload }) {
+      state.pageSettings[payload].isHideCompletedItems = true;
+      saveState(state);
+    },
   },
   extraReducers: builder => {
     builder.addCase(launchApp.fulfilled, (state, { payload }) => {
@@ -211,6 +240,8 @@ export const {
   markAsIncomplete,
   markAsImportant,
   markAsUnimportant,
+  showCompletedItems,
+  hideCompletedItems,
 } = todoSlice.actions;
 
 export default todoSlice.reducer;

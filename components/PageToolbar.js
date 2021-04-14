@@ -13,9 +13,10 @@ export default function PageToolbar({
   displayToday = false,
 }) {
   const router = useRouter();
+  const pageKey = router.pathname.replace(/^\/tasks\/?/, '') || 'inbox';
   const dispatch = useDispatch();
   const isActiveListOption = useSelector(({ todo: state }) => state.isActiveListOption);
-  const functionsPerPage = useSelector(({ todo: state }) => state.toolbarFunctions[router.pathname.replace(/^\/tasks\/?/, '') || 'inbox']);
+  const functionsPerPage = useSelector(({ todo: state }) => state.toolbarFunctions[pageKey]);
   const midnightToday = dayjs().startOf('day');
 
   return (

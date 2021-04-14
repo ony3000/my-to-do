@@ -1,7 +1,8 @@
 import { useRef, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import classNames from 'classnames/bind';
 import { useDispatch, useSelector } from 'react-redux';
-import { CHANGE_THEME, HIDE_COMPLETED_ITEMS, closeListOption } from '@/store/todoSlice';
+import { CHANGE_THEME, TOGGLE_COMPLETED_ITEMS, closeListOption, showCompletedItems, hideCompletedItems } from '@/store/todoSlice';
 import styles from './ListOption.module.scss';
 
 const cx = classNames.bind(styles);
@@ -9,16 +10,24 @@ const cx = classNames.bind(styles);
 export default function ListOption({
   availableOptions = [],
 }) {
+  const router = useRouter();
+  const pageKey = router.pathname.replace(/^\/tasks\/?/, '') || 'inbox';
   const dispatch = useDispatch();
   const isActiveListOption = useSelector(({ todo: state }) => state.isActiveListOption);
   const { top: topPosition, left: leftPosition } = useSelector(({ todo: state }) => state.listOptionPosition);
+  const settingsPerPage = useSelector(({ todo: state }) => state.pageSettings[pageKey]);
   const $refs = {
     container: useRef(null),
   };
 
+  const toggleCompletedItems = () => {
+    dispatch(settingsPerPage.isHideCompletedItems ? showCompletedItems(pageKey) : hideCompletedItems(pageKey));
+    dispatch(closeListOption());
+  };
+
   useEffect(() => {
     function clickHandler(event) {
-      if (isActiveListOption) {
+      if (isActiveListOption && $refs.container.current) {
         const optionContainer = event.target.closest(`.${$refs.container.current.className}`);
 
         if (optionContainer === null) {
@@ -64,13 +73,18 @@ export default function ListOption({
                     </button>
                   );
                   break;
-                case HIDE_COMPLETED_ITEMS:
+                case TOGGLE_COMPLETED_ITEMS:
                   elements = (
-                    <button className={cx('option-button')}>
+                    <button
+                      className={cx('option-button')}
+                      onClick={() => toggleCompletedItems()}
+                    >
                       <span className={cx('icon-wrapper')}>
                         <i className="far fa-check-circle"></i>
                       </span>
-                      <span className={cx('option-text')}>완료된 작업 숨기기</span>
+                      <span className={cx('option-text')}>
+                        {settingsPerPage.isHideCompletedItems ? '완료된 작업 표시' : '완료된 작업 숨기기'}
+                      </span>
                     </button>
                   );
                   break;

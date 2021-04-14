@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import classNames from 'classnames/bind';
+import { useSelector } from 'react-redux';
 import styles from './inbox.module.scss'; // shared
 import PageToolbar from '@/components/PageToolbar';
 import TaskInput from '@/components/TaskInput';
@@ -8,6 +9,8 @@ import TaskList from '@/components/TaskList';
 const cx = classNames.bind(styles);
 
 export default function Important() {
+  const settingsPerPage = useSelector(({ todo: state }) => state.pageSettings['important']);
+
   return (
     <main className={cx('main')}>
       <Head>
@@ -31,6 +34,7 @@ export default function Important() {
         <div className={cx('list-section')}>
           <TaskList
             isCollapsible={false}
+            isHideCompletedItems={settingsPerPage.isHideCompletedItems}
             filter={{
               isImportant: true,
             }}

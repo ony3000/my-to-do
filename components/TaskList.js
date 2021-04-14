@@ -13,25 +13,30 @@ export default function TaskList({
   isCollapsedInitially = false,
   isHideForEmptyList = false,
   isHideTodayIndicator = false,
+  isHideCompletedItems = false,
   filter = {},
 }) {
   const dispatch = useDispatch();
-  const filteredTodoItems = useSelector(({ todo: state }) => state.todoItems.filter((item) => Object.keys(filter).every((key) => {
-    if (key === 'deadline') {
-      const { $gt, $gte, $lt, $lte } = filter.deadline;
+  const filteredTodoItems = useSelector(
+    ({ todo: state }) => state.todoItems
+      .filter((item) => Object.keys(filter).every((key) => {
+        if (key === 'deadline') {
+          const { $gt, $gte, $lt, $lte } = filter.deadline;
 
-      return (
-        item.deadline
-          && item.deadline > ($gt ?? -Infinity)
-          && item.deadline >= ($gte ?? -Infinity)
-          && item.deadline < ($lt ?? Infinity)
-          && item.deadline <= ($lte ?? Infinity)
-      );
-    }
-    else {
-      return item[key] === filter[key];
-    }
-  })));
+          return (
+            item.deadline
+              && item.deadline > ($gt ?? -Infinity)
+              && item.deadline >= ($gte ?? -Infinity)
+              && item.deadline < ($lt ?? Infinity)
+              && item.deadline <= ($lte ?? Infinity)
+          );
+        }
+        else {
+          return item[key] === filter[key];
+        }
+      }))
+      .filter((item) => !(item.isComplete && isHideCompletedItems))
+  );
   const [ isCollapsed, setIsCollapsed ] = useState(isCollapsedInitially || false);
 
   const midnightToday = dayjs().startOf('day');

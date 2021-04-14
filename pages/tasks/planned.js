@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import classNames from 'classnames/bind';
+import { useSelector } from 'react-redux';
 import dayjs from '@/plugins/dayjs';
 import styles from './inbox.module.scss'; // shared
 import PageToolbar from '@/components/PageToolbar';
@@ -9,6 +10,8 @@ import TaskList from '@/components/TaskList';
 const cx = classNames.bind(styles);
 
 export default function Planned() {
+  const settingsPerPage = useSelector(({ todo: state }) => state.pageSettings['planned']);
+
   const midnightToday = dayjs().startOf('day');
   const midnightTomorrow = midnightToday.add(1, 'day');
   const midnightAfter2Days = midnightToday.add(2, 'day');
@@ -41,6 +44,7 @@ export default function Planned() {
             title="이전"
             isCollapsedInitially={true}
             isHideForEmptyList={true}
+            isHideCompletedItems={settingsPerPage.isHideCompletedItems}
             filter={{
               isComplete: false,
               deadline: {
@@ -52,6 +56,7 @@ export default function Planned() {
           <TaskList
             title="오늘"
             isHideForEmptyList={true}
+            isHideCompletedItems={settingsPerPage.isHideCompletedItems}
             filter={{
               deadline: {
                 $gte: Number(midnightToday.format('x')),
@@ -63,6 +68,7 @@ export default function Planned() {
           <TaskList
             title="내일"
             isHideForEmptyList={true}
+            isHideCompletedItems={settingsPerPage.isHideCompletedItems}
             filter={{
               deadline: {
                 $gte: Number(midnightTomorrow.format('x')),
@@ -74,6 +80,7 @@ export default function Planned() {
           <TaskList
             title={`${midnightAfter2Days.format('M월 D일, ddd')} ~ ${midnightAfter6Days.format('M월 D일, ddd')}`}
             isHideForEmptyList={true}
+            isHideCompletedItems={settingsPerPage.isHideCompletedItems}
             filter={{
               deadline: {
                 $gte: Number(midnightAfter2Days.format('x')),
@@ -85,6 +92,7 @@ export default function Planned() {
           <TaskList
             title="나중에"
             isHideForEmptyList={true}
+            isHideCompletedItems={settingsPerPage.isHideCompletedItems}
             filter={{
               deadline: {
                 $gte: Number(midnightAfter7Days.format('x')),
