@@ -65,7 +65,7 @@ export default function SettingPanel() {
                         className={cx('switch')}
                         title={isActiveSmartList ? '끄기' : '켜기'}
                         disabled={!isActiveSettingPanel}
-                        onClick={() => isActiveSmartList ? dispatch(turnOffSmartList(smartListItem.key)) : dispatch(turnOnSmartList(smartListItem.key))}
+                        onClick={() => dispatch(isActiveSmartList ? turnOffSmartList(smartListItem.key) : turnOnSmartList(smartListItem.key))}
                       >
                         <span className={cx('switch-thumb')}></span>
                         <span className="sr-only">{isActiveSmartList ? '끄기' : '켜기'}</span>

@@ -112,7 +112,7 @@ export default function NavigationDrawer() {
           <button
             className={cx('button')}
             title="사이드바 표시/숨기기"
-            onClick={() => isActiveSidebar ? dispatch(closeSidebar()) : dispatch(openSidebar())}
+            onClick={() => dispatch(isActiveSidebar ? closeSidebar() : openSidebar())}
           >
             <span className={cx('icon-wrapper')}>
               {isActiveSidebar ? (
