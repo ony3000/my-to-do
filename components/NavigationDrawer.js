@@ -15,6 +15,7 @@ export default function NavigationDrawer() {
   const isActiveSidebar = useSelector(({ todo: state }) => state.isActiveSidebar);
   const smartListSettings = useSelector(({ todo: state }) => state.settings.smartList);
   const todoItems = useSelector(({ todo: state }) => state.todoItems);
+  const pageSettings = useSelector(({ todo: state }) => state.pageSettings);
   const [ isMounted, setIsMounted ] = useState(false);
 
   const midnightToday = dayjs().startOf('day');
@@ -32,7 +33,12 @@ export default function NavigationDrawer() {
       count: incompleteTodoItems.filter(item => item.isMarkedAsTodayTask).length,
     },
     {
-      isHideAutomatically: todoItems.filter(item => item.isImportant).length === 0,
+      isHideAutomatically: (
+        todoItems
+          .filter(item => item.isImportant)
+          .filter(item => !(item.isComplete && pageSettings['important'].isHideCompletedItems))
+          .length === 0
+      ),
       key: 'important',
       text: '중요',
       href: '/tasks/important',
@@ -43,7 +49,13 @@ export default function NavigationDrawer() {
       textColor: 'text-blue-700',
     },
     {
-      isHideAutomatically: todoItems.filter(item => item.deadline && item.deadline < Number(midnightToday.format('x')) && !item.isComplete).length === 0,
+      isHideAutomatically: (
+        todoItems
+          .filter(item => item.deadline)
+          .filter(item => item.deadline >= Number(midnightToday.format('x')) || !item.isComplete)
+          .filter(item => !(item.isComplete && pageSettings['planned'].isHideCompletedItems))
+          .length === 0
+      ),
       key: 'planned',
       text: '계획된 일정',
       href: '/tasks/planned',
