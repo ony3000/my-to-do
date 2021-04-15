@@ -2,8 +2,16 @@ import { useRef, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import classNames from 'classnames/bind';
 import { useDispatch, useSelector } from 'react-redux';
-import { CHANGE_THEME, TOGGLE_COMPLETED_ITEMS, closeListOption, showCompletedItems, hideCompletedItems } from '@/store/todoSlice';
+import {
+  CHANGE_THEME,
+  TOGGLE_COMPLETED_ITEMS,
+  closeListOption,
+  openThemePalette,
+  showCompletedItems,
+  hideCompletedItems,
+} from '@/store/todoSlice';
 import styles from './ListOption.module.scss';
+import ThemePalette from '@/components/ThemePalette';
 
 const cx = classNames.bind(styles);
 
@@ -15,6 +23,7 @@ export default function ListOption({
   const dispatch = useDispatch();
   const isActiveListOption = useSelector(({ todo: state }) => state.isActiveListOption);
   const { top: topPosition, left: leftPosition } = useSelector(({ todo: state }) => state.listOptionPosition);
+  const isActiveThemePalette = useSelector(({ todo: state }) => state.isActiveThemePalette);
   const settingsPerPage = useSelector(({ todo: state }) => state.pageSettings[pageKey]);
   const $refs = {
     container: useRef(null),
@@ -62,15 +71,25 @@ export default function ListOption({
               switch (option) {
                 case CHANGE_THEME:
                   elements = (
-                    <button className={cx('option-button')}>
-                      <span className={cx('icon-wrapper')}>
-                        <i className="fas fa-palette"></i>
-                      </span>
-                      <span className={cx('option-text')}>테마 변경</span>
-                      <span className={cx('icon-wrapper')}>
-                        <i className="fas fa-chevron-right"></i>
-                      </span>
-                    </button>
+                    <>
+                      <button
+                        className={cx('option-button')}
+                        onClick={(event) => !isActiveThemePalette && dispatch(openThemePalette({
+                          event,
+                          selector: `.${cx('option-button')}`,
+                        }))}
+                      >
+                        <span className={cx('icon-wrapper')}>
+                          <i className="fas fa-palette"></i>
+                        </span>
+                        <span className={cx('option-text')}>테마 변경</span>
+                        <span className={cx('icon-wrapper')}>
+                          <i className="fas fa-chevron-right"></i>
+                        </span>
+                      </button>
+
+                      <ThemePalette />
+                    </>
                   );
                   break;
                 case TOGGLE_COMPLETED_ITEMS:

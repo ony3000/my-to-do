@@ -10,6 +10,9 @@ module.exports = {
     extend: {
       colors: {
         gray: colors.gray,
+        amber: colors.amber,
+        lime: colors.lime,
+        violet: colors.violet,
       },
     },
   },

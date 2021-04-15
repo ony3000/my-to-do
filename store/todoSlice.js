@@ -10,6 +10,7 @@ const initialState = {
   isActiveSearchBox: false,
   isActiveSidebar: true,
   isActiveListOption: false,
+  isActiveThemePalette: false,
   isActiveSettingPanel: false,
   settings: {
     smartList: {
@@ -22,6 +23,7 @@ const initialState = {
   },
   todoItems: [],
   listOptionPosition: {},
+  themePalettePosition: {},
   toolbarFunctions: {
     myday: {
       listOption: null,
@@ -59,13 +61,13 @@ const initialState = {
       isHideCompletedItems: false,
     },
     all: {
-      themeColor: null,
+      themeColor: 'blue',
     },
     completed: {
-      themeColor: null,
+      themeColor: 'blue',
     },
     inbox: {
-      themeColor: null,
+      themeColor: 'blue',
       ordering: [],
     },
   },
@@ -121,12 +123,33 @@ export const launchApp = createAsyncThunk('todo/launchApp', async () => {
 export const openListOption = createAsyncThunk('todo/openListOption', ({ event, selector }) => {
   const button = event.target.closest(selector);
   const { top, left, width, height } = button.getBoundingClientRect();
+
+  const optionWidth = 200;
   const optionPosition = {
     top: Math.floor(top + height - 2),
-    left: Math.floor(left + width / 2 - 100),
+    left: Math.floor(left + width / 2 - optionWidth / 2),
   };
 
   return Promise.resolve(optionPosition);
+});
+
+export const openThemePalette = createAsyncThunk('todo/openThemePalette', ({ event, selector }) => {
+  const option = event.target.closest(selector);
+  const { top, left, width } = option.getBoundingClientRect();
+
+  const paletteWidth = 282;
+  const paletteHeight = 82;
+  const palettePosition = {
+    top,
+    left: Math.floor(left + width - 1),
+  };
+
+  if (palettePosition.left + paletteWidth + 8 > window.innerWidth) {
+    palettePosition.top = top - paletteHeight;
+    palettePosition.left = left;
+  }
+
+  return Promise.resolve(palettePosition);
 });
 
 const todoSlice = createSlice({
@@ -152,6 +175,11 @@ const todoSlice = createSlice({
     closeListOption(state) {
       state.listOptionPosition = {};
       state.isActiveListOption = false;
+      saveState(state);
+    },
+    closeThemePalette(state) {
+      state.themePalettePosition = {};
+      state.isActiveThemePalette = false;
       saveState(state);
     },
     openSettingPanel(state) {
@@ -222,6 +250,11 @@ const todoSlice = createSlice({
       state.isActiveListOption = true;
       saveState(state);
     });
+    builder.addCase(openThemePalette.fulfilled, (state, { payload }) => {
+      state.themePalettePosition = payload;
+      state.isActiveThemePalette = true;
+      saveState(state);
+    });
   },
 });
 
@@ -231,6 +264,7 @@ export const {
   openSidebar,
   closeSidebar,
   closeListOption,
+  closeThemePalette,
   openSettingPanel,
   closeSettingPanel,
   turnOnSmartList,
