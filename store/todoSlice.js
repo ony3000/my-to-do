@@ -82,7 +82,12 @@ export const launchApp = createAsyncThunk('todo/launchApp', async () => {
     // API 호출로 데이터를 가져온다고 가정했을 때, 요청 완료되는 시간이 고정되어있지 않음을 나타냄
     const delay = 500 + Math.floor(Math.random() * 100);
 
-    const combinedState = Object.assign({}, initialState, loadState());
+    const combinedState = Object.assign({}, initialState, loadState(), {
+      isActiveListOption: false,
+      isActiveThemePalette: false,
+      listOptionPosition: {},
+      themePalettePosition: {},
+    });
 
     if (combinedState.todoItems.length === 0) {
       const getRandomInt = (min, max) => (min + Math.floor(Math.random() * (max + 1)));
