@@ -17,6 +17,7 @@ export default function PageToolbar({
   const dispatch = useDispatch();
   const isActiveListOption = useSelector(({ todo: state }) => state.isActiveListOption);
   const functionsPerPage = useSelector(({ todo: state }) => state.toolbarFunctions[pageKey]);
+  const settingsPerPage = useSelector(({ todo: state }) => state.pageSettings[pageKey]);
   const midnightToday = dayjs().startOf('day');
 
   return (
@@ -28,14 +29,19 @@ export default function PageToolbar({
     >
       <div className={cx('flexible-section')}>
         <div className={cx('headline')}>
-          {/* 테마 색상 */}
-          <h1 className={cx('list-title')}>{title}</h1>
+          <h1
+            className={cx(
+              'list-title',
+              `text-${settingsPerPage.themeColor ? settingsPerPage.themeColor : 'blue'}-500`,
+            )}
+          >
+            {title}
+          </h1>
 
           {functionsPerPage.listOption ? (
             <>
-              {/* gray-500 색상 고정 */}
               <button
-                className={cx('button')}
+                className={cx('button', 'text-gray-500')}
                 title="목록 옵션"
                 onClick={(event) => !isActiveListOption && dispatch(openListOption({
                   event,
@@ -64,12 +70,12 @@ export default function PageToolbar({
 
       {functionsPerPage.listOrdering ? (
         <div>
-          {/* 테마 색상 */}
           <button
             className={cx(
               'button',
               'transform',
               'rotate-90',
+              `text-${settingsPerPage.themeColor ? settingsPerPage.themeColor : 'blue'}-500`,
             )}
             title="정렬 기준"
             onClick={() => console.log('정렬 기준')}

@@ -2,7 +2,7 @@ import { useRef, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import classNames from 'classnames/bind';
 import { useDispatch, useSelector } from 'react-redux';
-import { closeThemePalette } from '@/store/todoSlice';
+import { closeListOption, closeThemePalette, setThemeColor } from '@/store/todoSlice';
 import styles from './ThemePalette.module.scss';
 
 const cx = classNames.bind(styles);
@@ -25,6 +25,12 @@ export default function ThemePalette() {
     'lime',
     'amber',
   ];
+
+  const changeTheme = (color) => {
+    dispatch(setThemeColor({ pageKey, color }));
+    dispatch(closeThemePalette());
+    dispatch(closeListOption());
+  };
 
   useEffect(() => {
     function clickHandler(event) {
@@ -59,7 +65,7 @@ export default function ThemePalette() {
             <button
               key={color}
               className={cx('color', `is-${color}`)}
-              onClick={() => console.log(`change theme to [${color}]`)}
+              onClick={() => changeTheme(color)}
             >
               {color === settingsPerPage.themeColor ? (
                 <i className="fas fa-check-circle text-base text-white" />

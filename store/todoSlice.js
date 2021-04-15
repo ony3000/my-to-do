@@ -236,6 +236,10 @@ const todoSlice = createSlice({
       state.pageSettings[payload].isHideCompletedItems = true;
       saveState(state);
     },
+    setThemeColor(state, { payload: { pageKey, color } }) {
+      state.pageSettings[pageKey].themeColor = color;
+      saveState(state);
+    },
   },
   extraReducers: builder => {
     builder.addCase(launchApp.fulfilled, (state, { payload }) => {
@@ -276,6 +280,7 @@ export const {
   markAsUnimportant,
   showCompletedItems,
   hideCompletedItems,
+  setThemeColor,
 } = todoSlice.actions;
 
 export default todoSlice.reducer;

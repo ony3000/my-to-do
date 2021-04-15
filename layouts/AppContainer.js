@@ -14,8 +14,10 @@ const cx = classNames.bind(styles);
 
 export default function AppContainer({ children }) {
   const router = useRouter();
+  const pageKey = router.pathname.replace(/^\/tasks\/?/, '') || 'inbox';
   const dispatch = useDispatch();
   const isAppReady = useSelector(({ todo: state }) => state.isAppReady);
+  const settingsPerPage = useSelector(({ todo: state }) => state.pageSettings[pageKey]);
   const [ isMounted, setIsMounted ] = useState(false);
 
   useEffect(() => {
@@ -33,7 +35,12 @@ export default function AppContainer({ children }) {
   });
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div
+      className={cx(
+        'min-h-screen flex flex-col',
+        { [`is-${settingsPerPage.themeColor}-theme`]: settingsPerPage.themeColor },
+      )}
+    >
       {isAppReady ? (
         <>
           <AppHeader />

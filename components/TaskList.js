@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useRouter } from 'next/router';
 import classNames from 'classnames/bind';
 import { useDispatch, useSelector } from 'react-redux';
 import { markAsComplete, markAsIncomplete, markAsImportant, markAsUnimportant } from '@/store/todoSlice';
@@ -16,6 +17,8 @@ export default function TaskList({
   isHideCompletedItems = false,
   filter = {},
 }) {
+  const router = useRouter();
+  const pageKey = router.pathname.replace(/^\/tasks\/?/, '') || 'inbox';
   const dispatch = useDispatch();
   const filteredTodoItems = useSelector(
     ({ todo: state }) => state.todoItems
@@ -37,6 +40,7 @@ export default function TaskList({
       }))
       .filter((item) => !(item.isComplete && isHideCompletedItems))
   );
+  const settingsPerPage = useSelector(({ todo: state }) => state.pageSettings[pageKey]);
   const [ isCollapsed, setIsCollapsed ] = useState(isCollapsedInitially || false);
 
   const midnightToday = dayjs().startOf('day');
@@ -102,9 +106,12 @@ export default function TaskList({
             className={cx('item')}
           >
             <div className={cx('item-body')}>
-              {/* 테마 색상 */}
               <button
-                className={cx('item-button', 'is-left')}
+                className={cx(
+                  'item-button',
+                  'is-left',
+                  `text-${settingsPerPage.themeColor ? settingsPerPage.themeColor : 'blue'}-500`,
+                )}
                 title={isComplete ? '완료되지 않음으로 표시' : '완료됨으로 표시'}
                 onClick={() => dispatch(
                   isComplete ? markAsIncomplete(id) : markAsComplete(id)
@@ -156,9 +163,16 @@ export default function TaskList({
                 </div>
               </button>
 
-              {/* 테마 색상 */}
               <button
-                className={cx('item-button', 'is-right')}
+                className={cx(
+                  'item-button',
+                  'is-right',
+                  (
+                    isImportant
+                      ? `text-${settingsPerPage.themeColor ? settingsPerPage.themeColor : 'blue'}-500`
+                      : 'text-gray-400 hover:text-black'
+                  ),
+                )}
                 title={isImportant ? '중요도를 제거합니다.' : '작업을 중요로 표시합니다.'}
                 onClick={() => dispatch(
                   isImportant ? markAsUnimportant(id) : markAsImportant(id)

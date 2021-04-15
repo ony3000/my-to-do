@@ -74,7 +74,7 @@ export default function NavigationDrawer() {
         className: 'fas fa-infinity',
       },
       count: incompleteTodoItems.length,
-      textColor: 'text-blue-700', // 테마 설정 가능
+      textColor: `text-${pageSettings['all'].themeColor}-700`,
     },
     {
       isHideAutomatically: todoItems.filter(item => item.isComplete).length === 0,
@@ -84,7 +84,7 @@ export default function NavigationDrawer() {
       icon: {
         className: 'far fa-check-circle',
       },
-      textColor: 'text-blue-700', // 테마 설정 가능
+      textColor: `text-${pageSettings['completed'].themeColor}-700`,
     },
     {
       isHideAutomatically: false,
@@ -95,10 +95,10 @@ export default function NavigationDrawer() {
         '/tasks',
       ],
       icon: {
-        className: 'fas fa-home text-blue-500', // 테마 설정 가능
+        className: `fas fa-home text-${pageSettings['inbox'].themeColor}-500`,
       },
       count: incompleteTodoItems.length,
-      textColor: 'text-blue-700', // 테마 설정 가능
+      textColor: `text-${pageSettings['inbox'].themeColor}-700`,
     },
   ];
 

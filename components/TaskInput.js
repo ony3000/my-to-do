@@ -1,6 +1,7 @@
 import { useRef } from 'react';
+import { useRouter } from 'next/router';
 import classNames from 'classnames/bind';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { createTodoItem } from '@/store/todoSlice';
 import styles from './TaskInput.module.scss';
 
@@ -10,7 +11,10 @@ export default function TaskInput({
   placeholder = '작업 추가',
   itemProps = {},
 }) {
+  const router = useRouter();
+  const pageKey = router.pathname.replace(/^\/tasks\/?/, '') || 'inbox';
   const dispatch = useDispatch();
+  const settingsPerPage = useSelector(({ todo: state }) => state.pageSettings[pageKey]);
   const $refs = {
     input: useRef(null),
   };
@@ -55,9 +59,12 @@ export default function TaskInput({
 
   return (
     <div className={cx('container')}>
-      {/* 테마 색상 */}
       <button
-        className={cx('button', 'is-left')}
+        className={cx(
+          'button',
+          'is-left',
+          `text-${settingsPerPage.themeColor ? settingsPerPage.themeColor : 'blue'}-500`,
+        )}
         title="작업 추가"
         onClick={() => $refs.input.current.focus()}
       >
@@ -67,10 +74,12 @@ export default function TaskInput({
         </span>
       </button>
 
-      {/* 엔터 입력 또는 input blur 시, trim 결과가 비어있지 않으면 작업 추가 */}
       <input
         ref={$refs.input}
-        className={cx('input')}
+        className={cx(
+          'input',
+          `placeholder-${settingsPerPage.themeColor ? settingsPerPage.themeColor : 'blue'}-500`,
+        )}
         type="text"
         placeholder={placeholder}
         data-is-empty={true}
@@ -79,9 +88,13 @@ export default function TaskInput({
         onBlur={e => blurHandler(e)}
       />
 
-      {/* 테마 색상, 작업 입력창의 값이 비어있지 않을 때만 노출됨 */}
       <button
-        className={cx('button', 'is-right', 'is-submit')}
+        className={cx(
+          'button',
+          'is-right',
+          'is-submit',
+          `text-${settingsPerPage.themeColor ? settingsPerPage.themeColor : 'blue'}-500`,
+        )}
         title="추가"
         onClick={() => createTask()}
       >
