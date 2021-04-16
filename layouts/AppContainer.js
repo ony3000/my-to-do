@@ -38,7 +38,7 @@ export default function AppContainer({ children }) {
     <div
       className={cx(
         'min-h-screen flex flex-col',
-        { [`is-${settingsPerPage.themeColor}-theme`]: settingsPerPage.themeColor },
+        { [`is-${settingsPerPage?.themeColor}-theme`]: settingsPerPage?.themeColor },
       )}
     >
       {isAppReady ? (
