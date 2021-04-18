@@ -4,6 +4,11 @@ import dayjs from '@/plugins/dayjs';
 
 export const CHANGE_THEME = 'CHANGE_THEME';
 export const TOGGLE_COMPLETED_ITEMS = 'TOGGLE_COMPLETED_ITEMS';
+export const IMPORTANCE = 'IMPORTANCE';
+export const DEADLINE = 'DEADLINE';
+export const MYDAY = 'MYDAY';
+export const TITLE = 'TITLE';
+export const CREATION_DATE = 'CREATION_DATE';
 
 const initialState = {
   isAppReady: false,
@@ -11,6 +16,7 @@ const initialState = {
   isActiveSidebar: true,
   isActiveListOption: false,
   isActiveThemePalette: false,
+  isActiveOrderingCriterion: false,
   isActiveSettingPanel: false,
   settings: {
     smartList: {
@@ -24,10 +30,16 @@ const initialState = {
   todoItems: [],
   listOptionPosition: {},
   themePalettePosition: {},
+  orderingCriterionPosition: {},
   toolbarFunctions: {
     myday: {
       listOption: null,
-      listOrdering: [],
+      listOrdering: [
+        IMPORTANCE,
+        DEADLINE,
+        TITLE,
+        CREATION_DATE,
+      ],
     },
     important: {
       listOption: [TOGGLE_COMPLETED_ITEMS],
@@ -47,7 +59,13 @@ const initialState = {
     },
     inbox: {
       listOption: [CHANGE_THEME],
-      listOrdering: [],
+      listOrdering: [
+        IMPORTANCE,
+        DEADLINE,
+        MYDAY,
+        TITLE,
+        CREATION_DATE,
+      ],
     },
   },
   pageSettings: {
@@ -85,8 +103,10 @@ export const launchApp = createAsyncThunk('todo/launchApp', async () => {
     const combinedState = Object.assign({}, initialState, loadState(), {
       isActiveListOption: false,
       isActiveThemePalette: false,
+      isActiveOrderingCriterion: false,
       listOptionPosition: {},
       themePalettePosition: {},
+      orderingCriterionPosition: {},
     });
 
     if (combinedState.todoItems.length === 0) {
@@ -157,6 +177,18 @@ export const openThemePalette = createAsyncThunk('todo/openThemePalette', ({ eve
   return Promise.resolve(palettePosition);
 });
 
+export const openOrderingCriterion = createAsyncThunk('todo/openOrderingCriterion', ({ event, selector }) => {
+  const button = event.target.closest(selector);
+  const { top, height } = button.getBoundingClientRect();
+
+  const criterionPosition = {
+    top: Math.floor(top + height - 2),
+    right: 8,
+  };
+
+  return Promise.resolve(criterionPosition);
+});
+
 const todoSlice = createSlice({
   name: 'todo',
   initialState,
@@ -185,6 +217,11 @@ const todoSlice = createSlice({
     closeThemePalette(state) {
       state.themePalettePosition = {};
       state.isActiveThemePalette = false;
+      saveState(state);
+    },
+    closeOrderingCriterion(state) {
+      state.orderingCriterion = {};
+      state.isActiveOrderingCriterion = false;
       saveState(state);
     },
     openSettingPanel(state) {
@@ -264,6 +301,11 @@ const todoSlice = createSlice({
       state.isActiveThemePalette = true;
       saveState(state);
     });
+    builder.addCase(openOrderingCriterion.fulfilled, (state, { payload }) => {
+      state.orderingCriterionPosition = payload;
+      state.isActiveOrderingCriterion = true;
+      saveState(state);
+    });
   },
 });
 
@@ -274,6 +316,7 @@ export const {
   closeSidebar,
   closeListOption,
   closeThemePalette,
+  closeOrderingCriterion,
   openSettingPanel,
   closeSettingPanel,
   turnOnSmartList,

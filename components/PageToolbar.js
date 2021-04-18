@@ -1,10 +1,11 @@
 import { useRouter } from 'next/router';
 import classNames from 'classnames/bind';
 import { useDispatch, useSelector } from 'react-redux';
-import { openListOption } from '@/store/todoSlice';
+import { openListOption, openOrderingCriterion } from '@/store/todoSlice';
 import dayjs from '@/plugins/dayjs';
 import styles from './PageToolbar.module.scss';
 import ListOption from '@/components/ListOption';
+import OrderingCriterion from '@/components/OrderingCriterion';
 
 const cx = classNames.bind(styles);
 
@@ -16,6 +17,7 @@ export default function PageToolbar({
   const pageKey = router.pathname.replace(/^\/tasks\/?/, '') || 'inbox';
   const dispatch = useDispatch();
   const isActiveListOption = useSelector(({ todo: state }) => state.isActiveListOption);
+  const isActiveOrderingCriterion = useSelector(({ todo: state }) => state.isActiveOrderingCriterion);
   const functionsPerPage = useSelector(({ todo: state }) => state.toolbarFunctions[pageKey]);
   const settingsPerPage = useSelector(({ todo: state }) => state.pageSettings[pageKey]);
   const midnightToday = dayjs().startOf('day');
@@ -73,18 +75,36 @@ export default function PageToolbar({
           <button
             className={cx(
               'button',
-              'transform',
-              'rotate-90',
               `text-${settingsPerPage.themeColor ? settingsPerPage.themeColor : 'blue'}-500`,
             )}
             title="정렬 기준"
-            onClick={() => console.log('정렬 기준')}
+            onClick={(event) => !isActiveOrderingCriterion && dispatch(openOrderingCriterion({
+              event,
+              selector: `.${cx('button')}`,
+            }))}
+            style={{
+              minWidth: '2rem',
+              width: 'auto',
+            }}
           >
-            <span className={cx('icon-wrapper')}>
+            <span
+              className={cx(
+                'icon-wrapper',
+                'transform',
+                'rotate-90',
+              )}
+            >
               <i className="fas fa-exchange-alt"></i>
-              <span className="sr-only">정렬 기준</span>
+            </span>
+            <span className={cx('button-text')}>
+              <span>정렬</span>
+              <span className="sr-only">&nbsp;기준</span>
             </span>
           </button>
+
+          <OrderingCriterion
+            availableCriterions={functionsPerPage.listOrdering}
+          />
         </div>
       ) : null}
     </div>

@@ -72,3 +72,11 @@
   width: 1.5rem;
   height: 1.5rem;
 }
+
+.button-text {
+  font-size: 14px;
+
+  @media (max-width: 899px) {
+    display: none;
+  }
+}
