@@ -47,7 +47,29 @@ export default function TaskList({
   const midnightTomorrow = midnightToday.add(1, 'day');
   const midnightAfter2Days = midnightToday.add(2, 'day');
 
-  filteredTodoItems.sort((former, latter) => (latter.createdAt - former.createdAt));
+  switch (pageKey) {
+    case 'myday':
+      filteredTodoItems.sort((former, latter) => (
+        (latter.markedAsImportantAt || latter.markedAsTodayTaskAt) - (former.markedAsImportantAt || former.markedAsTodayTaskAt)
+      ));
+      break;
+    case 'planned':
+      filteredTodoItems.sort((former, latter) => (
+        former.deadline - latter.deadline || former.createdAt - latter.createdAt
+      ));
+      break;
+    case 'all':
+    case 'inbox':
+      filteredTodoItems.sort((former, latter) => (
+        (latter.markedAsImportantAt || latter.createdAt) - (former.markedAsImportantAt || former.createdAt)
+      ));
+      break;
+    case 'completed':
+      filteredTodoItems.sort((former, latter) => (latter.completedAt - former.completedAt));
+      break;
+    default:
+      filteredTodoItems.sort((former, latter) => (latter.createdAt - former.createdAt));
+  }
 
   return isHideForEmptyList && filteredTodoItems.length === 0 ? null : (
     <div className={cx('container')}>

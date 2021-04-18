@@ -118,20 +118,31 @@ export const launchApp = createAsyncThunk('todo/launchApp', async () => {
       const now = dayjs();
       const midnightToday = now.startOf('day');
 
-      combinedState.todoItems = dummyItems.map(({ id, title, completed }) => ({
-        id: uuid(),
-        title,
-        isComplete: completed,
-        subSteps: Array(getRandomInt(0, 3)).fill(null).map(() => ({
-          title: 'test',
-          isComplete: Boolean(getRandomInt(0, 1)),
-        })),
-        isImportant: Boolean(getRandomInt(0, 1)),
-        isMarkedAsTodayTask: Boolean(getRandomInt(0, 1)),
-        deadline: Boolean(getRandomInt(0, 1)) ? Number(midnightToday.add(getRandomInt(-3, 7), 'day').format('x')) - 1 : null,
-        memo: Boolean(getRandomInt(0, 1)) ? 'this is a memo' : '',
-        createdAt: Number(now.format('x')) - (20 - id) * 1000,
-      }));
+      combinedState.todoItems = dummyItems.map(({ id, title, completed }) => {
+        const createdAt = Number(now.format('x')) - (20 - id) * 1000;
+
+        return {
+          id: uuid(),
+          title,
+          isComplete: completed,
+          subSteps: Array(getRandomInt(0, 3)).fill(null).map(() => ({
+            title: 'test',
+            isComplete: Boolean(getRandomInt(0, 1)),
+          })),
+          isImportant: Boolean(getRandomInt(0, 1)),
+          isMarkedAsTodayTask: Boolean(getRandomInt(0, 1)),
+          deadline: (
+            Boolean(getRandomInt(0, 1))
+              ? Number(midnightToday.add(getRandomInt(-3, 7), 'day').format('x')) - 1
+              : null
+          ),
+          memo: Boolean(getRandomInt(0, 1)) ? 'this is a memo' : '',
+          createdAt,
+          completedAt: completed ? createdAt : null,
+          markedAsImportantAt: createdAt,
+          markedAsTodayTaskAt: createdAt,
+        };
+      });
     }
 
     setTimeout(() => {
@@ -241,7 +252,8 @@ const todoSlice = createSlice({
       saveState(state);
     },
     createTodoItem(state, { payload }) {
-      state.todoItems.push(Object.assign({}, {
+      const now = new Date();
+      const newTask = Object.assign({}, {
         id: uuid(),
         title: '',
         isComplete: false,
@@ -250,12 +262,27 @@ const todoSlice = createSlice({
         isMarkedAsTodayTask: false,
         deadline: null,
         memo: '',
-        createdAt: new Date().getTime(),
-      }, payload));
+        createdAt: now.getTime(),
+        completedAt: null,
+        markedAsImportantAt: null,
+        markedAsTodayTaskAt: null,
+      }, payload);
+
+      if (newTask.isImportant) {
+        newTask.markedAsImportantAt = now.getTime();
+      }
+      if (newTask.isMarkedAsTodayTask) {
+        newTask.markedAsTodayTaskAt = now.getTime();
+      }
+
+      state.todoItems.push(newTask);
       saveState(state);
     },
     markAsComplete(state, { payload }) {
-      state.todoItems.find(({ id }) => (id === payload)).isComplete = true;
+      const targetTask = state.todoItems.find(({ id }) => (id === payload));
+
+      targetTask.isComplete = true;
+      targetTask.completedAt = new Date().getTime();
       saveState(state);
     },
     markAsIncomplete(state, { payload }) {
@@ -263,7 +290,10 @@ const todoSlice = createSlice({
       saveState(state);
     },
     markAsImportant(state, { payload }) {
-      state.todoItems.find(({ id }) => (id === payload)).isImportant = true;
+      const targetTask = state.todoItems.find(({ id }) => (id === payload));
+
+      targetTask.isImportant = true;
+      targetTask.markedAsImportantAt = new Date().getTime();
       saveState(state);
     },
     markAsUnimportant(state, { payload }) {
