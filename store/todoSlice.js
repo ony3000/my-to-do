@@ -9,6 +9,8 @@ export const DEADLINE = 'DEADLINE';
 export const MYDAY = 'MYDAY';
 export const TITLE = 'TITLE';
 export const CREATION_DATE = 'CREATION_DATE';
+export const ASCENDING = 'ASCENDING';
+export const DESCENDING = 'DESCENDING';
 
 const initialState = {
   isAppReady: false,
@@ -70,7 +72,7 @@ const initialState = {
   },
   pageSettings: {
     myday: {
-      ordering: [],
+      ordering: null,
     },
     important: {
       isHideCompletedItems: false,
@@ -86,7 +88,7 @@ const initialState = {
     },
     inbox: {
       themeColor: 'blue',
-      ordering: [],
+      ordering: null,
     },
   },
 };
@@ -312,6 +314,17 @@ const todoSlice = createSlice({
       state.pageSettings[pageKey].themeColor = color;
       saveState(state);
     },
+    setOrderingCriterion(state, { payload: { pageKey, criterion, direction } }) {
+      state.pageSettings[pageKey].ordering = {
+        criterion,
+        direction,
+      };
+      saveState(state);
+    },
+    unsetOrderingCriterion(state) {
+      state.pageSettings[pageKey].ordering = null;
+      saveState(state);
+    },
   },
   extraReducers: builder => {
     builder.addCase(launchApp.fulfilled, (state, { payload }) => {
@@ -359,6 +372,8 @@ export const {
   showCompletedItems,
   hideCompletedItems,
   setThemeColor,
+  setOrderingCriterion,
+  unsetOrderingCriterion,
 } = todoSlice.actions;
 
 export default todoSlice.reducer;

@@ -1,4 +1,5 @@
 import { useRef, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import classNames from 'classnames/bind';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -7,7 +8,10 @@ import {
   MYDAY,
   TITLE,
   CREATION_DATE,
+  ASCENDING,
+  DESCENDING,
   closeOrderingCriterion,
+  setOrderingCriterion,
 } from '@/store/todoSlice';
 import styles from './ListOption.module.scss'; // shared
 
@@ -16,11 +20,25 @@ const cx = classNames.bind(styles);
 export default function OrderingCriterion({
   availableCriterions = [],
 }) {
+  const router = useRouter();
+  const pageKey = router.pathname.replace(/^\/tasks\/?/, '') || 'inbox';
   const dispatch = useDispatch();
   const isActiveOrderingCriterion = useSelector(({ todo: state }) => state.isActiveOrderingCriterion);
   const { top: topPosition, right: rightPosition } = useSelector(({ todo: state }) => state.orderingCriterionPosition);
+  const settingsPerPage = useSelector(({ todo: state }) => state.pageSettings[pageKey]);
   const $refs = {
     container: useRef(null),
+  };
+
+  const setOrderingCriterionToDefault = ({ criterion, direction }) => {
+    if (settingsPerPage.ordering === null || criterion !== settingsPerPage.ordering.criterion || direction !== settingsPerPage.ordering.direction) {
+      dispatch(setOrderingCriterion({
+        pageKey,
+        criterion,
+        direction,
+      }));
+    }
+    dispatch(closeOrderingCriterion());
   };
 
   useEffect(() => {
@@ -62,7 +80,10 @@ export default function OrderingCriterion({
                   elements = (
                     <button
                       className={cx('option-button')}
-                      onClick={() => console.log('중요도 정렬')}
+                      onClick={() => setOrderingCriterionToDefault({
+                        criterion: option,
+                        direction: DESCENDING,
+                      })}
                     >
                       <span className={cx('icon-wrapper')}>
                         <i className="far fa-star"></i>
@@ -77,7 +98,10 @@ export default function OrderingCriterion({
                   elements = (
                     <button
                       className={cx('option-button')}
-                      onClick={() => console.log('기한 정렬')}
+                      onClick={() => setOrderingCriterionToDefault({
+                        criterion: option,
+                        direction: ASCENDING,
+                      })}
                     >
                       <span className={cx('icon-wrapper')}>
                         <i className="far fa-calendar-alt"></i>
@@ -92,7 +116,10 @@ export default function OrderingCriterion({
                   elements = (
                     <button
                       className={cx('option-button')}
-                      onClick={() => console.log('나의 하루 정렬')}
+                      onClick={() => setOrderingCriterionToDefault({
+                        criterion: option,
+                        direction: DESCENDING,
+                      })}
                     >
                       <span className={cx('icon-wrapper')}>
                         <i className="far fa-sun"></i>
@@ -107,7 +134,10 @@ export default function OrderingCriterion({
                   elements = (
                     <button
                       className={cx('option-button')}
-                      onClick={() => console.log('제목 정렬')}
+                      onClick={() => setOrderingCriterionToDefault({
+                        criterion: option,
+                        direction: ASCENDING,
+                      })}
                     >
                       <span
                         className={cx(
@@ -128,7 +158,10 @@ export default function OrderingCriterion({
                   elements = (
                     <button
                       className={cx('option-button')}
-                      onClick={() => console.log('만든 날짜 정렬')}
+                      onClick={() => setOrderingCriterionToDefault({
+                        criterion: option,
+                        direction: DESCENDING,
+                      })}
                     >
                       <span className={cx('icon-wrapper')}>
                         <i className="far fa-calendar-plus"></i>

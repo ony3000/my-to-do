@@ -2,7 +2,19 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import classNames from 'classnames/bind';
 import { useDispatch, useSelector } from 'react-redux';
-import { markAsComplete, markAsIncomplete, markAsImportant, markAsUnimportant } from '@/store/todoSlice';
+import {
+  IMPORTANCE,
+  DEADLINE,
+  MYDAY,
+  TITLE,
+  CREATION_DATE,
+  ASCENDING,
+  DESCENDING,
+  markAsComplete,
+  markAsIncomplete,
+  markAsImportant,
+  markAsUnimportant,
+} from '@/store/todoSlice';
 import dayjs from '@/plugins/dayjs';
 import styles from './TaskList.module.scss';
 
@@ -47,10 +59,32 @@ export default function TaskList({
   const midnightTomorrow = midnightToday.add(1, 'day');
   const midnightAfter2Days = midnightToday.add(2, 'day');
 
+  const compareByStoredCriterion = ({ criterion, direction }, former, latter) => {
+    switch (criterion) {
+      case IMPORTANCE:
+        return (latter.isImportant - former.isImportant) * (direction === ASCENDING ? -1 : 1);
+      case DEADLINE:
+        return (
+          (!!latter.deadline - !!former.deadline)
+            || (former.deadline - latter.deadline) * (direction === DESCENDING ? -1 : 1)
+            || former.createdAt - latter.createdAt
+        );
+      case MYDAY:
+        return (latter.isMarkedAsTodayTask - former.isMarkedAsTodayTask) * (direction === ASCENDING ? -1 : 1);
+      case TITLE:
+        return (former.title.localeCompare(latter.title)) * (direction === DESCENDING ? -1 : 1);
+      case CREATION_DATE:
+        return (latter.createdAt - former.createdAt) * (direction === ASCENDING ? -1 : 1);
+      default:
+        return false;
+    }
+  };
+
   switch (pageKey) {
     case 'myday':
       filteredTodoItems.sort((former, latter) => (
-        (latter.markedAsImportantAt || latter.markedAsTodayTaskAt) - (former.markedAsImportantAt || former.markedAsTodayTaskAt)
+        (settingsPerPage.ordering ? compareByStoredCriterion(settingsPerPage.ordering, former, latter) : false)
+          || (latter.markedAsImportantAt || latter.markedAsTodayTaskAt) - (former.markedAsImportantAt || former.markedAsTodayTaskAt)
       ));
       break;
     case 'planned':
@@ -59,13 +93,18 @@ export default function TaskList({
       ));
       break;
     case 'all':
-    case 'inbox':
       filteredTodoItems.sort((former, latter) => (
         (latter.markedAsImportantAt || latter.createdAt) - (former.markedAsImportantAt || former.createdAt)
       ));
       break;
     case 'completed':
       filteredTodoItems.sort((former, latter) => (latter.completedAt - former.completedAt));
+      break;
+    case 'inbox':
+      filteredTodoItems.sort((former, latter) => (
+        (settingsPerPage.ordering ? compareByStoredCriterion(settingsPerPage.ordering, former, latter) : false)
+          || (latter.markedAsImportantAt || latter.createdAt) - (former.markedAsImportantAt || former.createdAt)
+      ));
       break;
     default:
       filteredTodoItems.sort((former, latter) => (latter.createdAt - former.createdAt));
