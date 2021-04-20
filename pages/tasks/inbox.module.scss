@@ -1,13 +1,14 @@
 .main {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: calc(100vh - 48px);
 }
 
 .body {
   flex: 1;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .input-section {
@@ -18,7 +19,7 @@
 
 .list-section {
   flex: 1;
-  max-height: calc(100vh - 160px);
+  max-height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
   display: flex;

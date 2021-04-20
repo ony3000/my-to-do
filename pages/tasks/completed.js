@@ -19,12 +19,7 @@ export default function Completed() {
       />
 
       <div className={cx('body')}>
-        <div
-          className={cx('list-section')}
-          style={{
-            maxHeight: 'calc(100vh - 108px)',
-          }}
-        >
+        <div className={cx('list-section')}>
           <TaskList
             filter={{
               isComplete: true,
