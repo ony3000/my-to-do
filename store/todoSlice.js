@@ -321,7 +321,13 @@ const todoSlice = createSlice({
       };
       saveState(state);
     },
-    unsetOrderingCriterion(state) {
+    reverseOrderingCriterion(state, { payload: { pageKey } }) {
+      const oldDirection = state.pageSettings[pageKey].ordering.direction;
+
+      state.pageSettings[pageKey].ordering.direction = oldDirection === ASCENDING ? DESCENDING : ASCENDING;
+      saveState(state);
+    },
+    unsetOrderingCriterion(state, { payload: { pageKey } }) {
       state.pageSettings[pageKey].ordering = null;
       saveState(state);
     },
@@ -373,6 +379,7 @@ export const {
   hideCompletedItems,
   setThemeColor,
   setOrderingCriterion,
+  reverseOrderingCriterion,
   unsetOrderingCriterion,
 } = todoSlice.actions;
 

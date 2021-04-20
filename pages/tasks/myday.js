@@ -2,6 +2,7 @@ import Head from 'next/head';
 import classNames from 'classnames/bind';
 import styles from './inbox.module.scss'; // shared
 import PageToolbar from '@/components/PageToolbar';
+import OrderingIndicator from '@/components/OrderingIndicator';
 import TaskInput from '@/components/TaskInput';
 import TaskList from '@/components/TaskList';
 
@@ -21,6 +22,8 @@ export default function Myday() {
       />
 
       <div className={cx('body')}>
+        <OrderingIndicator />
+
         <div className={cx('input-section')}>
           <TaskInput
             itemProps={{
