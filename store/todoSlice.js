@@ -91,6 +91,7 @@ const initialState = {
       ordering: null,
     },
   },
+  focusedTaskId: null,
 };
 
 const saveState = (state) => localStorage.setItem('cloneCoding:my-to-do', JSON.stringify(state));
@@ -109,6 +110,7 @@ export const launchApp = createAsyncThunk('todo/launchApp', async () => {
       listOptionPosition: {},
       themePalettePosition: {},
       orderingCriterionPosition: {},
+      focusedTaskId: null,
     });
 
     if (combinedState.todoItems.length === 0) {
@@ -235,6 +237,14 @@ const todoSlice = createSlice({
     closeOrderingCriterion(state) {
       state.orderingCriterion = {};
       state.isActiveOrderingCriterion = false;
+      saveState(state);
+    },
+    openDetailPanel(state, { payload }) {
+      state.focusedTaskId = payload;
+      saveState(state);
+    },
+    closeDetailPanel(state) {
+      state.focusedTaskId = null;
       saveState(state);
     },
     openSettingPanel(state) {
@@ -366,6 +376,8 @@ export const {
   closeListOption,
   closeThemePalette,
   closeOrderingCriterion,
+  openDetailPanel,
+  closeDetailPanel,
   openSettingPanel,
   closeSettingPanel,
   turnOnSmartList,

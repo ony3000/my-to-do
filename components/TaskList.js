@@ -10,6 +10,7 @@ import {
   CREATION_DATE,
   ASCENDING,
   DESCENDING,
+  openDetailPanel,
   markAsComplete,
   markAsIncomplete,
   markAsImportant,
@@ -188,7 +189,10 @@ export default function TaskList({
                 </span>
               </button>
 
-              <button className={cx('item-summary')}>
+              <button
+                className={cx('item-summary')}
+                onClick={() => dispatch(openDetailPanel(id))}
+              >
                 <div className={cx('item-title')}>{title}</div>
                 <div className={cx('item-metadata')}>
                   {isMarkedAsTodayTask && !isHideTodayIndicator ? (

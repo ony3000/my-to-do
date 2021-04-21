@@ -7,7 +7,7 @@ import styles from './AppContainer.module.scss';
 import AppSplash from '@/components/AppSplash';
 import AppHeader from '@/components/AppHeader';
 import NavigationDrawer from '@/components/NavigationDrawer';
-import AppRightColumn from '@/components/AppRightColumn';
+import DetailPanel from '@/components/DetailPanel';
 import SettingPanel from '@/components/SettingPanel';
 
 const cx = classNames.bind(styles);
@@ -54,7 +54,7 @@ export default function AppContainer({ children }) {
               {children}
             </div>
 
-            {/* <AppRightColumn /> */}
+            <DetailPanel />
           </div>
         </>
       ) : (
