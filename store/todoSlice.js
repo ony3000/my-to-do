@@ -130,6 +130,7 @@ export const launchApp = createAsyncThunk('todo/launchApp', async () => {
           title,
           isComplete: completed,
           subSteps: Array(getRandomInt(0, 3)).fill(null).map(() => ({
+            id: uuid(),
             title: 'test',
             isComplete: Boolean(getRandomInt(0, 1)),
           })),
@@ -290,6 +291,18 @@ const todoSlice = createSlice({
       state.todoItems.push(newTask);
       saveState(state);
     },
+    removeTodoItem(state, { payload }) {
+      const targetTaskIndex = state.todoItems.findIndex(({ id }) => (id === payload));
+
+      state.todoItems.splice(targetTaskIndex, 1);
+      saveState(state);
+    },
+    updateTodoItem(state, { payload }) {
+      const targetTaskIndex = state.todoItems.findIndex(({ id }) => (id === payload.id));
+
+      state.todoItems[targetTaskIndex] = Object.assign({}, state.todoItems[targetTaskIndex], payload);
+      saveState(state);
+    },
     markAsComplete(state, { payload }) {
       const targetTask = state.todoItems.find(({ id }) => (id === payload));
 
@@ -310,6 +323,17 @@ const todoSlice = createSlice({
     },
     markAsUnimportant(state, { payload }) {
       state.todoItems.find(({ id }) => (id === payload)).isImportant = false;
+      saveState(state);
+    },
+    markAsTodayTask(state, { payload }) {
+      const targetTask = state.todoItems.find(({ id }) => (id === payload));
+
+      targetTask.isMarkedAsTodayTask = true;
+      targetTask.markedAsTodayTaskAt = new Date().getTime();
+      saveState(state);
+    },
+    markAsNonTodayTask(state, { payload }) {
+      state.todoItems.find(({ id }) => (id === payload)).isMarkedAsTodayTask = false;
       saveState(state);
     },
     showCompletedItems(state, { payload }) {
@@ -339,6 +363,28 @@ const todoSlice = createSlice({
     },
     unsetOrderingCriterion(state, { payload: { pageKey } }) {
       state.pageSettings[pageKey].ordering = null;
+      saveState(state);
+    },
+    createSubStep(state, { payload: { taskId, title } }) {
+      state.todoItems.find(({ id }) => (id === taskId)).subSteps.push({
+        id: uuid(),
+        title,
+        isComplete: false,
+      });
+      saveState(state);
+    },
+    removeSubStep(state, { payload: { taskId, stepId } }) {
+      const targetTask = state.todoItems.find(({ id }) => (id === taskId));
+      const targetStepIndex = targetTask.subSteps.findIndex(({ id }) => (id === stepId));
+
+      targetTask.subSteps.splice(targetStepIndex, 1);
+      saveState(state);
+    },
+    updateSubStep(state, { payload: { taskId, stepId, ...others } }) {
+      const targetTask = state.todoItems.find(({ id }) => (id === taskId));
+      const targetStepIndex = targetTask.subSteps.findIndex(({ id }) => (id === stepId));
+
+      targetTask.subSteps[targetStepIndex] = Object.assign({}, targetTask.subSteps[targetStepIndex], others);
       saveState(state);
     },
   },
@@ -383,16 +429,23 @@ export const {
   turnOnSmartList,
   turnOffSmartList,
   createTodoItem,
+  removeTodoItem,
+  updateTodoItem,
   markAsComplete,
   markAsIncomplete,
   markAsImportant,
   markAsUnimportant,
+  markAsTodayTask,
+  markAsNonTodayTask,
   showCompletedItems,
   hideCompletedItems,
   setThemeColor,
   setOrderingCriterion,
   reverseOrderingCriterion,
   unsetOrderingCriterion,
+  createSubStep,
+  removeSubStep,
+  updateSubStep,
 } = todoSlice.actions;
 
 export default todoSlice.reducer;
