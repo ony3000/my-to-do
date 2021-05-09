@@ -1,0 +1,56 @@
+.container {
+  padding: 0 4px;
+}
+
+.body {
+  display: flex;
+  align-items: center;
+  height: 40px;
+}
+
+@mixin button-base {
+  display: inline-flex;
+  align-items: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0.25rem;
+  border-radius: 2px;
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 1px theme("colors.white"), 0 0 0 3px theme("colors.blue.500");
+  }
+}
+
+.button {
+  @include button-base;
+
+  &.is-submit {
+    font-size: 12px;
+  }
+}
+
+.icon-wrapper {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.input {
+  flex: 1;
+  padding: 4px 6px;
+  font-size: 14px;
+  color: theme("colors.gray.700");
+
+  &:focus {
+    &::placeholder {
+      color: theme("colors.gray.500");
+    }
+  }
+
+  &[data-is-empty="true"] + .button.is-submit {
+    display: none;
+  }
+}

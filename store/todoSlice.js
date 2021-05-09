@@ -195,12 +195,18 @@ export const openThemePalette = createAsyncThunk('todo/openThemePalette', ({ eve
 
 export const openOrderingCriterion = createAsyncThunk('todo/openOrderingCriterion', ({ event, selector }) => {
   const button = event.target.closest(selector);
-  const { top, height } = button.getBoundingClientRect();
+  const { top, left, width, height } = button.getBoundingClientRect();
 
+  const criterionWidth = 200;
   const criterionPosition = {
     top: Math.floor(top + height - 2),
-    right: 8,
+    left: Math.floor(left + width / 2 - criterionWidth / 2),
   };
+
+  if (criterionPosition.left + criterionWidth + 8 > window.innerWidth) {
+    delete criterionPosition.left;
+    criterionPosition.right = 8;
+  }
 
   return Promise.resolve(criterionPosition);
 });

@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import classNames from 'classnames/bind';
 import { useDispatch, useSelector } from 'react-redux';
 import { createTodoItem, createSubStep } from '@/store/todoSlice';
-import styles from './TaskInput.module.scss'; // shared temporarily
+import styles from './StepInput.module.scss';
 
 const cx = classNames.bind(styles);
 
@@ -59,49 +59,49 @@ export default function StepInput({
 
   return (
     <div className={cx('container')}>
-      <button
-        className={cx(
-          'button',
-          'is-left',
-          `text-${settingsPerPage.themeColor ? settingsPerPage.themeColor : 'blue'}-500`,
-        )}
-        title="작업 추가"
-        onClick={() => $refs.input.current.focus()}
-      >
-        <span className={cx('icon-wrapper')}>
-          <i className="fas fa-plus"></i>
-          <span className="sr-only">작업 추가</span>
-        </span>
-      </button>
+      <div className={cx('body')}>
+        <button
+          className={cx(
+            'button',
+            `text-${settingsPerPage.themeColor ? settingsPerPage.themeColor : 'blue'}-500`,
+          )}
+          title="작업 추가"
+          onClick={() => $refs.input.current.focus()}
+        >
+          <span className={cx('icon-wrapper')}>
+            <i className="fas fa-plus"></i>
+            <span className="sr-only">작업 추가</span>
+          </span>
+        </button>
 
-      <input
-        ref={$refs.input}
-        className={cx(
-          'input',
-          `placeholder-${settingsPerPage.themeColor ? settingsPerPage.themeColor : 'blue'}-500`,
-        )}
-        type="text"
-        placeholder={placeholder}
-        data-is-empty={true}
-        onKeyUp={e => keyUpHandler(e)}
-        onInput={e => inputHandler(e)}
-        onBlur={e => blurHandler(e)}
-      />
+        <input
+          ref={$refs.input}
+          className={cx(
+            'input',
+            `placeholder-${settingsPerPage.themeColor ? settingsPerPage.themeColor : 'blue'}-500`,
+          )}
+          type="text"
+          placeholder={placeholder}
+          data-is-empty={true}
+          onKeyUp={e => keyUpHandler(e)}
+          onInput={e => inputHandler(e)}
+          onBlur={e => blurHandler(e)}
+        />
 
-      <button
-        className={cx(
-          'button',
-          'is-right',
-          'is-submit',
-          `text-${settingsPerPage.themeColor ? settingsPerPage.themeColor : 'blue'}-500`,
-        )}
-        title="추가"
-        onClick={() => createStep()}
-      >
-        <span className={cx('icon-wrapper')}>
-          <span>추가</span>
-        </span>
-      </button>
+        <button
+          className={cx(
+            'button',
+            'is-submit',
+            `text-${settingsPerPage.themeColor ? settingsPerPage.themeColor : 'blue'}-500`,
+          )}
+          title="추가"
+          onClick={() => createStep()}
+        >
+          <span className={cx('icon-wrapper')}>
+            <span>추가</span>
+          </span>
+        </button>
+      </div>
     </div>
   );
 }

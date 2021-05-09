@@ -24,7 +24,11 @@ export default function OrderingCriterion({
   const pageKey = router.pathname.replace(/^\/tasks\/?/, '') || 'inbox';
   const dispatch = useDispatch();
   const isActiveOrderingCriterion = useSelector(({ todo: state }) => state.isActiveOrderingCriterion);
-  const { top: topPosition, right: rightPosition } = useSelector(({ todo: state }) => state.orderingCriterionPosition);
+  const {
+    top: topPosition,
+    right: rightPosition,
+    left: leftPosition,
+  } = useSelector(({ todo: state }) => state.orderingCriterionPosition);
   const settingsPerPage = useSelector(({ todo: state }) => state.pageSettings[pageKey]);
   const $refs = {
     container: useRef(null),
@@ -67,7 +71,8 @@ export default function OrderingCriterion({
           className={cx('container')}
           style={{
             top: `${topPosition}px`,
-            right: `${rightPosition}px`,
+            right: (rightPosition !== undefined) && `${rightPosition}px`,
+            left: (leftPosition !== undefined) && `${leftPosition}px`,
           }}
         >
           <div className={cx('title')}>정렬 기준</div>
