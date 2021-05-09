@@ -176,6 +176,13 @@
     }
   }
 
+  &.has-error {
+    .section-item .button,
+    .section-title {
+      color: theme("colors.red.600");
+    }
+  }
+
   &.has-no-border {
     border: none;
   }

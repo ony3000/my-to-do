@@ -41,6 +41,12 @@
   display: flex;
 }
 
+.option-separator {
+  margin: 6px 0;
+  border-bottom: 1px solid rgb(0 0 0 / 8%);
+  background-color: theme("colors.white");
+}
+
 .option-button {
   position: relative;
   font-size: 14px;

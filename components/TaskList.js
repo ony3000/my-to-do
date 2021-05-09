@@ -145,13 +145,16 @@ export default function TaskList({
       }) => {
         const completedSubSteps = subSteps.filter((step) => step.isComplete);
 
+        let deadlineTextColor = 'text-gray-500';
         let deadlineElement = null;
 
         if (deadline) {
           if (deadline < Number(midnightToday.format('x'))) {
+            deadlineTextColor = 'text-red-600';
             deadlineElement = <span>지연, {dayjs(deadline, 'x').format('M월 D일, ddd')}</span>;
           }
           else if (deadline < Number(midnightTomorrow.format('x'))) {
+            deadlineTextColor = 'text-blue-500';
             deadlineElement = <span>오늘까지</span>;
           }
           else if (deadline < Number(midnightAfter2Days.format('x'))) {
@@ -209,8 +212,7 @@ export default function TaskList({
                     </span>
                   ) : null}
                   {deadline ? (
-                    <span className={cx('meta-indicator')}>
-                      {/* 기한이 지났으면 빨간색, 오늘까지면 파란색, 오늘 이후면 회색 */}
+                    <span className={cx('meta-indicator', deadlineTextColor)}>
                       <span className={cx('meta-icon-wrapper')}>
                         <i className="far fa-calendar" />
                       </span>

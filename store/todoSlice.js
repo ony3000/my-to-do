@@ -19,6 +19,7 @@ const initialState = {
   isActiveListOption: false,
   isActiveThemePalette: false,
   isActiveOrderingCriterion: false,
+  isActiveDeadlinePicker: false,
   isActiveSettingPanel: false,
   settings: {
     smartList: {
@@ -33,6 +34,7 @@ const initialState = {
   listOptionPosition: {},
   themePalettePosition: {},
   orderingCriterionPosition: {},
+  deadlinePickerPosition: {},
   toolbarFunctions: {
     myday: {
       listOption: null,
@@ -107,9 +109,11 @@ export const launchApp = createAsyncThunk('todo/launchApp', async () => {
       isActiveListOption: false,
       isActiveThemePalette: false,
       isActiveOrderingCriterion: false,
+      isActiveDeadlinePicker: false,
       listOptionPosition: {},
       themePalettePosition: {},
       orderingCriterionPosition: {},
+      deadlinePickerPosition: {},
       focusedTaskId: null,
     });
 
@@ -211,6 +215,24 @@ export const openOrderingCriterion = createAsyncThunk('todo/openOrderingCriterio
   return Promise.resolve(criterionPosition);
 });
 
+export const openDeadlinePicker = createAsyncThunk('todo/openDeadlinePicker', ({ event, selector }) => {
+  const button = event.target.closest(selector);
+  const { top, left, width, height } = button.getBoundingClientRect();
+
+  const pickerWidth = 200;
+  const pickerHeight = 217;
+  const pickerPosition = {
+    top: Math.floor(top + height - 2),
+    left: Math.floor(left + width / 2 - pickerWidth / 2),
+  };
+
+  if (pickerPosition.top + pickerHeight + 8 > window.innerHeight) {
+    pickerPosition.top = Math.floor(top - pickerHeight + 2);
+  }
+
+  return Promise.resolve(pickerPosition);
+});
+
 const todoSlice = createSlice({
   name: 'todo',
   initialState,
@@ -244,6 +266,11 @@ const todoSlice = createSlice({
     closeOrderingCriterion(state) {
       state.orderingCriterion = {};
       state.isActiveOrderingCriterion = false;
+      saveState(state);
+    },
+    closeDeadlinePicker(state) {
+      state.deadlinePicker = {};
+      state.isActiveDeadlinePicker = false;
       saveState(state);
     },
     openDetailPanel(state, { payload }) {
@@ -393,6 +420,14 @@ const todoSlice = createSlice({
       targetTask.subSteps[targetStepIndex] = Object.assign({}, targetTask.subSteps[targetStepIndex], others);
       saveState(state);
     },
+    setDeadline(state, { payload: { taskId, deadline } }) {
+      state.todoItems.find(({ id }) => (id === taskId)).deadline = deadline;
+      saveState(state);
+    },
+    unsetDeadline(state, { payload }) {
+      state.todoItems.find(({ id }) => (id === payload)).deadline = null;
+      saveState(state);
+    },
   },
   extraReducers: builder => {
     builder.addCase(launchApp.fulfilled, (state, { payload }) => {
@@ -417,6 +452,11 @@ const todoSlice = createSlice({
       state.isActiveOrderingCriterion = true;
       saveState(state);
     });
+    builder.addCase(openDeadlinePicker.fulfilled, (state, { payload }) => {
+      state.deadlinePickerPosition = payload;
+      state.isActiveDeadlinePicker = true;
+      saveState(state);
+    });
   },
 });
 
@@ -428,6 +468,7 @@ export const {
   closeListOption,
   closeThemePalette,
   closeOrderingCriterion,
+  closeDeadlinePicker,
   openDetailPanel,
   closeDetailPanel,
   openSettingPanel,
@@ -452,6 +493,8 @@ export const {
   createSubStep,
   removeSubStep,
   updateSubStep,
+  setDeadline,
+  unsetDeadline,
 } = todoSlice.actions;
 
 export default todoSlice.reducer;

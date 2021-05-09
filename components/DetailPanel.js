@@ -3,6 +3,8 @@ import { useRouter } from 'next/router';
 import classNames from 'classnames/bind';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  openDeadlinePicker,
+  closeDeadlinePicker,
   closeDetailPanel,
   removeTodoItem,
   updateTodoItem,
@@ -14,10 +16,12 @@ import {
   markAsNonTodayTask,
   removeSubStep,
   updateSubStep,
+  unsetDeadline,
 } from '@/store/todoSlice';
 import dayjs from '@/plugins/dayjs';
 import styles from './DetailPanel.module.scss';
 import StepInput from '@/components/StepInput';
+import DeadlinePicker from '@/components/DeadlinePicker';
 
 const cx = classNames.bind(styles);
 
@@ -28,6 +32,7 @@ export default function DetailPanel() {
   const settingsPerPage = useSelector(({ todo: state }) => state.pageSettings[pageKey]);
   const focusedTaskId = useSelector(({ todo: state }) => state.focusedTaskId);
   const task = useSelector(({ todo: state }) => state.todoItems.find(({ id }) => (id === focusedTaskId)));
+  const isActiveDeadlinePicker = useSelector(({ todo: state }) => state.isActiveDeadlinePicker);
   const [ isActivated, setIsActivated ] = useState(false);
   const $refs = {
     titleArea: useRef(null),
@@ -36,7 +41,32 @@ export default function DetailPanel() {
   };
 
   const midnightThisYear = dayjs().startOf('year');
+  const midnightToday = dayjs().startOf('day');
+  const midnightTomorrow = midnightToday.add(1, 'day');
+  const midnightAfter2Days = midnightToday.add(2, 'day');
+  let deadlineElement = null;
+  let isOverdue = false;
 
+  if (task?.deadline) {
+    if (task.deadline < Number(midnightToday.format('x'))) {
+      deadlineElement = <span>지연, {dayjs(task.deadline, 'x').format('M월 D일, ddd')}</span>;
+      isOverdue = true;
+    }
+    else if (task.deadline < Number(midnightTomorrow.format('x'))) {
+      deadlineElement = <span>오늘까지</span>;
+    }
+    else if (task.deadline < Number(midnightAfter2Days.format('x'))) {
+      deadlineElement = <span>내일까지</span>;
+    }
+    else {
+      deadlineElement = <span>{dayjs(task.deadline, 'x').format('M월 D일, ddd')}까지</span>;
+    }
+  }
+
+  const closeHandler = () => {
+    dispatch(closeDetailPanel());
+    dispatch(closeDeadlinePicker());
+  };
   const titleInputHandler = (element) => {
     element.style.setProperty('height', '');
 
@@ -112,11 +142,31 @@ export default function DetailPanel() {
     }
   });
 
+  useEffect(() => {
+    const flexibleSection = document.querySelector(`.${cx('flexible-section')}`);
+
+    function scrollHandler(event) {
+      if (isActiveDeadlinePicker && flexibleSection) {
+        dispatch(closeDeadlinePicker());
+      }
+    }
+
+    if (flexibleSection) {
+      flexibleSection.addEventListener('scroll', scrollHandler);
+    }
+
+    return () => {
+      if (flexibleSection) {
+        flexibleSection.removeEventListener('scroll', scrollHandler);
+      }
+    };
+  });
+
   return task ? (
     <>
       <div
         className={cx('overlay')}
-        onClick={() => dispatch(closeDetailPanel())}
+        onClick={() => closeHandler()}
       />
       <div className={cx('container')}>
         <div className={cx('body')}>
@@ -278,10 +328,19 @@ export default function DetailPanel() {
               ) : null}
             </div>
 
-            <div className={cx('general-section')}>
+            <div
+              className={cx(
+                'general-section',
+                { 'is-active': task.deadline },
+                { 'has-error': isOverdue },
+              )}
+            >
               <button
                 className={cx('section-item')}
-                onClick={() => console.log('기한 설정')}
+                onClick={(event) => dispatch(openDeadlinePicker({
+                  event,
+                  selector: `.${cx('section-item')}`,
+                }))}
               >
                 <span className={cx('button')}>
                   <span className={cx('icon-wrapper')}>
@@ -289,9 +348,32 @@ export default function DetailPanel() {
                   </span>
                 </span>
                 <span className={cx('section-title')}>
-                  기한 설정
+                  {task.deadline ? deadlineElement : '기한 설정'}
                 </span>
               </button>
+              {task.deadline ? (
+                <div
+                  style={{
+                    padding: '0 8px',
+                    alignSelf: 'center',
+                  }}
+                >
+                  <button
+                    className={cx('button')}
+                    title="기한 제거"
+                    onClick={() => dispatch(unsetDeadline(task.id))}
+                  >
+                    <span className={cx('icon-wrapper')}>
+                      <i className="fas fa-times"></i>
+                    </span>
+                    <span className="sr-only">기한 제거</span>
+                  </button>
+                </div>
+              ) : null}
+
+              <DeadlinePicker
+                taskId={task.id}
+              />
             </div>
 
             <div className={cx('general-section', 'has-no-border')}>
@@ -310,7 +392,7 @@ export default function DetailPanel() {
             <button
               className={cx('button')}
               title="세부 정보 화면 숨기기"
-              onClick={() => dispatch(closeDetailPanel())}
+              onClick={() => closeHandler()}
             >
               <span className={cx('icon-wrapper')}>
                 <i className="fas fa-columns"></i>
