@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { Fragment, useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import classNames from 'classnames/bind';
 import { useDispatch, useSelector } from 'react-redux';
@@ -173,7 +173,7 @@ export default function DetailPanel() {
   });
 
   return task ? (
-    <>
+    <Fragment key={task.id}>
       <div
         className={cx('overlay')}
         onClick={() => closeHandler()}
@@ -433,6 +433,6 @@ export default function DetailPanel() {
           </div>
         </div>
       </div>
-    </>
+    </Fragment>
   ) : null;
 }
