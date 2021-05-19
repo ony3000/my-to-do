@@ -54,6 +54,7 @@ export default function TaskList({
       .filter((item) => !(item.isComplete && isHideCompletedItems))
   );
   const settingsPerPage = useSelector(({ todo: state }) => state.pageSettings[pageKey]);
+  const focusedTaskId = useSelector(({ todo: state }) => state.focusedTaskId);
   const [ isCollapsed, setIsCollapsed ] = useState(isCollapsedInitially || false);
 
   const midnightToday = dayjs().startOf('day');
@@ -174,7 +175,10 @@ export default function TaskList({
         return (
           <div
             key={id}
-            className={cx('item')}
+            className={cx(
+              'item',
+              { 'is-active': id === focusedTaskId },
+            )}
           >
             <div className={cx('item-body')}>
               <button

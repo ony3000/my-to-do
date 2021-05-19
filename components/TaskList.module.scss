@@ -76,6 +76,11 @@
       box-shadow: none;
     }
   }
+
+  &.is-active {
+    background-color: theme("colors.lightBlue.100");
+    box-shadow: 0 1px 0 0 theme("colors.lightBlue.100");
+  }
 }
 
 .item-body {
