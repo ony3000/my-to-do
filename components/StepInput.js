@@ -82,6 +82,7 @@ export default function StepInput({
           )}
           type="text"
           placeholder={placeholder}
+          maxLength={255}
           data-is-empty={true}
           onKeyUp={e => keyUpHandler(e)}
           onInput={e => inputHandler(e)}

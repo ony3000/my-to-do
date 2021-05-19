@@ -206,6 +206,7 @@ export default function DetailPanel() {
                   ref={$refs.titleArea}
                   className={cx('title-input')}
                   defaultValue={task.title}
+                  maxLength={255}
                   onInput={e => titleInputHandler(e.target)}
                   onBlur={e => titleBlurHandler(e, task.id)}
                 />
@@ -270,6 +271,7 @@ export default function DetailPanel() {
                         { 'text-gray-700': !isComplete },
                       )}
                       defaultValue={title}
+                      maxLength={255}
                       onBlur={e => stepTitleBlurHandler(e, task.id, id)}
                     />
                     <button
