@@ -1,12 +1,15 @@
-import { useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   closeDeadlinePicker,
+  openDeadlineCalendar,
+  closeDeadlineCalendar,
   setDeadline,
 } from '@/store/todoSlice';
 import dayjs from '@/plugins/dayjs';
 import styles from './ListOption.module.scss'; // shared
+import DeadlineCalendar from '@/components/DeadlineCalendar';
 
 const cx = classNames.bind(styles);
 
@@ -15,7 +18,9 @@ export default function DeadlinePicker({
 }) {
   const dispatch = useDispatch();
   const isActiveDeadlinePicker = useSelector(({ todo: state }) => state.isActiveDeadlinePicker);
-  const { top: topPosition, left: leftPosition } = useSelector(({ todo: state }) => state.deadlinePickerPosition);
+  const { top: topPosition, right: rightPosition } = useSelector(({ todo: state }) => state.deadlinePickerPosition);
+  const isActiveDeadlineCalendar = useSelector(({ todo: state }) => state.isActiveDeadlineCalendar);
+  const [ isMounted, setIsMounted ] = useState(false);
   const $refs = {
     container: useRef(null),
   };
@@ -31,7 +36,17 @@ export default function DeadlinePicker({
       deadline: timestamp,
     }));
     dispatch(closeDeadlinePicker());
+
+    if (isActiveDeadlineCalendar) {
+      dispatch(closeDeadlineCalendar());
+    }
   };
+
+  useEffect(() => {
+    if (!isMounted) {
+      setIsMounted(true);
+    }
+  });
 
   useEffect(() => {
     function clickHandler(event) {
@@ -40,18 +55,26 @@ export default function DeadlinePicker({
 
         if (pickerContainer === null) {
           dispatch(closeDeadlinePicker());
+
+          if (isActiveDeadlineCalendar) {
+            dispatch(closeDeadlineCalendar());
+          }
         }
       }
     }
 
-    document.addEventListener('click', clickHandler);
+    if (isMounted) {
+      document.addEventListener('click', clickHandler);
+    }
 
     return () => {
-      document.removeEventListener('click', clickHandler);
+      if (isMounted) {
+        document.removeEventListener('click', clickHandler);
+      }
     };
   });
 
-  return isActiveDeadlinePicker ? (
+  return (
     <div className={cx('fixed-layer')}>
       <div className={cx('visible-layer')}>
         <div
@@ -59,7 +82,7 @@ export default function DeadlinePicker({
           className={cx('container')}
           style={{
             top: `${topPosition}px`,
-            left: `${leftPosition}px`,
+            right: `${rightPosition}px`,
           }}
         >
           <div className={cx('title')}>기한</div>
@@ -124,11 +147,21 @@ export default function DeadlinePicker({
             <li className={cx('option-separator')} />
             <li className={cx('option-item')}>
               <button
-                className={cx('option-button')}
-                onClick={() => console.log('날짜 선택')}
+                className={cx('option-button', 'datepicker-activator')}
+                onClick={(event) => !isActiveDeadlineCalendar && dispatch(openDeadlineCalendar({
+                  event,
+                  selector: `.${cx('datepicker-activator')}`,
+                }))}
               >
-                <span className={cx('icon-wrapper')}>
+                <span className={cx('icon-wrapper', 'relative')}>
                   <i className="far fa-calendar-alt"></i>
+                  <i className="far fa-clock" style={{
+                    position: 'absolute',
+                    top: 'calc(50% + 6px)',
+                    left: 'calc(50% + 6px)',
+                    transform: 'translate(-50%, -50%) scale(0.6)',
+                    backgroundColor: '#fff',
+                  }}></i>
                 </span>
                 <span className={cx('option-text')}>
                   날짜 선택
@@ -137,10 +170,16 @@ export default function DeadlinePicker({
                   <i className="fas fa-chevron-right"></i>
                 </span>
               </button>
+
+              {isActiveDeadlineCalendar && (
+                <DeadlineCalendar
+                  taskId={taskId}
+                />
+              )}
             </li>
           </ul>
         </div>
       </div>
     </div>
-  ) : null;
+  );
 }

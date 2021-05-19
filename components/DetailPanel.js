@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   openDeadlinePicker,
   closeDeadlinePicker,
+  closeDeadlineCalendar,
   closeDetailPanel,
   removeTodoItem,
   updateTodoItem,
@@ -33,6 +34,7 @@ export default function DetailPanel() {
   const focusedTaskId = useSelector(({ todo: state }) => state.focusedTaskId);
   const task = useSelector(({ todo: state }) => state.todoItems.find(({ id }) => (id === focusedTaskId)));
   const isActiveDeadlinePicker = useSelector(({ todo: state }) => state.isActiveDeadlinePicker);
+  const isActiveDeadlineCalendar = useSelector(({ todo: state }) => state.isActiveDeadlineCalendar);
   const [ isActivated, setIsActivated ] = useState(false);
   const $refs = {
     titleArea: useRef(null),
@@ -66,6 +68,10 @@ export default function DetailPanel() {
   const closeHandler = () => {
     dispatch(closeDetailPanel());
     dispatch(closeDeadlinePicker());
+
+    if (isActiveDeadlineCalendar) {
+      dispatch(closeDeadlineCalendar());
+    }
   };
   const titleInputHandler = (element) => {
     element.style.setProperty('height', '');
@@ -148,6 +154,10 @@ export default function DetailPanel() {
     function scrollHandler(event) {
       if (isActiveDeadlinePicker && flexibleSection) {
         dispatch(closeDeadlinePicker());
+
+        if (isActiveDeadlineCalendar) {
+          dispatch(closeDeadlineCalendar());
+        }
       }
     }
 
@@ -331,13 +341,13 @@ export default function DetailPanel() {
             <div
               className={cx(
                 'general-section',
-                { 'is-active': task.deadline },
-                { 'has-error': isOverdue },
+                { 'is-active': !task.isComplete && task.deadline },
+                { 'has-error': !task.isComplete && isOverdue },
               )}
             >
               <button
                 className={cx('section-item')}
-                onClick={(event) => dispatch(openDeadlinePicker({
+                onClick={(event) => !isActiveDeadlinePicker && dispatch(openDeadlinePicker({
                   event,
                   selector: `.${cx('section-item')}`,
                 }))}
@@ -371,9 +381,11 @@ export default function DetailPanel() {
                 </div>
               ) : null}
 
-              <DeadlinePicker
-                taskId={task.id}
-              />
+              {isActiveDeadlinePicker && (
+                <DeadlinePicker
+                  taskId={task.id}
+                />
+              )}
             </div>
 
             <div className={cx('general-section', 'has-no-border')}>

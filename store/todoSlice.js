@@ -20,6 +20,7 @@ const initialState = {
   isActiveThemePalette: false,
   isActiveOrderingCriterion: false,
   isActiveDeadlinePicker: false,
+  isActiveDeadlineCalendar: false,
   isActiveSettingPanel: false,
   settings: {
     smartList: {
@@ -35,6 +36,7 @@ const initialState = {
   themePalettePosition: {},
   orderingCriterionPosition: {},
   deadlinePickerPosition: {},
+  deadlineCalendarPosition: {},
   toolbarFunctions: {
     myday: {
       listOption: null,
@@ -110,10 +112,12 @@ export const launchApp = createAsyncThunk('todo/launchApp', async () => {
       isActiveThemePalette: false,
       isActiveOrderingCriterion: false,
       isActiveDeadlinePicker: false,
+      isActiveDeadlineCalendar: false,
       listOptionPosition: {},
       themePalettePosition: {},
       orderingCriterionPosition: {},
       deadlinePickerPosition: {},
+      deadlineCalendarPosition: {},
       focusedTaskId: null,
     });
 
@@ -185,13 +189,13 @@ export const openThemePalette = createAsyncThunk('todo/openThemePalette', ({ eve
   const paletteWidth = 282;
   const paletteHeight = 82;
   const palettePosition = {
-    top,
+    top: Math.floor(top),
     left: Math.floor(left + width - 1),
   };
 
   if (palettePosition.left + paletteWidth + 8 > window.innerWidth) {
-    palettePosition.top = top - paletteHeight;
-    palettePosition.left = left;
+    palettePosition.top = Math.floor(top - paletteHeight);
+    palettePosition.left = Math.floor(left);
   }
 
   return Promise.resolve(palettePosition);
@@ -217,13 +221,14 @@ export const openOrderingCriterion = createAsyncThunk('todo/openOrderingCriterio
 
 export const openDeadlinePicker = createAsyncThunk('todo/openDeadlinePicker', ({ event, selector }) => {
   const button = event.target.closest(selector);
-  const { top, left, width, height } = button.getBoundingClientRect();
+  const section = button.parentElement;
+  const { top, left, height } = button.getBoundingClientRect();
 
   const pickerWidth = 200;
   const pickerHeight = 217;
   const pickerPosition = {
     top: Math.floor(top + height - 2),
-    left: Math.floor(left + width / 2 - pickerWidth / 2),
+    right: window.innerWidth - Math.floor(left + section.clientWidth / 2 + pickerWidth / 2),
   };
 
   if (pickerPosition.top + pickerHeight + 8 > window.innerHeight) {
@@ -231,6 +236,29 @@ export const openDeadlinePicker = createAsyncThunk('todo/openDeadlinePicker', ({
   }
 
   return Promise.resolve(pickerPosition);
+});
+
+export const openDeadlineCalendar = createAsyncThunk('todo/openDeadlineCalendar', ({ event, selector }) => {
+  const button = event.target.closest(selector);
+  const { top, left } = button.getBoundingClientRect();
+
+  const calendarWidth = 220;
+  const calendarHeight = 371;
+  const calendarPosition = {
+    top: Math.floor(top),
+    right: window.innerWidth - Math.floor(left),
+  };
+
+  if (calendarPosition.top + calendarHeight + 8 > window.innerHeight) {
+    calendarPosition.top = window.innerHeight - (calendarHeight + 8);
+  }
+
+  if (calendarPosition.right + calendarWidth + 8 > window.innerWidth) {
+    calendarPosition.top = Math.floor(top - calendarHeight);
+    calendarPosition.right = window.innerWidth - Math.floor(left + calendarWidth);
+  }
+
+  return Promise.resolve(calendarPosition);
 });
 
 const todoSlice = createSlice({
@@ -264,13 +292,18 @@ const todoSlice = createSlice({
       saveState(state);
     },
     closeOrderingCriterion(state) {
-      state.orderingCriterion = {};
+      state.orderingCriterionPosition = {};
       state.isActiveOrderingCriterion = false;
       saveState(state);
     },
     closeDeadlinePicker(state) {
-      state.deadlinePicker = {};
+      state.deadlinePickerPosition = {};
       state.isActiveDeadlinePicker = false;
+      saveState(state);
+    },
+    closeDeadlineCalendar(state) {
+      state.deadlineCalendarPosition = {};
+      state.isActiveDeadlineCalendar = false;
       saveState(state);
     },
     openDetailPanel(state, { payload }) {
@@ -457,6 +490,11 @@ const todoSlice = createSlice({
       state.isActiveDeadlinePicker = true;
       saveState(state);
     });
+    builder.addCase(openDeadlineCalendar.fulfilled, (state, { payload }) => {
+      state.deadlineCalendarPosition = payload;
+      state.isActiveDeadlineCalendar = true;
+      saveState(state);
+    });
   },
 });
 
@@ -469,6 +507,7 @@ export const {
   closeThemePalette,
   closeOrderingCriterion,
   closeDeadlinePicker,
+  closeDeadlineCalendar,
   openDetailPanel,
   closeDetailPanel,
   openSettingPanel,

@@ -150,11 +150,17 @@ export default function TaskList({
 
         if (deadline) {
           if (deadline < Number(midnightToday.format('x'))) {
-            deadlineTextColor = 'text-red-600';
+            if (!isComplete) {
+              deadlineTextColor = 'text-red-600';
+            }
+
             deadlineElement = <span>지연, {dayjs(deadline, 'x').format('M월 D일, ddd')}</span>;
           }
           else if (deadline < Number(midnightTomorrow.format('x'))) {
-            deadlineTextColor = 'text-blue-500';
+            if (!isComplete) {
+              deadlineTextColor = 'text-blue-500';
+            }
+
             deadlineElement = <span>오늘까지</span>;
           }
           else if (deadline < Number(midnightAfter2Days.format('x'))) {
