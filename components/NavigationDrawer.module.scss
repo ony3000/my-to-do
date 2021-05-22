@@ -60,6 +60,13 @@
   align-items: center;
 }
 
+.sidebar-body {
+  margin-top: 8px;
+  max-height: calc(100% - 68px);
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
 .button {
   display: inline-flex;
   align-items: center;

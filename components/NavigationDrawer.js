@@ -136,37 +136,39 @@ export default function NavigationDrawer() {
             </span>
           </button>
         </div>
-        <ul className="mt-2">
-          {anchors.map((anchorItem) => {
-            const isActiveSmartList = (smartListSettings[anchorItem.key] !== false) && !(autoHideEmptyLists && anchorItem.isHideAutomatically);
+        <div className={cx('sidebar-body')}>
+          <ul>
+            {anchors.map((anchorItem) => {
+              const isActiveSmartList = (smartListSettings[anchorItem.key] !== false) && !(autoHideEmptyLists && anchorItem.isHideAutomatically);
 
-            return (isActiveSmartList ? (
-              <li
-                key={anchorItem.key}
-                className={cx(
-                  'sidebar-item',
-                  { 'is-active': router.pathname === anchorItem.href || anchorItem.hrefAliases?.includes(router.pathname) },
-                )}
-              >
-                <Link href={anchorItem.href}>
-                  <a className={cx('sidebar-link')}>
-                    <span className={cx('icon-wrapper')}>
-                      <i className={anchorItem.icon.className}></i>
-                    </span>
-                    <span className={cx('link-text', 'is-title', anchorItem.textColor)}>
-                      {anchorItem.text}
-                    </span>
-                    {anchorItem.count ? (
-                      <span className={cx('link-text', anchorItem.textColor)}>
-                        {anchorItem.count}
+              return (isActiveSmartList ? (
+                <li
+                  key={anchorItem.key}
+                  className={cx(
+                    'sidebar-item',
+                    { 'is-active': router.pathname === anchorItem.href || anchorItem.hrefAliases?.includes(router.pathname) },
+                  )}
+                >
+                  <Link href={anchorItem.href}>
+                    <a className={cx('sidebar-link')}>
+                      <span className={cx('icon-wrapper')}>
+                        <i className={anchorItem.icon.className}></i>
                       </span>
-                    ) : null}
-                  </a>
-                </Link>
-              </li>
-            ) : null);
-          })}
-        </ul>
+                      <span className={cx('link-text', 'is-title', anchorItem.textColor)}>
+                        {anchorItem.text}
+                      </span>
+                      {anchorItem.count ? (
+                        <span className={cx('link-text', anchorItem.textColor)}>
+                          {anchorItem.count}
+                        </span>
+                      ) : null}
+                    </a>
+                  </Link>
+                </li>
+              ) : null);
+            })}
+          </ul>
+        </div>
       </div>
       <div
         className={cx(
