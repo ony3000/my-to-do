@@ -1,6 +1,12 @@
 import classNames from 'classnames/bind';
 import { useDispatch, useSelector } from 'react-redux';
-import { closeSettingPanel, turnOnSmartList, turnOffSmartList } from '@/store/todoSlice';
+import {
+  closeSettingPanel,
+  turnOnGeneral,
+  turnOffGeneral,
+  turnOnSmartList,
+  turnOffSmartList,
+} from '@/store/todoSlice';
 import styles from './SettingPanel.module.scss';
 
 const cx = classNames.bind(styles);
@@ -8,8 +14,19 @@ const cx = classNames.bind(styles);
 export default function SettingPanel() {
   const dispatch = useDispatch();
   const isActiveSettingPanel = useSelector(({ todo: state }) => state.isActiveSettingPanel);
+  const generalSettings = useSelector(({ todo: state }) => state.settings.general);
   const smartListSettings = useSelector(({ todo: state }) => state.settings.smartList);
 
+  const generals = [
+    {
+      key: 'confirmBeforeRemoving',
+      text: '삭제하기 전에 확인',
+    },
+    {
+      key: 'moveImportantTask',
+      text: '별표 표시된 작업을 상단으로 이동',
+    },
+  ];
   const smartLists = [
     {
       key: 'important',
@@ -44,6 +61,40 @@ export default function SettingPanel() {
         <h1 className="inline-flex px-4 py-5 text-xl font-semibold">설정</h1>
 
         <div className="px-4">
+          <div className={cx('setting-section')}>
+            <h2 className={cx('title')}>일반</h2>
+
+            <div className="flex flex-col items-start">
+              {generals.map((generalItem) => {
+                const isActiveGeneral = generalSettings[generalItem.key];
+
+                return (
+                  <div
+                    key={generalItem.key}
+                    className={cx(
+                      'togglable-item',
+                      { 'is-active': isActiveGeneral },
+                    )}
+                  >
+                    <label className={cx('top-label')}>{generalItem.text}</label>
+                    <div className="inline-flex">
+                      <button
+                        className={cx('switch')}
+                        title={isActiveGeneral ? '끄기' : '켜기'}
+                        disabled={!isActiveSettingPanel}
+                        onClick={() => dispatch(isActiveGeneral ? turnOffGeneral(generalItem.key) : turnOnGeneral(generalItem.key))}
+                      >
+                        <span className={cx('switch-thumb')}></span>
+                        <span className="sr-only">{isActiveGeneral ? '끄기' : '켜기'}</span>
+                      </button>
+                      <label className={cx('side-label')}>{isActiveGeneral ? '켬' : '끔'}</label>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
           <div className={cx('setting-section')}>
             <h2 className={cx('title')}>스마트 목록</h2>
 

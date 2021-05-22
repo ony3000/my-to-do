@@ -11,9 +11,10 @@ import {
   ASCENDING,
   DESCENDING,
   openDetailPanel,
-  markAsComplete,
+  markAsCompleteWithOrderingFlag,
   markAsIncomplete,
   markAsImportant,
+  markAsImportantWithOrderingFlag,
   markAsUnimportant,
 } from '@/store/todoSlice';
 import dayjs from '@/plugins/dayjs';
@@ -53,6 +54,7 @@ export default function TaskList({
       }))
       .filter((item) => !(item.isComplete && isHideCompletedItems))
   );
+  const generalSettings = useSelector(({ todo: state }) => state.settings.general);
   const settingsPerPage = useSelector(({ todo: state }) => state.pageSettings[pageKey]);
   const focusedTaskId = useSelector(({ todo: state }) => state.focusedTaskId);
   const [ isCollapsed, setIsCollapsed ] = useState(isCollapsedInitially || false);
@@ -79,6 +81,19 @@ export default function TaskList({
         return (latter.createdAt - former.createdAt) * (direction === ASCENDING ? -1 : 1);
       default:
         return false;
+    }
+  };
+  const importantHandler = ({ id, isImportant }) => {
+    if (isImportant) {
+      dispatch(markAsUnimportant(id));
+    }
+    else {
+      if (generalSettings.moveImportantTask) {
+        dispatch(markAsImportantWithOrderingFlag(id));
+      }
+      else {
+        dispatch(markAsImportant(id));
+      }
     }
   };
 
@@ -189,7 +204,7 @@ export default function TaskList({
                 )}
                 title={isComplete ? '완료되지 않음으로 표시' : '완료됨으로 표시'}
                 onClick={() => dispatch(
-                  isComplete ? markAsIncomplete(id) : markAsComplete(id)
+                  isComplete ? markAsIncomplete(id) : markAsCompleteWithOrderingFlag(id)
                 )}
               >
                 <span className={cx('icon-wrapper')}>
@@ -251,9 +266,10 @@ export default function TaskList({
                   ),
                 )}
                 title={isImportant ? '중요도를 제거합니다.' : '작업을 중요로 표시합니다.'}
-                onClick={() => dispatch(
-                  isImportant ? markAsUnimportant(id) : markAsImportant(id)
-                )}
+                onClick={() => importantHandler({
+                  id,
+                  isImportant,
+                })}
               >
                 <span className={cx('icon-wrapper')}>
                   {isImportant ? (

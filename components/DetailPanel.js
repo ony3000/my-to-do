@@ -9,11 +9,12 @@ import {
   closeDetailPanel,
   removeTodoItem,
   updateTodoItem,
-  markAsComplete,
+  markAsCompleteWithOrderingFlag,
   markAsIncomplete,
   markAsImportant,
+  markAsImportantWithOrderingFlag,
   markAsUnimportant,
-  markAsTodayTask,
+  markAsTodayTaskWithOrderingFlag,
   markAsNonTodayTask,
   removeSubStep,
   updateSubStep,
@@ -30,6 +31,7 @@ export default function DetailPanel() {
   const router = useRouter();
   const pageKey = router.pathname.replace(/^\/tasks\/?/, '') || 'inbox';
   const dispatch = useDispatch();
+  const generalSettings = useSelector(({ todo: state }) => state.settings.general);
   const settingsPerPage = useSelector(({ todo: state }) => state.pageSettings[pageKey]);
   const focusedTaskId = useSelector(({ todo: state }) => state.focusedTaskId);
   const task = useSelector(({ todo: state }) => state.todoItems.find(({ id }) => (id === focusedTaskId)));
@@ -136,6 +138,24 @@ export default function DetailPanel() {
     inputElement.value = trimmedMemo;
     memoInputHandler(inputElement);
   };
+  const removeHandler = ({ title, action }) => {
+    if (!generalSettings.confirmBeforeRemoving || confirm(`"${title}"이(가) 영구적으로 삭제됩니다.\n이 작업은 취소할 수 없습니다.`)) {
+      dispatch(action);
+    }
+  };
+  const importantHandler = ({ id, isImportant }) => {
+    if (isImportant) {
+      dispatch(markAsUnimportant(id));
+    }
+    else {
+      if (generalSettings.moveImportantTask) {
+        dispatch(markAsImportantWithOrderingFlag(id));
+      }
+      else {
+        dispatch(markAsImportant(id));
+      }
+    }
+  };
 
   useEffect(() => {
     if (task && !isActivated) {
@@ -190,7 +210,7 @@ export default function DetailPanel() {
                   )}
                   title={task.isComplete ? '완료되지 않음으로 표시' : '완료됨으로 표시'}
                   onClick={() => dispatch(
-                    task.isComplete ? markAsIncomplete(task.id) : markAsComplete(task.id)
+                    task.isComplete ? markAsIncomplete(task.id) : markAsCompleteWithOrderingFlag(task.id)
                   )}
                 >
                   <span className={cx('icon-wrapper')}>
@@ -220,9 +240,7 @@ export default function DetailPanel() {
                     ),
                   )}
                   title={task.isImportant ? '중요도를 제거합니다.' : '작업을 중요로 표시합니다.'}
-                  onClick={() => dispatch(
-                    task.isImportant ? markAsUnimportant(task.id) : markAsImportant(task.id)
-                  )}
+                  onClick={() => importantHandler(task)}
                 >
                   <span className={cx('icon-wrapper')}>
                     {task.isImportant ? (
@@ -277,10 +295,13 @@ export default function DetailPanel() {
                     <button
                       className={cx('button')}
                       title="단계 삭제"
-                      onClick={() => confirm(`"${title}"이(가) 영구적으로 삭제됩니다.\n이 작업은 취소할 수 없습니다.`) && dispatch(removeSubStep({
-                        taskId: task.id,
-                        stepId: id,
-                      }))}
+                      onClick={() => removeHandler({
+                        title,
+                        action: removeSubStep({
+                          taskId: task.id,
+                          stepId: id,
+                        }),
+                      })}
                     >
                       <span className={cx('icon-wrapper')}>
                         <i className="fas fa-times"></i>
@@ -307,7 +328,7 @@ export default function DetailPanel() {
             >
               <button
                 className={cx('section-item')}
-                onClick={() => !task.isMarkedAsTodayTask && dispatch(markAsTodayTask(task.id))}
+                onClick={() => !task.isMarkedAsTodayTask && dispatch(markAsTodayTaskWithOrderingFlag(task.id))}
                 disabled={task.isMarkedAsTodayTask}
               >
                 <span className={cx('button')}>
@@ -423,7 +444,10 @@ export default function DetailPanel() {
             <button
               className={cx('button')}
               title="작업 삭제"
-              onClick={() => confirm(`"${task.title}"이(가) 영구적으로 삭제됩니다.\n이 작업은 취소할 수 없습니다.`) && dispatch(removeTodoItem(task.id))}
+              onClick={() => removeHandler({
+                title: task.title,
+                action: removeTodoItem(task.id),
+              })}
             >
               <span className={cx('icon-wrapper')}>
                 <i className="fas fa-trash-alt"></i>

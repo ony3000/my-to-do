@@ -23,11 +23,15 @@ const initialState = {
   isActiveDeadlineCalendar: false,
   isActiveSettingPanel: false,
   settings: {
+    general: {
+      confirmBeforeRemoving: true,
+      moveImportantTask: true,
+    },
     smartList: {
       important: true,
       planned: true,
-      all: false,
-      completed: false,
+      all: true,
+      completed: true,
       autoHideEmptyLists: false,
     },
   },
@@ -322,6 +326,14 @@ const todoSlice = createSlice({
       state.isActiveSettingPanel = false;
       saveState(state);
     },
+    turnOnGeneral(state, { payload }) {
+      state.settings.general[payload] = true;
+      saveState(state);
+    },
+    turnOffGeneral(state, { payload }) {
+      state.settings.general[payload] = false;
+      saveState(state);
+    },
     turnOnSmartList(state, { payload }) {
       state.settings.smartList[payload] = true;
       saveState(state);
@@ -369,7 +381,7 @@ const todoSlice = createSlice({
       state.todoItems[targetTaskIndex] = Object.assign({}, state.todoItems[targetTaskIndex], payload);
       saveState(state);
     },
-    markAsComplete(state, { payload }) {
+    markAsCompleteWithOrderingFlag(state, { payload }) {
       const targetTask = state.todoItems.find(({ id }) => (id === payload));
 
       targetTask.isComplete = true;
@@ -381,6 +393,10 @@ const todoSlice = createSlice({
       saveState(state);
     },
     markAsImportant(state, { payload }) {
+      state.todoItems.find(({ id }) => (id === payload)).isImportant = true;
+      saveState(state);
+    },
+    markAsImportantWithOrderingFlag(state, { payload }) {
       const targetTask = state.todoItems.find(({ id }) => (id === payload));
 
       targetTask.isImportant = true;
@@ -391,7 +407,7 @@ const todoSlice = createSlice({
       state.todoItems.find(({ id }) => (id === payload)).isImportant = false;
       saveState(state);
     },
-    markAsTodayTask(state, { payload }) {
+    markAsTodayTaskWithOrderingFlag(state, { payload }) {
       const targetTask = state.todoItems.find(({ id }) => (id === payload));
 
       targetTask.isMarkedAsTodayTask = true;
@@ -512,16 +528,19 @@ export const {
   closeDetailPanel,
   openSettingPanel,
   closeSettingPanel,
+  turnOnGeneral,
+  turnOffGeneral,
   turnOnSmartList,
   turnOffSmartList,
   createTodoItem,
   removeTodoItem,
   updateTodoItem,
-  markAsComplete,
+  markAsCompleteWithOrderingFlag,
   markAsIncomplete,
   markAsImportant,
+  markAsImportantWithOrderingFlag,
   markAsUnimportant,
-  markAsTodayTask,
+  markAsTodayTaskWithOrderingFlag,
   markAsNonTodayTask,
   showCompletedItems,
   hideCompletedItems,
