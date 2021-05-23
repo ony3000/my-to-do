@@ -129,23 +129,24 @@ export const launchApp = createAsyncThunk('todo/launchApp', async () => {
     if (combinedState.todoItems.length === 0) {
       const getRandomInt = (min, max) => (min + Math.floor(Math.random() * (max + 1)));
 
-      const response = await fetch('https://jsonplaceholder.typicode.com/users/1/todos');
+      const response = await fetch('https://jsonplaceholder.typicode.com/todos');
       const dummyItems = await response.json();
 
       const now = dayjs();
       const midnightToday = now.startOf('day');
 
-      combinedState.todoItems = dummyItems.map(({ id, title, completed }) => {
+      combinedState.todoItems = dummyItems.slice(0, 20).map(({ id, title, completed }, itemIndex) => {
         const createdAt = Number(now.format('x')) - (20 - id) * 1000;
 
         return {
           id: uuid(),
           title,
           isComplete: completed,
-          subSteps: Array(getRandomInt(0, 3)).fill(null).map(() => ({
+          subSteps: Array(getRandomInt(0, 3)).fill(null).map((_, stepIndex) => ({
             id: uuid(),
-            title: 'test',
-            isComplete: Boolean(getRandomInt(0, 1)),
+            title: dummyItems[itemIndex * 10 + stepIndex].title,
+            isComplete: dummyItems[itemIndex * 10 + stepIndex].completed,
+            createdAt: createdAt + (stepIndex + 1) * 1000,
           })),
           isImportant: Boolean(getRandomInt(0, 1)),
           isMarkedAsTodayTask: Boolean(getRandomInt(0, 1)),
@@ -154,7 +155,7 @@ export const launchApp = createAsyncThunk('todo/launchApp', async () => {
               ? Number(midnightToday.add(getRandomInt(-3, 7), 'day').format('x')) - 1
               : null
           ),
-          memo: Boolean(getRandomInt(0, 1)) ? 'this is a memo' : '',
+          memo: Boolean(getRandomInt(0, 1)) ? dummyItems[itemIndex * 10 + 5].title : '',
           createdAt,
           completedAt: completed ? createdAt : null,
           markedAsImportantAt: createdAt,
@@ -453,6 +454,7 @@ const todoSlice = createSlice({
         id: uuid(),
         title,
         isComplete: false,
+        createdAt: new Date().getTime(),
       });
       saveState(state);
     },
