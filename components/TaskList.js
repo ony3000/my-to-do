@@ -132,10 +132,11 @@ export default function TaskList({
       <div
         className={cx(
           'headline',
+          { 'is-visible': title !== null },
           { 'is-collapsible': isCollapsible },
           { 'is-collapsed': isCollapsed },
         )}
-        onClick={() => setIsCollapsed(!isCollapsed)}
+        onClick={() => isCollapsible && setIsCollapsed(!isCollapsed)}
       >
         <div className={cx('headline-body')}>
           <span className={cx('icon-wrapper')}>
@@ -145,7 +146,7 @@ export default function TaskList({
               <i className="fas fa-chevron-down"></i>
             )}
           </span>
-          <span className={cx('headline-title')}>{title}</span>
+          <span className={cx('headline-title')}>{title ?? '작업'}</span>
         </div>
       </div>
 

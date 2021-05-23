@@ -5,11 +5,14 @@
 
 .headline {
   padding: 0 16px;
-  cursor: pointer;
   display: none;
 
-  &.is-collapsible {
+  &.is-visible {
     display: block;
+  }
+
+  &.is-collapsible {
+    cursor: pointer;
   }
 
   &.is-collapsed ~ .item {

@@ -33,6 +33,7 @@ export default function Important() {
 
         <div className={cx('list-section')}>
           <TaskList
+            title={null}
             isCollapsible={false}
             isHideCompletedItems={settingsPerPage.isHideCompletedItems}
             filter={{

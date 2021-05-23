@@ -29,6 +29,7 @@ export default function Inbox() {
 
         <div className={cx('list-section')}>
           <TaskList
+            title={null}
             isCollapsible={false}
             filter={{
               isComplete: false,

@@ -34,6 +34,7 @@ export default function Myday() {
 
         <div className={cx('list-section')}>
           <TaskList
+            title={null}
             isCollapsible={false}
             isHideTodayIndicator={true}
             filter={{
