@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { v4 as uuid } from 'uuid';
+import merge from 'lodash.merge';
 import dayjs from '@/plugins/dayjs';
 
 export const CHANGE_THEME = 'CHANGE_THEME';
@@ -111,7 +112,7 @@ export const launchApp = createAsyncThunk('todo/launchApp', async () => {
     // API 호출로 데이터를 가져온다고 가정했을 때, 요청 완료되는 시간이 고정되어있지 않음을 나타냄
     const delay = 500 + Math.floor(Math.random() * 100);
 
-    const combinedState = Object.assign({}, initialState, loadState(), {
+    const combinedState = merge({}, initialState, loadState(), {
       isActiveListOption: false,
       isActiveThemePalette: false,
       isActiveOrderingCriterion: false,
