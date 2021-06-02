@@ -78,6 +78,12 @@ const initialState = {
         CREATION_DATE,
       ],
     },
+    search: {
+      listOption: [TOGGLE_COMPLETED_ITEMS],
+    },
+    'search/[keyword]': {
+      listOption: [TOGGLE_COMPLETED_ITEMS],
+    },
   },
   pageSettings: {
     myday: {
@@ -99,6 +105,8 @@ const initialState = {
       themeColor: 'blue',
       ordering: null,
     },
+    search: {},
+    'search/[keyword]': {},
   },
   focusedTaskId: null,
 };

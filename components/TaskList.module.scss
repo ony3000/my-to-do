@@ -15,6 +15,16 @@
     cursor: pointer;
   }
 
+  &:not(.is-collapsible) {
+    .icon-wrapper {
+      display: none;
+    }
+
+    .headline-title {
+      margin-left: 0;
+    }
+  }
+
   &.is-collapsed ~ .item {
     display: none;
   }

@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import { useRouter } from 'next/router';
 import classNames from 'classnames/bind';
 import { useDispatch, useSelector } from 'react-redux';
 import { openSearchBox, closeSearchBox } from '@/store/todoSlice';
@@ -7,11 +8,14 @@ import styles from './SearchBox.module.scss';
 const cx = classNames.bind(styles);
 
 export default function SearchBox() {
+  const router = useRouter();
   const dispatch = useDispatch();
   const isActiveSearchBox = useSelector(({ todo: state }) => state.isActiveSearchBox);
   const $refs = {
     input: useRef(null),
   };
+
+  const { keyword = '' } = router.query;
 
   const activateSearchBox = () => {
     if (!isActiveSearchBox) {
@@ -26,16 +30,18 @@ export default function SearchBox() {
     if (isActiveSearchBox) {
       dispatch(closeSearchBox());
     }
+
+    router.push('/tasks/inbox');
   };
   const inputHandler = (event) => {
     const inputElement = event.target;
     const encodedKeyword = encodeURIComponent(inputElement.value);
 
-    if (encodedKeyword) {
-      console.log(`Route URL to [/tasks/search/${encodedKeyword}]`);
+    if (router.pathname.startsWith('/tasks/search')) {
+      router.replace(`/tasks/search/${encodedKeyword}`);
     }
     else {
-      console.log(`Route URL to [/tasks/search]`);
+      router.push(`/tasks/search/${encodedKeyword}`);
     }
   };
   const blurHandler = (event) => {
@@ -71,6 +77,7 @@ export default function SearchBox() {
         disabled={!isActiveSearchBox}
         onInput={e => inputHandler(e)}
         onBlur={e => blurHandler(e)}
+        defaultValue={keyword}
       />
       <button
         className={cx('button', 'is-closer')}

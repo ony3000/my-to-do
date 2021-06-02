@@ -50,7 +50,7 @@ export default function AppContainer({ children }) {
           <div className={cx('body')}>
             <NavigationDrawer />
 
-            <div className="flex-1">
+            <div className="flex-1 overflow-hidden">
               {children}
             </div>
 

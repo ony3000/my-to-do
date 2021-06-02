@@ -36,7 +36,7 @@ export default function TaskList({
   const dispatch = useDispatch();
   const filteredTodoItems = useSelector(
     ({ todo: state }) => state.todoItems
-      .filter((item) => Object.keys(filter).every((key) => {
+      .filter((item) => Object.entries(filter).every(([ key, value ]) => {
         if (key === 'deadline') {
           const { $gt, $gte, $lt, $lte } = filter.deadline;
 
@@ -48,8 +48,11 @@ export default function TaskList({
               && item.deadline <= ($lte ?? Infinity)
           );
         }
+        else if (value?.constructor === RegExp) {
+          return item[key].match(value);
+        }
         else {
-          return item[key] === filter[key];
+          return item[key] === value;
         }
       }))
       .filter((item) => !(item.isComplete && isHideCompletedItems))
