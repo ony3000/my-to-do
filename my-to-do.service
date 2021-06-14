@@ -1,0 +1,18 @@
+[Unit]
+Description=Clone coding of Microsoft To Do
+
+[Service]
+ExecStart=/usr/bin/yarn start
+WorkingDirectory=
+
+# Restart service after 10 seconds if service crashes
+Restart=always
+RestartSec=10
+
+# Output to syslog
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=my-to-do
+
+[Install]
+WantedBy=multi-user.target
