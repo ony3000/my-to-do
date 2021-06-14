@@ -12,6 +12,28 @@ import SettingPanel from '@/components/SettingPanel';
 
 const cx = classNames.bind(styles);
 
+/**
+ * These classNames will not be purged
+ *
+ * placeholder-blue-500
+ * placeholder-red-500
+ * placeholder-violet-500
+ * placeholder-lime-500
+ * placeholder-amber-500
+ *
+ * text-blue-500
+ * text-red-500
+ * text-violet-500
+ * text-lime-500
+ * text-amber-500
+ *
+ * text-blue-700
+ * text-red-700
+ * text-violet-700
+ * text-lime-700
+ * text-amber-700
+ */
+
 export default function AppContainer({ children }) {
   const router = useRouter();
   const pageKey = router.pathname.replace(/^\/tasks\/?/, '') || 'inbox';
