@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { v4 as uuid } from 'uuid';
 import merge from 'lodash.merge';
+import { TodoAppState } from '@/types/store/todoSlice';
 
 export const CHANGE_THEME = 'CHANGE_THEME';
 export const TOGGLE_COMPLETED_ITEMS = 'TOGGLE_COMPLETED_ITEMS';
@@ -12,7 +13,7 @@ export const CREATION_DATE = 'CREATION_DATE';
 export const ASCENDING = 'ASCENDING';
 export const DESCENDING = 'DESCENDING';
 
-const initialState = {
+const initialState: TodoAppState = {
   isAppReady: false,
   isActiveSearchBox: false,
   isActiveSidebar: true,
