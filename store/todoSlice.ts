@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import invariant from 'tiny-invariant';
 import { v4 as uuid } from 'uuid';
 import merge from 'lodash.merge';
 import { TodoAppState } from '@/types/store/todoSlice';
@@ -356,38 +357,53 @@ const todoSlice = createSlice({
     markAsCompleteWithOrderingFlag(state, { payload }) {
       const targetTask = state.todoItems.find(({ id }) => (id === payload));
 
+      invariant(targetTask, '작업을 찾을 수 없습니다.');
       targetTask.isComplete = true;
       targetTask.completedAt = new Date().getTime();
       saveState(state);
     },
     markAsIncomplete(state, { payload }) {
-      state.todoItems.find(({ id }) => (id === payload)).isComplete = false;
+      const targetTask = state.todoItems.find(({ id }) => (id === payload));
+
+      invariant(targetTask, '작업을 찾을 수 없습니다.');
+      targetTask.isComplete = false;
       saveState(state);
     },
     markAsImportant(state, { payload }) {
-      state.todoItems.find(({ id }) => (id === payload)).isImportant = true;
+      const targetTask = state.todoItems.find(({ id }) => (id === payload));
+
+      invariant(targetTask, '작업을 찾을 수 없습니다.');
+      targetTask.isImportant = true;
       saveState(state);
     },
     markAsImportantWithOrderingFlag(state, { payload }) {
       const targetTask = state.todoItems.find(({ id }) => (id === payload));
 
+      invariant(targetTask, '작업을 찾을 수 없습니다.');
       targetTask.isImportant = true;
       targetTask.markedAsImportantAt = new Date().getTime();
       saveState(state);
     },
     markAsUnimportant(state, { payload }) {
-      state.todoItems.find(({ id }) => (id === payload)).isImportant = false;
+      const targetTask = state.todoItems.find(({ id }) => (id === payload));
+
+      invariant(targetTask, '작업을 찾을 수 없습니다.');
+      targetTask.isImportant = false;
       saveState(state);
     },
     markAsTodayTaskWithOrderingFlag(state, { payload }) {
       const targetTask = state.todoItems.find(({ id }) => (id === payload));
 
+      invariant(targetTask, '작업을 찾을 수 없습니다.');
       targetTask.isMarkedAsTodayTask = true;
       targetTask.markedAsTodayTaskAt = new Date().getTime();
       saveState(state);
     },
     markAsNonTodayTask(state, { payload }) {
-      state.todoItems.find(({ id }) => (id === payload)).isMarkedAsTodayTask = false;
+      const targetTask = state.todoItems.find(({ id }) => (id === payload));
+
+      invariant(targetTask, '작업을 찾을 수 없습니다.');
+      targetTask.isMarkedAsTodayTask = false;
       saveState(state);
     },
     showCompletedItems(state, { payload }) {
@@ -420,7 +436,10 @@ const todoSlice = createSlice({
       saveState(state);
     },
     createSubStep(state, { payload: { taskId, title } }) {
-      state.todoItems.find(({ id }) => (id === taskId)).subSteps.push({
+      const targetTask = state.todoItems.find(({ id }) => (id === taskId));
+
+      invariant(targetTask, '작업을 찾을 수 없습니다.');
+      targetTask.subSteps.push({
         id: uuid(),
         title,
         isComplete: false,
@@ -430,6 +449,9 @@ const todoSlice = createSlice({
     },
     removeSubStep(state, { payload: { taskId, stepId } }) {
       const targetTask = state.todoItems.find(({ id }) => (id === taskId));
+
+      invariant(targetTask, '작업을 찾을 수 없습니다.');
+
       const targetStepIndex = targetTask.subSteps.findIndex(({ id }) => (id === stepId));
 
       targetTask.subSteps.splice(targetStepIndex, 1);
@@ -437,17 +459,26 @@ const todoSlice = createSlice({
     },
     updateSubStep(state, { payload: { taskId, stepId, ...others } }) {
       const targetTask = state.todoItems.find(({ id }) => (id === taskId));
+
+      invariant(targetTask, '작업을 찾을 수 없습니다.');
+
       const targetStepIndex = targetTask.subSteps.findIndex(({ id }) => (id === stepId));
 
       targetTask.subSteps[targetStepIndex] = Object.assign({}, targetTask.subSteps[targetStepIndex], others);
       saveState(state);
     },
     setDeadline(state, { payload: { taskId, deadline } }) {
-      state.todoItems.find(({ id }) => (id === taskId)).deadline = deadline;
+      const targetTask = state.todoItems.find(({ id }) => (id === taskId));
+
+      invariant(targetTask, '작업을 찾을 수 없습니다.');
+      targetTask.deadline = deadline;
       saveState(state);
     },
     unsetDeadline(state, { payload }) {
-      state.todoItems.find(({ id }) => (id === payload)).deadline = null;
+      const targetTask = state.todoItems.find(({ id }) => (id === payload));
+
+      invariant(targetTask, '작업을 찾을 수 없습니다.');
+      targetTask.deadline = null;
       saveState(state);
     },
   },
