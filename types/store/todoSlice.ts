@@ -6,7 +6,7 @@ import {
   ThemeColor,
 } from '@/types/common';
 
-type TodoItemBase = {
+export type TodoItemBase = {
   id: string;
   title: string;
   isComplete: boolean;

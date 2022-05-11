@@ -1,8 +1,8 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import invariant from 'tiny-invariant';
 import { v4 as uuid } from 'uuid';
 import merge from 'lodash.merge';
-import { TodoAppState } from '@/types/store/todoSlice';
+import { TodoItemBase, TodoItem, TodoAppState } from '@/types/store/todoSlice';
 
 export const CHANGE_THEME = 'CHANGE_THEME';
 export const TOGGLE_COMPLETED_ITEMS = 'TOGGLE_COMPLETED_ITEMS';
@@ -283,7 +283,7 @@ const todoSlice = createSlice({
       state.isActiveDeadlineCalendar = false;
       saveState(state);
     },
-    openDetailPanel(state, { payload }) {
+    openDetailPanel(state, { payload }: PayloadAction<string>) {
       state.focusedTaskId = payload;
       saveState(state);
     },
@@ -299,25 +299,25 @@ const todoSlice = createSlice({
       state.isActiveSettingPanel = false;
       saveState(state);
     },
-    turnOnGeneral(state, { payload }) {
+    turnOnGeneral(state, { payload }: PayloadAction<keyof TodoAppState['settings']['general']>) {
       state.settings.general[payload] = true;
       saveState(state);
     },
-    turnOffGeneral(state, { payload }) {
+    turnOffGeneral(state, { payload }: PayloadAction<keyof TodoAppState['settings']['general']>) {
       state.settings.general[payload] = false;
       saveState(state);
     },
-    turnOnSmartList(state, { payload }) {
+    turnOnSmartList(state, { payload }: PayloadAction<keyof TodoAppState['settings']['smartList']>) {
       state.settings.smartList[payload] = true;
       saveState(state);
     },
-    turnOffSmartList(state, { payload }) {
+    turnOffSmartList(state, { payload }: PayloadAction<keyof TodoAppState['settings']['smartList']>) {
       state.settings.smartList[payload] = false;
       saveState(state);
     },
-    createTodoItem(state, { payload }) {
+    createTodoItem(state, { payload }: PayloadAction<Partial<TodoItem>>) {
       const now = new Date();
-      const newTask = Object.assign({}, {
+      const newTask: TodoItem = Object.assign({}, {
         id: uuid(),
         title: '',
         isComplete: false,
@@ -342,19 +342,19 @@ const todoSlice = createSlice({
       state.todoItems.push(newTask);
       saveState(state);
     },
-    removeTodoItem(state, { payload }) {
+    removeTodoItem(state, { payload }: PayloadAction<string>) {
       const targetTaskIndex = state.todoItems.findIndex(({ id }) => (id === payload));
 
       state.todoItems.splice(targetTaskIndex, 1);
       saveState(state);
     },
-    updateTodoItem(state, { payload }) {
+    updateTodoItem(state, { payload }: PayloadAction<Pick<TodoItem, 'id'> & Partial<Omit<TodoItem, 'id'>>>) {
       const targetTaskIndex = state.todoItems.findIndex(({ id }) => (id === payload.id));
 
       state.todoItems[targetTaskIndex] = Object.assign({}, state.todoItems[targetTaskIndex], payload);
       saveState(state);
     },
-    markAsCompleteWithOrderingFlag(state, { payload }) {
+    markAsCompleteWithOrderingFlag(state, { payload }: PayloadAction<string>) {
       const targetTask = state.todoItems.find(({ id }) => (id === payload));
 
       invariant(targetTask, '작업을 찾을 수 없습니다.');
@@ -362,21 +362,21 @@ const todoSlice = createSlice({
       targetTask.completedAt = new Date().getTime();
       saveState(state);
     },
-    markAsIncomplete(state, { payload }) {
+    markAsIncomplete(state, { payload }: PayloadAction<string>) {
       const targetTask = state.todoItems.find(({ id }) => (id === payload));
 
       invariant(targetTask, '작업을 찾을 수 없습니다.');
       targetTask.isComplete = false;
       saveState(state);
     },
-    markAsImportant(state, { payload }) {
+    markAsImportant(state, { payload }: PayloadAction<string>) {
       const targetTask = state.todoItems.find(({ id }) => (id === payload));
 
       invariant(targetTask, '작업을 찾을 수 없습니다.');
       targetTask.isImportant = true;
       saveState(state);
     },
-    markAsImportantWithOrderingFlag(state, { payload }) {
+    markAsImportantWithOrderingFlag(state, { payload }: PayloadAction<string>) {
       const targetTask = state.todoItems.find(({ id }) => (id === payload));
 
       invariant(targetTask, '작업을 찾을 수 없습니다.');
@@ -384,14 +384,14 @@ const todoSlice = createSlice({
       targetTask.markedAsImportantAt = new Date().getTime();
       saveState(state);
     },
-    markAsUnimportant(state, { payload }) {
+    markAsUnimportant(state, { payload }: PayloadAction<string>) {
       const targetTask = state.todoItems.find(({ id }) => (id === payload));
 
       invariant(targetTask, '작업을 찾을 수 없습니다.');
       targetTask.isImportant = false;
       saveState(state);
     },
-    markAsTodayTaskWithOrderingFlag(state, { payload }) {
+    markAsTodayTaskWithOrderingFlag(state, { payload }: PayloadAction<string>) {
       const targetTask = state.todoItems.find(({ id }) => (id === payload));
 
       invariant(targetTask, '작업을 찾을 수 없습니다.');
@@ -399,7 +399,7 @@ const todoSlice = createSlice({
       targetTask.markedAsTodayTaskAt = new Date().getTime();
       saveState(state);
     },
-    markAsNonTodayTask(state, { payload }) {
+    markAsNonTodayTask(state, { payload }: PayloadAction<string>) {
       const targetTask = state.todoItems.find(({ id }) => (id === payload));
 
       invariant(targetTask, '작업을 찾을 수 없습니다.');
@@ -435,7 +435,7 @@ const todoSlice = createSlice({
       state.pageSettings[pageKey].ordering = null;
       saveState(state);
     },
-    createSubStep(state, { payload: { taskId, title } }) {
+    createSubStep(state, { payload: { taskId, title } }: PayloadAction<{ taskId: string, title: string }>) {
       const targetTask = state.todoItems.find(({ id }) => (id === taskId));
 
       invariant(targetTask, '작업을 찾을 수 없습니다.');
@@ -447,7 +447,7 @@ const todoSlice = createSlice({
       });
       saveState(state);
     },
-    removeSubStep(state, { payload: { taskId, stepId } }) {
+    removeSubStep(state, { payload: { taskId, stepId } }: PayloadAction<{ taskId: string, stepId: string }>) {
       const targetTask = state.todoItems.find(({ id }) => (id === taskId));
 
       invariant(targetTask, '작업을 찾을 수 없습니다.');
@@ -457,7 +457,7 @@ const todoSlice = createSlice({
       targetTask.subSteps.splice(targetStepIndex, 1);
       saveState(state);
     },
-    updateSubStep(state, { payload: { taskId, stepId, ...others } }) {
+    updateSubStep(state, { payload: { taskId, stepId, ...others } }: PayloadAction<{ taskId: string, stepId: string } & Partial<Omit<TodoItemBase, 'id' | 'createdAt'>>>) {
       const targetTask = state.todoItems.find(({ id }) => (id === taskId));
 
       invariant(targetTask, '작업을 찾을 수 없습니다.');
@@ -467,14 +467,14 @@ const todoSlice = createSlice({
       targetTask.subSteps[targetStepIndex] = Object.assign({}, targetTask.subSteps[targetStepIndex], others);
       saveState(state);
     },
-    setDeadline(state, { payload: { taskId, deadline } }) {
+    setDeadline(state, { payload: { taskId, deadline } }: PayloadAction<{ taskId: string, deadline: number }>) {
       const targetTask = state.todoItems.find(({ id }) => (id === taskId));
 
       invariant(targetTask, '작업을 찾을 수 없습니다.');
       targetTask.deadline = deadline;
       saveState(state);
     },
-    unsetDeadline(state, { payload }) {
+    unsetDeadline(state, { payload }: PayloadAction<string>) {
       const targetTask = state.todoItems.find(({ id }) => (id === payload));
 
       invariant(targetTask, '작업을 찾을 수 없습니다.');
