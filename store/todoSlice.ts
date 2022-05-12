@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import invariant from 'tiny-invariant';
 import { v4 as uuid } from 'uuid';
 import merge from 'lodash.merge';
+import { Dict, OrderingCriterion, OrderingDirection, ThemeColor } from '@/types/common';
 import { TodoItemBase, TodoItem, TodoAppState } from '@/types/store/todoSlice';
 
 export const CHANGE_THEME = 'CHANGE_THEME';
@@ -406,32 +407,32 @@ const todoSlice = createSlice({
       targetTask.isMarkedAsTodayTask = false;
       saveState(state);
     },
-    showCompletedItems(state, { payload }) {
+    showCompletedItems(state, { payload }: PayloadAction<'important' | 'planned' | 'search' | 'search/[keyword]'>) {
       state.pageSettings[payload].isHideCompletedItems = false;
       saveState(state);
     },
-    hideCompletedItems(state, { payload }) {
+    hideCompletedItems(state, { payload }: PayloadAction<'important' | 'planned' | 'search' | 'search/[keyword]'>) {
       state.pageSettings[payload].isHideCompletedItems = true;
       saveState(state);
     },
-    setThemeColor(state, { payload: { pageKey, color } }) {
+    setThemeColor(state, { payload: { pageKey, color } }: PayloadAction<{ pageKey: 'all' | 'completed' | 'inbox', color: ThemeColor }>) {
       state.pageSettings[pageKey].themeColor = color;
       saveState(state);
     },
-    setOrderingCriterion(state, { payload: { pageKey, criterion, direction } }) {
+    setOrderingCriterion(state, { payload: { pageKey, criterion, direction } }: PayloadAction<{ pageKey: 'myday' | 'inbox', criterion: OrderingCriterion, direction: OrderingDirection }>) {
       state.pageSettings[pageKey].ordering = {
         criterion,
         direction,
       };
       saveState(state);
     },
-    reverseOrderingCriterion(state, { payload: { pageKey } }) {
+    reverseOrderingCriterion(state, { payload: { pageKey } }: PayloadAction<{ pageKey: 'myday' | 'inbox' }>) {
       const oldDirection = state.pageSettings[pageKey].ordering.direction;
 
       state.pageSettings[pageKey].ordering.direction = oldDirection === ASCENDING ? DESCENDING : ASCENDING;
       saveState(state);
     },
-    unsetOrderingCriterion(state, { payload: { pageKey } }) {
+    unsetOrderingCriterion(state, { payload: { pageKey } }: PayloadAction<{ pageKey: 'myday' | 'inbox' }>) {
       state.pageSettings[pageKey].ordering = null;
       saveState(state);
     },
@@ -483,34 +484,34 @@ const todoSlice = createSlice({
     },
   },
   extraReducers: builder => {
-    builder.addCase(launchApp.fulfilled, (state, { payload }) => {
+    builder.addCase(launchApp.fulfilled, (state, { payload }: PayloadAction<TodoAppState & Dict>) => {
       Object.keys(state).forEach((key) => {
         state[key] = payload[key];
       });
       state.isAppReady = true;
       saveState(state);
     });
-    builder.addCase(openListOption.fulfilled, (state, { payload }) => {
+    builder.addCase(openListOption.fulfilled, (state, { payload }: PayloadAction<TodoAppState['listOptionPosition']>) => {
       state.listOptionPosition = payload;
       state.isActiveListOption = true;
       saveState(state);
     });
-    builder.addCase(openThemePalette.fulfilled, (state, { payload }) => {
+    builder.addCase(openThemePalette.fulfilled, (state, { payload }: PayloadAction<TodoAppState['themePalettePosition']>) => {
       state.themePalettePosition = payload;
       state.isActiveThemePalette = true;
       saveState(state);
     });
-    builder.addCase(openOrderingCriterion.fulfilled, (state, { payload }) => {
+    builder.addCase(openOrderingCriterion.fulfilled, (state, { payload }: PayloadAction<TodoAppState['orderingCriterionPosition']>) => {
       state.orderingCriterionPosition = payload;
       state.isActiveOrderingCriterion = true;
       saveState(state);
     });
-    builder.addCase(openDeadlinePicker.fulfilled, (state, { payload }) => {
+    builder.addCase(openDeadlinePicker.fulfilled, (state, { payload }: PayloadAction<TodoAppState['deadlinePickerPosition']>) => {
       state.deadlinePickerPosition = payload;
       state.isActiveDeadlinePicker = true;
       saveState(state);
     });
-    builder.addCase(openDeadlineCalendar.fulfilled, (state, { payload }) => {
+    builder.addCase(openDeadlineCalendar.fulfilled, (state, { payload }: PayloadAction<TodoAppState['deadlineCalendarPosition']>) => {
       state.deadlineCalendarPosition = payload;
       state.isActiveDeadlineCalendar = true;
       saveState(state);
