@@ -16,11 +16,13 @@ export default function PageToolbar({
   const router = useRouter();
   const pageKey = router.pathname.replace(/^\/tasks\/?/, '') || 'inbox';
   const dispatch = useDispatch();
-  const isActiveListOption = useSelector(({ todo: state }) => state.isActiveListOption);
+  const listOptionPosition = useSelector(({ todo: state }) => state.listOptionPosition);
   const isActiveOrderingCriterion = useSelector(({ todo: state }) => state.isActiveOrderingCriterion);
   const functionsPerPage = useSelector(({ todo: state }) => state.toolbarFunctions[pageKey]);
   const settingsPerPage = useSelector(({ todo: state }) => state.pageSettings[pageKey]);
   const midnightToday = dayjs().startOf('day');
+
+  const isActiveListOption = listOptionPosition !== null;
 
   return (
     <div
