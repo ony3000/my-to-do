@@ -16,13 +16,16 @@ export default function DeadlineCalendar({
   taskId,
 }) {
   const dispatch = useDispatch();
-  const isActiveDeadlineCalendar = useSelector(({ todo: state }) => state.isActiveDeadlineCalendar);
-  const { top: topPosition, right: rightPosition } = useSelector(({ todo: state }) => state.deadlineCalendarPosition);
+  const deadlineCalendarPosition = useSelector(({ todo: state }) => state.deadlineCalendarPosition);
   const [ isMounted, setIsMounted ] = useState(false);
   const [ calendarDate, setCalendarDate ] = useState(new Date());
   const $refs = {
     container: useRef(null),
   };
+
+  const isActiveDeadlineCalendar = deadlineCalendarPosition !== null;
+  const topPosition = deadlineCalendarPosition?.top || 0;
+  const rightPosition = deadlineCalendarPosition?.right || 0;
 
   const set__Deadline = (timestamp) => {
     dispatch(setDeadline({

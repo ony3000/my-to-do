@@ -18,7 +18,7 @@ export default function DeadlinePicker({
 }) {
   const dispatch = useDispatch();
   const deadlinePickerPosition = useSelector(({ todo: state }) => state.deadlinePickerPosition);
-  const isActiveDeadlineCalendar = useSelector(({ todo: state }) => state.isActiveDeadlineCalendar);
+  const deadlineCalendarPosition = useSelector(({ todo: state }) => state.deadlineCalendarPosition);
   const [ isMounted, setIsMounted ] = useState(false);
   const $refs = {
     container: useRef(null),
@@ -31,6 +31,7 @@ export default function DeadlinePicker({
   const isActiveDeadlinePicker = deadlinePickerPosition !== null;
   const topPosition = deadlinePickerPosition?.top || 0;
   const rightPosition = deadlinePickerPosition?.right || 0;
+  const isActiveDeadlineCalendar = deadlineCalendarPosition !== null;
 
   const setFixedDeadline = (timestamp) => {
     dispatch(setDeadline({

@@ -36,7 +36,7 @@ export default function DetailPanel() {
   const focusedTaskId = useSelector(({ todo: state }) => state.focusedTaskId);
   const task = useSelector(({ todo: state }) => state.todoItems.find(({ id }) => (id === focusedTaskId)));
   const deadlinePickerPosition = useSelector(({ todo: state }) => state.deadlinePickerPosition);
-  const isActiveDeadlineCalendar = useSelector(({ todo: state }) => state.isActiveDeadlineCalendar);
+  const deadlineCalendarPosition = useSelector(({ todo: state }) => state.deadlineCalendarPosition);
   const [ isActivated, setIsActivated ] = useState(false);
   const $refs = {
     titleArea: useRef(null),
@@ -49,6 +49,7 @@ export default function DetailPanel() {
   const midnightTomorrow = midnightToday.add(1, 'day');
   const midnightAfter2Days = midnightToday.add(2, 'day');
   const isActiveDeadlinePicker = deadlinePickerPosition !== null;
+  const isActiveDeadlineCalendar = deadlineCalendarPosition !== null;
   let deadlineElement = null;
   let isOverdue = false;
 
