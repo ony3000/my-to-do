@@ -19,7 +19,6 @@ const initialState: TodoAppState = {
   isAppReady: false,
   isActiveSearchBox: false,
   isActiveSidebar: true,
-  isActiveOrderingCriterion: false,
   isActiveDeadlinePicker: false,
   isActiveDeadlineCalendar: false,
   isActiveSettingPanel: false,
@@ -39,7 +38,7 @@ const initialState: TodoAppState = {
   todoItems: [],
   listOptionPosition: null,
   themePalettePosition: null,
-  orderingCriterionPosition: {},
+  orderingCriterionPosition: null,
   deadlinePickerPosition: {},
   deadlineCalendarPosition: {},
   toolbarFunctions: {
@@ -121,12 +120,11 @@ export const launchApp = createAsyncThunk('todo/launchApp', async () => {
     const delay = 350 + Math.floor(Math.random() * 150);
 
     const combinedState = merge({}, initialState, loadState(), {
-      isActiveOrderingCriterion: false,
       isActiveDeadlinePicker: false,
       isActiveDeadlineCalendar: false,
       listOptionPosition: null,
       themePalettePosition: null,
-      orderingCriterionPosition: {},
+      orderingCriterionPosition: null,
       deadlinePickerPosition: {},
       deadlineCalendarPosition: {},
       focusedTaskId: null,
@@ -264,8 +262,7 @@ const todoSlice = createSlice({
       saveState(state);
     },
     closeOrderingCriterion(state) {
-      state.orderingCriterionPosition = {};
-      state.isActiveOrderingCriterion = false;
+      state.orderingCriterionPosition = null;
       saveState(state);
     },
     closeDeadlinePicker(state) {
@@ -495,7 +492,6 @@ const todoSlice = createSlice({
     });
     builder.addCase(openOrderingCriterion.fulfilled, (state, { payload }: PayloadAction<TodoAppState['orderingCriterionPosition']>) => {
       state.orderingCriterionPosition = payload;
-      state.isActiveOrderingCriterion = true;
       saveState(state);
     });
     builder.addCase(openDeadlinePicker.fulfilled, (state, { payload }: PayloadAction<TodoAppState['deadlinePickerPosition']>) => {

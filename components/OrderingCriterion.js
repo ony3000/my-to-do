@@ -23,16 +23,16 @@ export default function OrderingCriterion({
   const router = useRouter();
   const pageKey = router.pathname.replace(/^\/tasks\/?/, '') || 'inbox';
   const dispatch = useDispatch();
-  const isActiveOrderingCriterion = useSelector(({ todo: state }) => state.isActiveOrderingCriterion);
-  const {
-    top: topPosition,
-    right: rightPosition,
-    left: leftPosition,
-  } = useSelector(({ todo: state }) => state.orderingCriterionPosition);
+  const orderingCriterionPosition = useSelector(({ todo: state }) => state.orderingCriterionPosition);
   const settingsPerPage = useSelector(({ todo: state }) => state.pageSettings[pageKey]);
   const $refs = {
     container: useRef(null),
   };
+
+  const isActiveOrderingCriterion = orderingCriterionPosition !== null;
+  const topPosition = orderingCriterionPosition?.top || 0;
+  const rightPosition = orderingCriterionPosition?.right;
+  const leftPosition = orderingCriterionPosition?.left;
 
   const setOrderingCriterionToDefault = ({ criterion, direction }) => {
     if (settingsPerPage.ordering === null || criterion !== settingsPerPage.ordering.criterion || direction !== settingsPerPage.ordering.direction) {
