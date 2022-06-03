@@ -1,6 +1,10 @@
+import { MouseEventHandler } from 'react';
+
 export type Dict<T = unknown> = Record<string, T>;
 
 export type Nullable<T> = T | null;
+
+export type ReactMouseEvent<T> = Parameters<MouseEventHandler<T>>[0];
 
 export type ListOption = 'CHANGE_THEME' | 'TOGGLE_COMPLETED_ITEMS';
 

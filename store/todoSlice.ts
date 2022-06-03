@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import invariant from 'tiny-invariant';
 import { v4 as uuid } from 'uuid';
 import merge from 'lodash.merge';
-import { Dict, OrderingCriterion, OrderingDirection, ThemeColor } from '@/types/common';
+import { Dict, ReactMouseEvent, OrderingCriterion, OrderingDirection, ThemeColor } from '@/types/common';
 import { TodoItemBase, TodoItem, TodoAppState } from '@/types/store/todoSlice';
 
 export const CHANGE_THEME = 'CHANGE_THEME';
@@ -113,11 +113,11 @@ const saveState = (state) => localStorage.setItem('cloneCoding:my-to-do', JSON.s
 const loadState = () => JSON.parse(localStorage.getItem('cloneCoding:my-to-do')) || {};
 
 export const launchApp = createAsyncThunk('todo/launchApp', async () => {
-  const promise = new Promise(async (resolve) => {
+  const promise = new Promise<{ data: TodoAppState }>(async (resolve) => {
     // API 호출로 데이터를 가져온다고 가정했을 때, 요청 완료되는 시간이 고정되어있지 않음을 나타냄
     const delay = 350 + Math.floor(Math.random() * 150);
 
-    const combinedState = merge({}, initialState, loadState(), {
+    const combinedState: TodoAppState = merge({}, initialState, loadState(), {
       listOptionPosition: null,
       themePalettePosition: null,
       orderingCriterionPosition: null,
@@ -137,10 +137,15 @@ export const launchApp = createAsyncThunk('todo/launchApp', async () => {
   return response.data;
 });
 
-export const openListOption = createAsyncThunk('todo/openListOption', ({ event, selector }) => {
-  const button = event.target.closest(selector);
-  const { top, left, width, height } = button.getBoundingClientRect();
+export const openListOption = createAsyncThunk<
+  { top: number; left: number; },
+  { event: ReactMouseEvent<HTMLButtonElement>, selector: string }
+>('todo/openListOption', ({ event, selector }) => {
+  const button = event.currentTarget.closest(selector);
 
+  invariant(button, '요소를 찾을 수 없습니다.');
+
+  const { top, left, width, height } = button.getBoundingClientRect();
   const optionWidth = 200;
   const optionPosition = {
     top: Math.floor(top + height - 2),
@@ -150,10 +155,15 @@ export const openListOption = createAsyncThunk('todo/openListOption', ({ event, 
   return Promise.resolve(optionPosition);
 });
 
-export const openThemePalette = createAsyncThunk('todo/openThemePalette', ({ event, selector }) => {
-  const option = event.target.closest(selector);
-  const { top, left, width } = option.getBoundingClientRect();
+export const openThemePalette = createAsyncThunk<
+  { top: number; left: number; },
+  { event: ReactMouseEvent<HTMLButtonElement>, selector: string }
+>('todo/openThemePalette', ({ event, selector }) => {
+  const option = event.currentTarget.closest(selector);
 
+  invariant(option, '요소를 찾을 수 없습니다.');
+
+  const { top, left, width } = option.getBoundingClientRect();
   const paletteWidth = 282;
   const paletteHeight = 82;
   const palettePosition = {
@@ -169,10 +179,15 @@ export const openThemePalette = createAsyncThunk('todo/openThemePalette', ({ eve
   return Promise.resolve(palettePosition);
 });
 
-export const openOrderingCriterion = createAsyncThunk('todo/openOrderingCriterion', ({ event, selector }) => {
-  const button = event.target.closest(selector);
-  const { top, left, width, height } = button.getBoundingClientRect();
+export const openOrderingCriterion = createAsyncThunk<
+  { top: number; left: number; } | { top: number; right: number; },
+  { event: ReactMouseEvent<HTMLButtonElement>, selector: string }
+>('todo/openOrderingCriterion', ({ event, selector }) => {
+  const button = event.currentTarget.closest(selector);
 
+  invariant(button, '요소를 찾을 수 없습니다.');
+
+  const { top, left, width, height } = button.getBoundingClientRect();
   const criterionWidth = 200;
   const criterionPosition = {
     top: Math.floor(top + height - 2),
@@ -187,11 +202,19 @@ export const openOrderingCriterion = createAsyncThunk('todo/openOrderingCriterio
   return Promise.resolve(criterionPosition);
 });
 
-export const openDeadlinePicker = createAsyncThunk('todo/openDeadlinePicker', ({ event, selector }) => {
-  const button = event.target.closest(selector);
-  const section = button.parentElement;
-  const { top, left, height } = button.getBoundingClientRect();
+export const openDeadlinePicker = createAsyncThunk<
+  { top: number; right: number; },
+  { event: ReactMouseEvent<HTMLButtonElement>, selector: string }
+>('todo/openDeadlinePicker', ({ event, selector }) => {
+  const button = event.currentTarget.closest(selector);
 
+  invariant(button, '요소를 찾을 수 없습니다.');
+
+  const section = button.parentElement;
+
+  invariant(section, '요소를 찾을 수 없습니다.');
+
+  const { top, left, height } = button.getBoundingClientRect();
   const pickerWidth = 200;
   const pickerHeight = 217;
   const pickerPosition = {
@@ -206,10 +229,15 @@ export const openDeadlinePicker = createAsyncThunk('todo/openDeadlinePicker', ({
   return Promise.resolve(pickerPosition);
 });
 
-export const openDeadlineCalendar = createAsyncThunk('todo/openDeadlineCalendar', ({ event, selector }) => {
-  const button = event.target.closest(selector);
-  const { top, left } = button.getBoundingClientRect();
+export const openDeadlineCalendar = createAsyncThunk<
+  { top: number; right: number; },
+  { event: ReactMouseEvent<HTMLButtonElement>, selector: string }
+>('todo/openDeadlineCalendar', ({ event, selector }) => {
+  const button = event.currentTarget.closest(selector);
 
+  invariant(button, '요소를 찾을 수 없습니다.');
+
+  const { top, left } = button.getBoundingClientRect();
   const calendarWidth = 220;
   const calendarHeight = 371;
   const calendarPosition = {
@@ -469,7 +497,7 @@ const todoSlice = createSlice({
     },
   },
   extraReducers: builder => {
-    builder.addCase(launchApp.fulfilled, (state, { payload }: PayloadAction<TodoAppState & Dict>) => {
+    builder.addCase(launchApp.fulfilled, (state, { payload }: PayloadAction<TodoAppState>) => {
       Object.keys(state).forEach((key) => {
         state[key] = payload[key];
       });
