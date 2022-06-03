@@ -22,7 +22,7 @@ export default function ListOption({
   const pageKey = router.pathname.replace(/^\/tasks\/?/, '') || 'inbox';
   const dispatch = useDispatch();
   const listOptionPosition = useSelector(({ todo: state }) => state.listOptionPosition);
-  const isActiveThemePalette = useSelector(({ todo: state }) => state.isActiveThemePalette);
+  const themePalettePosition = useSelector(({ todo: state }) => state.themePalettePosition);
   const settingsPerPage = useSelector(({ todo: state }) => state.pageSettings[pageKey]);
   const $refs = {
     container: useRef(null),
@@ -31,6 +31,7 @@ export default function ListOption({
   const isActiveListOption = listOptionPosition !== null;
   const topPosition = listOptionPosition?.top || 0;
   const leftPosition = listOptionPosition?.left || 0;
+  const isActiveThemePalette = themePalettePosition !== null;
 
   const toggleCompletedItems = () => {
     dispatch(settingsPerPage.isHideCompletedItems ? showCompletedItems(pageKey) : hideCompletedItems(pageKey));

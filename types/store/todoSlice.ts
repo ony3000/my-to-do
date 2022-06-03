@@ -28,7 +28,6 @@ export type TodoAppState = {
   isAppReady: boolean;
   isActiveSearchBox: boolean;
   isActiveSidebar: boolean;
-  isActiveThemePalette: boolean;
   isActiveOrderingCriterion: boolean;
   isActiveDeadlinePicker: boolean;
   isActiveDeadlineCalendar: boolean;

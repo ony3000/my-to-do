@@ -11,8 +11,7 @@ export default function ThemePalette() {
   const router = useRouter();
   const pageKey = router.pathname.replace(/^\/tasks\/?/, '') || 'inbox';
   const dispatch = useDispatch();
-  const isActiveThemePalette = useSelector(({ todo: state }) => state.isActiveThemePalette);
-  const { top: topPosition, left: leftPosition } = useSelector(({ todo: state }) => state.themePalettePosition);
+  const themePalettePosition = useSelector(({ todo: state }) => state.themePalettePosition);
   const settingsPerPage = useSelector(({ todo: state }) => state.pageSettings[pageKey]);
   const $refs = {
     container: useRef(null),
@@ -25,6 +24,9 @@ export default function ThemePalette() {
     'lime',
     'amber',
   ];
+  const isActiveThemePalette = themePalettePosition !== null;
+  const topPosition = themePalettePosition?.top || 0;
+  const leftPosition = themePalettePosition?.left || 0;
 
   const changeTheme = (color) => {
     dispatch(setThemeColor({ pageKey, color }));
