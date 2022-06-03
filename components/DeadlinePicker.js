@@ -17,8 +17,7 @@ export default function DeadlinePicker({
   taskId,
 }) {
   const dispatch = useDispatch();
-  const isActiveDeadlinePicker = useSelector(({ todo: state }) => state.isActiveDeadlinePicker);
-  const { top: topPosition, right: rightPosition } = useSelector(({ todo: state }) => state.deadlinePickerPosition);
+  const deadlinePickerPosition = useSelector(({ todo: state }) => state.deadlinePickerPosition);
   const isActiveDeadlineCalendar = useSelector(({ todo: state }) => state.isActiveDeadlineCalendar);
   const [ isMounted, setIsMounted ] = useState(false);
   const $refs = {
@@ -29,6 +28,9 @@ export default function DeadlinePicker({
   const midnightTomorrow = midnightToday.add(1, 'day');
   const midnightAfter2Days = midnightToday.add(2, 'day');
   const midnightNextTuesday = midnightToday.startOf('isoWeek').add(8, 'day');
+  const isActiveDeadlinePicker = deadlinePickerPosition !== null;
+  const topPosition = deadlinePickerPosition?.top || 0;
+  const rightPosition = deadlinePickerPosition?.right || 0;
 
   const setFixedDeadline = (timestamp) => {
     dispatch(setDeadline({

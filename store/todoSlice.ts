@@ -19,7 +19,6 @@ const initialState: TodoAppState = {
   isAppReady: false,
   isActiveSearchBox: false,
   isActiveSidebar: true,
-  isActiveDeadlinePicker: false,
   isActiveDeadlineCalendar: false,
   isActiveSettingPanel: false,
   settings: {
@@ -39,7 +38,7 @@ const initialState: TodoAppState = {
   listOptionPosition: null,
   themePalettePosition: null,
   orderingCriterionPosition: null,
-  deadlinePickerPosition: {},
+  deadlinePickerPosition: null,
   deadlineCalendarPosition: {},
   toolbarFunctions: {
     myday: {
@@ -120,12 +119,11 @@ export const launchApp = createAsyncThunk('todo/launchApp', async () => {
     const delay = 350 + Math.floor(Math.random() * 150);
 
     const combinedState = merge({}, initialState, loadState(), {
-      isActiveDeadlinePicker: false,
       isActiveDeadlineCalendar: false,
       listOptionPosition: null,
       themePalettePosition: null,
       orderingCriterionPosition: null,
-      deadlinePickerPosition: {},
+      deadlinePickerPosition: null,
       deadlineCalendarPosition: {},
       focusedTaskId: null,
     });
@@ -266,8 +264,7 @@ const todoSlice = createSlice({
       saveState(state);
     },
     closeDeadlinePicker(state) {
-      state.deadlinePickerPosition = {};
-      state.isActiveDeadlinePicker = false;
+      state.deadlinePickerPosition = null;
       saveState(state);
     },
     closeDeadlineCalendar(state) {
@@ -496,7 +493,6 @@ const todoSlice = createSlice({
     });
     builder.addCase(openDeadlinePicker.fulfilled, (state, { payload }: PayloadAction<TodoAppState['deadlinePickerPosition']>) => {
       state.deadlinePickerPosition = payload;
-      state.isActiveDeadlinePicker = true;
       saveState(state);
     });
     builder.addCase(openDeadlineCalendar.fulfilled, (state, { payload }: PayloadAction<TodoAppState['deadlineCalendarPosition']>) => {
