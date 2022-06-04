@@ -442,9 +442,13 @@ const todoSlice = createSlice({
       saveState(state);
     },
     reverseOrderingCriterion(state, { payload: { pageKey } }: PayloadAction<{ pageKey: 'myday' | 'inbox' }>) {
-      const oldDirection = state.pageSettings[pageKey].ordering.direction;
+      const ordering = state.pageSettings[pageKey].ordering;
 
-      state.pageSettings[pageKey].ordering.direction = oldDirection === ASCENDING ? DESCENDING : ASCENDING;
+      invariant(ordering, '정렬 기준이 없습니다.');
+
+      const oldDirection = ordering.direction;
+
+      ordering.direction = oldDirection === ASCENDING ? DESCENDING : ASCENDING;
       saveState(state);
     },
     unsetOrderingCriterion(state, { payload: { pageKey } }: PayloadAction<{ pageKey: 'myday' | 'inbox' }>) {
