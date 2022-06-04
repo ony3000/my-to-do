@@ -3,6 +3,7 @@ import invariant from 'tiny-invariant';
 import { v4 as uuid } from 'uuid';
 import merge from 'lodash.merge';
 import { Dict, ReactMouseEvent, OrderingCriterion, OrderingDirection, ThemeColor } from '@/types/common';
+import { isDict } from '@/types/guard';
 import { TodoItemBase, TodoItem, TodoAppState } from '@/types/store/todoSlice';
 
 export const CHANGE_THEME = 'CHANGE_THEME';
@@ -112,9 +113,26 @@ const initialState: TodoAppState = {
   focusedTaskId: null,
 };
 
-const saveState = (state) => localStorage.setItem('cloneCoding:my-to-do', JSON.stringify(state));
+const saveState = (state: TodoAppState) => localStorage.setItem('cloneCoding:my-to-do', JSON.stringify(state));
 
-const loadState = () => JSON.parse(localStorage.getItem('cloneCoding:my-to-do')) || {};
+const loadState = (): Dict => {
+  const storedValue = localStorage.getItem('cloneCoding:my-to-do');
+  let state = null;
+
+  try {
+    invariant(typeof storedValue === 'string');
+    state = JSON.parse(storedValue);
+    invariant(isDict(state)); // explicit throw for non-object
+  }
+  catch (err) {
+    state = {};
+  }
+  finally {
+    invariant(isDict(state)); // type narrowing
+  }
+
+  return state;
+};
 
 export const launchApp = createAsyncThunk('todo/launchApp', async () => {
   const promise = new Promise<{ data: TodoAppState }>(async (resolve) => {
