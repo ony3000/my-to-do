@@ -119,12 +119,12 @@ export type TodoAppState = {
         direction: OrderingDirection;
       }>;
     };
-    search: Nullable<{
+    search: {
       isHideCompletedItems: boolean;
-    }>;
-    'search/[keyword]': Nullable<{
+    };
+    'search/[keyword]': {
       isHideCompletedItems: boolean;
-    }>;
+    };
   };
   focusedTaskId: Nullable<string>;
 };

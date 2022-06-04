@@ -102,8 +102,12 @@ const initialState: TodoAppState = {
       themeColor: 'blue',
       ordering: null,
     },
-    search: {},
-    'search/[keyword]': {},
+    search: {
+      isHideCompletedItems: false,
+    },
+    'search/[keyword]': {
+      isHideCompletedItems: false,
+    },
   },
   focusedTaskId: null,
 };
