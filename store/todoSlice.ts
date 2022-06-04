@@ -189,15 +189,13 @@ export const openOrderingCriterion = createAsyncThunk<
 
   const { top, left, width, height } = button.getBoundingClientRect();
   const criterionWidth = 200;
-  const criterionPosition = {
-    top: Math.floor(top + height - 2),
-    left: Math.floor(left + width / 2 - criterionWidth / 2),
-  };
-
-  if (criterionPosition.left + criterionWidth + 8 > window.innerWidth) {
-    delete criterionPosition.left;
-    criterionPosition.right = 8;
-  }
+  const topPosition = Math.floor(top + height - 2);
+  const leftPosition = Math.floor(left + width / 2 - criterionWidth / 2);
+  const criterionPosition = (
+    leftPosition + criterionWidth + 8 > window.innerWidth
+      ? { top: topPosition, right: 8 }
+      : { top: topPosition, left: leftPosition }
+  );
 
   return Promise.resolve(criterionPosition);
 });
