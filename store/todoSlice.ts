@@ -42,7 +42,6 @@ const initialState: TodoAppState = {
   deadlineCalendarPosition: null,
   toolbarFunctions: {
     myday: {
-      listOption: null,
       listOrdering: [
         IMPORTANCE,
         DEADLINE,
@@ -52,19 +51,15 @@ const initialState: TodoAppState = {
     },
     important: {
       listOption: [TOGGLE_COMPLETED_ITEMS],
-      listOrdering: null,
     },
     planned: {
       listOption: [TOGGLE_COMPLETED_ITEMS],
-      listOrdering: null,
     },
     all: {
       listOption: [CHANGE_THEME],
-      listOrdering: null,
     },
     completed: {
       listOption: [CHANGE_THEME],
-      listOrdering: null,
     },
     inbox: {
       listOption: [CHANGE_THEME],

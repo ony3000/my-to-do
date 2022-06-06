@@ -68,19 +68,24 @@ export type TodoAppState = {
   }>;
   toolbarFunctions: {
     myday: {
+      listOption?: null;
       listOrdering: OrderingCriterion[];
     };
     important: {
       listOption: ListOption[];
+      listOrdering?: null;
     };
     planned: {
       listOption: ListOption[];
+      listOrdering?: null;
     };
     all: {
       listOption: ListOption[];
+      listOrdering?: null;
     };
     completed: {
       listOption: ListOption[];
+      listOrdering?: null;
     };
     inbox: {
       listOption: ListOption[];
@@ -88,9 +93,11 @@ export type TodoAppState = {
     };
     search: {
       listOption: ListOption[];
+      listOrdering?: null;
     };
     'search/[keyword]': {
       listOption: ListOption[];
+      listOrdering?: null;
     };
   };
   pageSettings: {
