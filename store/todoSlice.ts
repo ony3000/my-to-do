@@ -130,11 +130,11 @@ const loadState = (): Dict => {
 };
 
 export const launchApp = createAsyncThunk('todo/launchApp', async () => {
-  const promise = new Promise<{ data: TodoAppState }>(async (resolve) => {
+  const promise = new Promise<{ data: TodoAppState & Dict }>(async (resolve) => {
     // API 호출로 데이터를 가져온다고 가정했을 때, 요청 완료되는 시간이 고정되어있지 않음을 나타냄
     const delay = 350 + Math.floor(Math.random() * 150);
 
-    const combinedState: TodoAppState = merge({}, initialState, loadState(), {
+    const combinedState: TodoAppState & Dict = merge({}, initialState, loadState(), {
       listOptionPosition: null,
       themePalettePosition: null,
       orderingCriterionPosition: null,
@@ -516,9 +516,10 @@ const todoSlice = createSlice({
     },
   },
   extraReducers: builder => {
-    builder.addCase(launchApp.fulfilled, (state, { payload }: PayloadAction<TodoAppState>) => {
+    builder.addCase(launchApp.fulfilled, (state, { payload }: PayloadAction<TodoAppState & Dict>) => {
+      invariant(isDict(state));
       Object.keys(state).forEach((key) => {
-        state[key] = payload[key];
+        (state as Dict)[key] = payload[key];
       });
       state.isAppReady = true;
       saveState(state);
