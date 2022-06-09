@@ -1,8 +1,8 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import classNames from 'classnames/bind';
-import { useSelector } from 'react-redux';
 import styles from '../inbox.module.scss'; // shared
+import { useAppSelector } from '@/hooks/index';
 import PageToolbar from '@/components/PageToolbar';
 import TaskList from '@/components/TaskList';
 import StepList from '@/components/StepList';
@@ -13,8 +13,8 @@ const cx = classNames.bind(styles);
 export default function Search() {
   const router = useRouter();
   const pageKey = router.pathname.replace(/^\/tasks\/?/, '') || 'inbox';
-  const todoItems = useSelector(({ todo: state }) => state.todoItems);
-  const settingsPerPage = useSelector(({ todo: state }) => state.pageSettings[pageKey]);
+  const todoItems = useAppSelector(({ todo: state }) => state.todoItems);
+  const settingsPerPage = useAppSelector(({ todo: state }) => state.pageSettings[pageKey]);
 
   const { keyword = '' } = router.query;
   const trimmedKeyword = keyword.trim();
