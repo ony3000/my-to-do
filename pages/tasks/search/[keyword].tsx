@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import invariant from 'tiny-invariant';
 import classNames from 'classnames/bind';
 import styles from '../inbox.module.scss'; // shared
 import { useAppSelector } from '@/hooks/index';
@@ -12,7 +13,10 @@ const cx = classNames.bind(styles);
 
 export default function Search() {
   const router = useRouter();
-  const pageKey = router.pathname.replace(/^\/tasks\/?/, '') || 'inbox';
+  const pageKey = router.pathname.replace(/^\/tasks\/?/, '');
+
+  invariant(pageKey === 'search/[keyword]');
+
   const todoItems = useAppSelector(({ todo: state }) => state.todoItems);
   const settingsPerPage = useAppSelector(({ todo: state }) => state.pageSettings[pageKey]);
 
