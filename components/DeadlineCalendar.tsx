@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import classNames from 'classnames/bind';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '@/hooks/index';
 import {
   closeDeadlinePicker,
   closeDeadlineCalendar,
@@ -15,8 +15,8 @@ const cx = classNames.bind(styles);
 export default function DeadlineCalendar({
   taskId,
 }) {
-  const dispatch = useDispatch();
-  const deadlineCalendarPosition = useSelector(({ todo: state }) => state.deadlineCalendarPosition);
+  const dispatch = useAppDispatch();
+  const deadlineCalendarPosition = useAppSelector(({ todo: state }) => state.deadlineCalendarPosition);
   const [ isMounted, setIsMounted ] = useState(false);
   const [ calendarDate, setCalendarDate ] = useState(new Date());
   const $refs = {

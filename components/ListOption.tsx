@@ -1,7 +1,7 @@
 import { useRef, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import classNames from 'classnames/bind';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '@/hooks/index';
 import {
   CHANGE_THEME,
   TOGGLE_COMPLETED_ITEMS,
@@ -20,10 +20,10 @@ export default function ListOption({
 }) {
   const router = useRouter();
   const pageKey = router.pathname.replace(/^\/tasks\/?/, '') || 'inbox';
-  const dispatch = useDispatch();
-  const listOptionPosition = useSelector(({ todo: state }) => state.listOptionPosition);
-  const themePalettePosition = useSelector(({ todo: state }) => state.themePalettePosition);
-  const settingsPerPage = useSelector(({ todo: state }) => state.pageSettings[pageKey]);
+  const dispatch = useAppDispatch();
+  const listOptionPosition = useAppSelector(({ todo: state }) => state.listOptionPosition);
+  const themePalettePosition = useAppSelector(({ todo: state }) => state.themePalettePosition);
+  const settingsPerPage = useAppSelector(({ todo: state }) => state.pageSettings[pageKey]);
   const $refs = {
     container: useRef(null),
   };

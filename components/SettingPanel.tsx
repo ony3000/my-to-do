@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '@/hooks/index';
 import {
   closeSettingPanel,
   turnOnGeneral,
@@ -12,10 +12,10 @@ import styles from './SettingPanel.module.scss';
 const cx = classNames.bind(styles);
 
 export default function SettingPanel() {
-  const dispatch = useDispatch();
-  const isActiveSettingPanel = useSelector(({ todo: state }) => state.isActiveSettingPanel);
-  const generalSettings = useSelector(({ todo: state }) => state.settings.general);
-  const smartListSettings = useSelector(({ todo: state }) => state.settings.smartList);
+  const dispatch = useAppDispatch();
+  const isActiveSettingPanel = useAppSelector(({ todo: state }) => state.isActiveSettingPanel);
+  const generalSettings = useAppSelector(({ todo: state }) => state.settings.general);
+  const smartListSettings = useAppSelector(({ todo: state }) => state.settings.smartList);
 
   const generals = [
     {

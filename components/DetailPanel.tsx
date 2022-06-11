@@ -1,7 +1,7 @@
 import { Fragment, useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import classNames from 'classnames/bind';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '@/hooks/index';
 import {
   openDeadlinePicker,
   closeDeadlinePicker,
@@ -30,13 +30,13 @@ const cx = classNames.bind(styles);
 export default function DetailPanel() {
   const router = useRouter();
   const pageKey = router.pathname.replace(/^\/tasks\/?/, '') || 'inbox';
-  const dispatch = useDispatch();
-  const generalSettings = useSelector(({ todo: state }) => state.settings.general);
-  const settingsPerPage = useSelector(({ todo: state }) => state.pageSettings[pageKey]);
-  const focusedTaskId = useSelector(({ todo: state }) => state.focusedTaskId);
-  const task = useSelector(({ todo: state }) => state.todoItems.find(({ id }) => (id === focusedTaskId)));
-  const deadlinePickerPosition = useSelector(({ todo: state }) => state.deadlinePickerPosition);
-  const deadlineCalendarPosition = useSelector(({ todo: state }) => state.deadlineCalendarPosition);
+  const dispatch = useAppDispatch();
+  const generalSettings = useAppSelector(({ todo: state }) => state.settings.general);
+  const settingsPerPage = useAppSelector(({ todo: state }) => state.pageSettings[pageKey]);
+  const focusedTaskId = useAppSelector(({ todo: state }) => state.focusedTaskId);
+  const task = useAppSelector(({ todo: state }) => state.todoItems.find(({ id }) => (id === focusedTaskId)));
+  const deadlinePickerPosition = useAppSelector(({ todo: state }) => state.deadlinePickerPosition);
+  const deadlineCalendarPosition = useAppSelector(({ todo: state }) => state.deadlineCalendarPosition);
   const [ isActivated, setIsActivated ] = useState(false);
   const $refs = {
     titleArea: useRef(null),

@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { useRouter } from 'next/router';
 import classNames from 'classnames/bind';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '@/hooks/index';
 import { createTodoItem, createSubStep } from '@/store/todoSlice';
 import styles from './StepInput.module.scss';
 
@@ -13,8 +13,8 @@ export default function StepInput({
 }) {
   const router = useRouter();
   const pageKey = router.pathname.replace(/^\/tasks\/?/, '') || 'inbox';
-  const dispatch = useDispatch();
-  const settingsPerPage = useSelector(({ todo: state }) => state.pageSettings[pageKey]);
+  const dispatch = useAppDispatch();
+  const settingsPerPage = useAppSelector(({ todo: state }) => state.pageSettings[pageKey]);
   const $refs = {
     input: useRef(null),
   };

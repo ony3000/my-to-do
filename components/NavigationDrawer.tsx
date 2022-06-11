@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import classNames from 'classnames/bind';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '@/hooks/index';
 import { openSidebar, closeSidebar } from '@/store/todoSlice';
 import dayjs from '@/plugins/dayjs';
 import styles from './NavigationDrawer.module.scss';
@@ -11,11 +11,11 @@ const cx = classNames.bind(styles);
 
 export default function NavigationDrawer() {
   const router = useRouter();
-  const dispatch = useDispatch();
-  const isActiveSidebar = useSelector(({ todo: state }) => state.isActiveSidebar);
-  const smartListSettings = useSelector(({ todo: state }) => state.settings.smartList);
-  const todoItems = useSelector(({ todo: state }) => state.todoItems);
-  const pageSettings = useSelector(({ todo: state }) => state.pageSettings);
+  const dispatch = useAppDispatch();
+  const isActiveSidebar = useAppSelector(({ todo: state }) => state.isActiveSidebar);
+  const smartListSettings = useAppSelector(({ todo: state }) => state.settings.smartList);
+  const todoItems = useAppSelector(({ todo: state }) => state.todoItems);
+  const pageSettings = useAppSelector(({ todo: state }) => state.pageSettings);
   const [ isMounted, setIsMounted ] = useState(false);
 
   const midnightToday = dayjs().startOf('day');

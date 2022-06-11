@@ -1,7 +1,7 @@
 import { useRef, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import classNames from 'classnames/bind';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '@/hooks/index';
 import { closeListOption, closeThemePalette, setThemeColor } from '@/store/todoSlice';
 import styles from './ThemePalette.module.scss';
 
@@ -10,9 +10,9 @@ const cx = classNames.bind(styles);
 export default function ThemePalette() {
   const router = useRouter();
   const pageKey = router.pathname.replace(/^\/tasks\/?/, '') || 'inbox';
-  const dispatch = useDispatch();
-  const themePalettePosition = useSelector(({ todo: state }) => state.themePalettePosition);
-  const settingsPerPage = useSelector(({ todo: state }) => state.pageSettings[pageKey]);
+  const dispatch = useAppDispatch();
+  const themePalettePosition = useAppSelector(({ todo: state }) => state.themePalettePosition);
+  const settingsPerPage = useAppSelector(({ todo: state }) => state.pageSettings[pageKey]);
   const $refs = {
     container: useRef(null),
   };

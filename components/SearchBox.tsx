@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { useRouter } from 'next/router';
 import classNames from 'classnames/bind';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '@/hooks/index';
 import { openSearchBox, closeSearchBox } from '@/store/todoSlice';
 import styles from './SearchBox.module.scss';
 
@@ -9,8 +9,8 @@ const cx = classNames.bind(styles);
 
 export default function SearchBox() {
   const router = useRouter();
-  const dispatch = useDispatch();
-  const isActiveSearchBox = useSelector(({ todo: state }) => state.isActiveSearchBox);
+  const dispatch = useAppDispatch();
+  const isActiveSearchBox = useAppSelector(({ todo: state }) => state.isActiveSearchBox);
   const $refs = {
     input: useRef(null),
   };

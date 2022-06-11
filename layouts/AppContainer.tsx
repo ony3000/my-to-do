@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import classNames from 'classnames/bind';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '@/hooks/index';
 import { launchApp } from '@/store/todoSlice';
 import styles from './AppContainer.module.scss';
 import AppSplash from '@/components/AppSplash';
@@ -37,9 +37,9 @@ const cx = classNames.bind(styles);
 export default function AppContainer({ children }) {
   const router = useRouter();
   const pageKey = router.pathname.replace(/^\/tasks\/?/, '') || 'inbox';
-  const dispatch = useDispatch();
-  const isAppReady = useSelector(({ todo: state }) => state.isAppReady);
-  const settingsPerPage = useSelector(({ todo: state }) => state.pageSettings[pageKey]);
+  const dispatch = useAppDispatch();
+  const isAppReady = useAppSelector(({ todo: state }) => state.isAppReady);
+  const settingsPerPage = useAppSelector(({ todo: state }) => state.pageSettings[pageKey]);
   const [ isMounted, setIsMounted ] = useState(false);
 
   useEffect(() => {

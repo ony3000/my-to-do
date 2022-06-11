@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import classNames from 'classnames/bind';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '@/hooks/index';
 import { openDetailPanel, updateSubStep } from '@/store/todoSlice';
 import styles from './TaskList.module.scss'; // shared
 
@@ -14,8 +14,8 @@ export default function StepList({
   isHideCompletedItems = false,
   filter = {},
 }) {
-  const dispatch = useDispatch();
-  const filteredTodoItems = useSelector(
+  const dispatch = useAppDispatch();
+  const filteredTodoItems = useAppSelector(
     ({ todo: state }) => state.todoItems
       .map((item) => {
         return {
@@ -41,7 +41,7 @@ export default function StepList({
       taskTitle: currentItem.title,
     })),
   ], []);
-  const focusedTaskId = useSelector(({ todo: state }) => state.focusedTaskId);
+  const focusedTaskId = useAppSelector(({ todo: state }) => state.focusedTaskId);
   const [ isCollapsed, setIsCollapsed ] = useState(isCollapsedInitially || false);
 
   filteredTodoSteps.sort((former, latter) => (latter.createdAt - former.createdAt));
