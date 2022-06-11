@@ -20,7 +20,7 @@ export default function Search() {
   const todoItems = useAppSelector(({ todo: state }) => state.todoItems);
   const settingsPerPage = useAppSelector(({ todo: state }) => state.pageSettings[pageKey]);
 
-  const { keyword = '' } = router.query;
+  const { keyword = '' } = router.query as { keyword: string };
   const trimmedKeyword = keyword.trim();
   const pattern = new RegExp(trimmedKeyword, 'i');
   const visibleTodoItems = todoItems.filter((item) => {
