@@ -1,6 +1,7 @@
 import { useRef, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import classNames from 'classnames/bind';
+import { OrderingCriterion as OrderingCriterionType } from '@/types/common';
 import { useAppDispatch, useAppSelector } from '@/hooks/index';
 import {
   IMPORTANCE,
@@ -17,9 +18,13 @@ import styles from './ListOption.module.scss'; // shared
 
 const cx = classNames.bind(styles);
 
+type OrderingCriterionProps = {
+  availableCriterions: OrderingCriterionType[];
+};
+
 export default function OrderingCriterion({
   availableCriterions = [],
-}) {
+}: OrderingCriterionProps) {
   const router = useRouter();
   const pageKey = router.pathname.replace(/^\/tasks\/?/, '') || 'inbox';
   const dispatch = useAppDispatch();

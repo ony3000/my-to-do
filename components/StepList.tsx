@@ -1,10 +1,20 @@
 import { useState } from 'react';
 import classNames from 'classnames/bind';
+import { Dict, Nullable } from '@/types/common';
 import { useAppDispatch, useAppSelector } from '@/hooks/index';
 import { openDetailPanel, updateSubStep } from '@/store/todoSlice';
 import styles from './TaskList.module.scss'; // shared
 
 const cx = classNames.bind(styles);
+
+type StepListProps = {
+  title?: Nullable<string>;
+  isCollapsible?: boolean;
+  isCollapsedInitially?: boolean;
+  isHideForEmptyList?: boolean;
+  isHideCompletedItems?: boolean;
+  filter?: Dict;
+};
 
 export default function StepList({
   title = '단계',
@@ -13,7 +23,7 @@ export default function StepList({
   isHideForEmptyList = false,
   isHideCompletedItems = false,
   filter = {},
-}) {
+}: StepListProps) {
   const dispatch = useAppDispatch();
   const filteredTodoItems = useAppSelector(
     ({ todo: state }) => state.todoItems

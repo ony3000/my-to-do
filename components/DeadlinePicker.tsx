@@ -13,9 +13,13 @@ import DeadlineCalendar from '@/components/DeadlineCalendar';
 
 const cx = classNames.bind(styles);
 
+type DeadlinePickerProps = {
+  taskId: string;
+};
+
 export default function DeadlinePicker({
   taskId,
-}) {
+}: DeadlinePickerProps) {
   const dispatch = useAppDispatch();
   const deadlinePickerPosition = useAppSelector(({ todo: state }) => state.deadlinePickerPosition);
   const deadlineCalendarPosition = useAppSelector(({ todo: state }) => state.deadlineCalendarPosition);

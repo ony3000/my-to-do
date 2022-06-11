@@ -34,7 +34,11 @@ const cx = classNames.bind(styles);
  * text-amber-700
  */
 
-export default function AppContainer({ children }) {
+type AppContainerProps = {
+  children: JSX.Element;
+};
+
+export default function AppContainer({ children }: AppContainerProps) {
   const router = useRouter();
   const pageKey = router.pathname.replace(/^\/tasks\/?/, '') || 'inbox';
   const dispatch = useAppDispatch();

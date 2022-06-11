@@ -1,6 +1,7 @@
 import { useRef, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import classNames from 'classnames/bind';
+import { ListOption as ListOptionType } from '@/types/common';
 import { useAppDispatch, useAppSelector } from '@/hooks/index';
 import {
   CHANGE_THEME,
@@ -15,9 +16,13 @@ import ThemePalette from '@/components/ThemePalette';
 
 const cx = classNames.bind(styles);
 
+type ListOptionProps = {
+  availableOptions: ListOptionType[];
+};
+
 export default function ListOption({
   availableOptions = [],
-}) {
+}: ListOptionProps) {
   const router = useRouter();
   const pageKey = router.pathname.replace(/^\/tasks\/?/, '') || 'inbox';
   const dispatch = useAppDispatch();

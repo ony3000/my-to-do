@@ -12,9 +12,13 @@ import styles from './DeadlineCalendar.module.scss';
 
 const cx = classNames.bind(styles);
 
+type DeadlineCalendarProps = {
+  taskId: string;
+};
+
 export default function DeadlineCalendar({
   taskId,
-}) {
+}: DeadlineCalendarProps) {
   const dispatch = useAppDispatch();
   const deadlineCalendarPosition = useAppSelector(({ todo: state }) => state.deadlineCalendarPosition);
   const [ isMounted, setIsMounted ] = useState(false);

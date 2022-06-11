@@ -7,10 +7,15 @@ import styles from './StepInput.module.scss';
 
 const cx = classNames.bind(styles);
 
+type StepInputProps = {
+  placeholder?: string;
+  taskId: string;
+};
+
 export default function StepInput({
   placeholder = '다음 단계',
   taskId,
-}) {
+}: StepInputProps) {
   const router = useRouter();
   const pageKey = router.pathname.replace(/^\/tasks\/?/, '') || 'inbox';
   const dispatch = useAppDispatch();
