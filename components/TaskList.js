@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import classNames from 'classnames/bind';
 import { useDispatch, useSelector } from 'react-redux';
+import { Dict, Nullable } from '@/types/common';
 import {
   IMPORTANCE,
   DEADLINE,
@@ -22,6 +23,9 @@ import styles from './TaskList.module.scss';
 
 const cx = classNames.bind(styles);
 
+/**
+ * @type {(props: { title?: Nullable<string> } & Dict) => Nullable<JSX.Element>}
+ */
 export default function TaskList({
   title = '작업',
   isCollapsible = true,
