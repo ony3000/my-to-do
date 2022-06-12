@@ -24,6 +24,15 @@ export type TodoItem = TodoItemBase & {
   markedAsTodayTaskAt: Nullable<number>;
 };
 
+export type SettingsPerPage = {
+  themeColor?: ThemeColor;
+  isHideCompletedItems?: boolean;
+  ordering?: Nullable<{
+    criterion: OrderingCriterion;
+    direction: OrderingDirection;
+  }>;
+};
+
 export type TodoAppState = {
   isAppReady: boolean;
   isActiveSearchBox: boolean;
@@ -101,37 +110,14 @@ export type TodoAppState = {
     };
   };
   pageSettings: {
-    myday: {
-      ordering: Nullable<{
-        criterion: OrderingCriterion;
-        direction: OrderingDirection;
-      }>;
-    };
-    important: {
-      isHideCompletedItems: boolean;
-    };
-    planned: {
-      isHideCompletedItems: boolean;
-    };
-    all: {
-      themeColor: ThemeColor;
-    };
-    completed: {
-      themeColor: ThemeColor;
-    };
-    inbox: {
-      themeColor: ThemeColor;
-      ordering: Nullable<{
-        criterion: OrderingCriterion;
-        direction: OrderingDirection;
-      }>;
-    };
-    search: {
-      isHideCompletedItems: boolean;
-    };
-    'search/[keyword]': {
-      isHideCompletedItems: boolean;
-    };
+    myday: Required<Pick<SettingsPerPage, 'ordering'>>;
+    important: Required<Pick<SettingsPerPage, 'isHideCompletedItems'>>;
+    planned: Required<Pick<SettingsPerPage, 'isHideCompletedItems'>>;
+    all: Required<Pick<SettingsPerPage, 'themeColor'>>;
+    completed: Required<Pick<SettingsPerPage, 'themeColor'>>;
+    inbox: Required<Pick<SettingsPerPage, 'themeColor' | 'ordering'>>;
+    search: Required<Pick<SettingsPerPage, 'isHideCompletedItems'>>;
+    'search/[keyword]': Required<Pick<SettingsPerPage, 'isHideCompletedItems'>>;
   };
   focusedTaskId: Nullable<string>;
 };

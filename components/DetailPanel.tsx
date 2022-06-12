@@ -1,6 +1,9 @@
 import { Fragment, useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import invariant from 'tiny-invariant';
 import classNames from 'classnames/bind';
+import { isOneOf } from '@/types/guard';
+import { SettingsPerPage } from '@/types/store/todoSlice';
 import { useAppDispatch, useAppSelector } from '@/hooks/index';
 import {
   openDeadlinePicker,
@@ -30,9 +33,12 @@ const cx = classNames.bind(styles);
 export default function DetailPanel() {
   const router = useRouter();
   const pageKey = router.pathname.replace(/^\/tasks\/?/, '') || 'inbox';
+
+  invariant(isOneOf(pageKey, ['myday', 'important', 'planned', 'all', 'completed', 'inbox', 'search', 'search/[keyword]']));
+
   const dispatch = useAppDispatch();
   const generalSettings = useAppSelector(({ todo: state }) => state.settings.general);
-  const settingsPerPage = useAppSelector(({ todo: state }) => state.pageSettings[pageKey]);
+  const settingsPerPage: SettingsPerPage = useAppSelector(({ todo: state }) => state.pageSettings[pageKey]);
   const focusedTaskId = useAppSelector(({ todo: state }) => state.focusedTaskId);
   const task = useAppSelector(({ todo: state }) => state.todoItems.find(({ id }) => (id === focusedTaskId)));
   const deadlinePickerPosition = useAppSelector(({ todo: state }) => state.deadlinePickerPosition);

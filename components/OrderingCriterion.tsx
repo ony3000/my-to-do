@@ -1,7 +1,9 @@
 import { useRef, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import invariant from 'tiny-invariant';
 import classNames from 'classnames/bind';
 import { OrderingCriterion as OrderingCriterionType } from '@/types/common';
+import { isOneOf } from '@/types/guard';
 import { useAppDispatch, useAppSelector } from '@/hooks/index';
 import {
   IMPORTANCE,
@@ -27,6 +29,9 @@ export default function OrderingCriterion({
 }: OrderingCriterionProps) {
   const router = useRouter();
   const pageKey = router.pathname.replace(/^\/tasks\/?/, '') || 'inbox';
+
+  invariant(isOneOf(pageKey, ['myday', 'inbox']));
+
   const dispatch = useAppDispatch();
   const orderingCriterionPosition = useAppSelector(({ todo: state }) => state.orderingCriterionPosition);
   const settingsPerPage = useAppSelector(({ todo: state }) => state.pageSettings[pageKey]);

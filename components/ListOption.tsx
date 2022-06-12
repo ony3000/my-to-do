@@ -1,7 +1,10 @@
 import { useRef, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import invariant from 'tiny-invariant';
 import classNames from 'classnames/bind';
 import { ListOption as ListOptionType } from '@/types/common';
+import { isOneOf } from '@/types/guard';
+import { SettingsPerPage } from '@/types/store/todoSlice';
 import { useAppDispatch, useAppSelector } from '@/hooks/index';
 import {
   CHANGE_THEME,
@@ -25,10 +28,13 @@ export default function ListOption({
 }: ListOptionProps) {
   const router = useRouter();
   const pageKey = router.pathname.replace(/^\/tasks\/?/, '') || 'inbox';
+
+  invariant(isOneOf(pageKey, ['important', 'planned', 'all', 'completed', 'inbox', 'search', 'search/[keyword]']));
+
   const dispatch = useAppDispatch();
   const listOptionPosition = useAppSelector(({ todo: state }) => state.listOptionPosition);
   const themePalettePosition = useAppSelector(({ todo: state }) => state.themePalettePosition);
-  const settingsPerPage = useAppSelector(({ todo: state }) => state.pageSettings[pageKey]);
+  const settingsPerPage: SettingsPerPage = useAppSelector(({ todo: state }) => state.pageSettings[pageKey]);
   const $refs = {
     container: useRef(null),
   };
@@ -39,6 +45,7 @@ export default function ListOption({
   const isActiveThemePalette = themePalettePosition !== null;
 
   const toggleCompletedItems = () => {
+    invariant(isOneOf(pageKey, ['important', 'planned', 'search', 'search/[keyword]']));
     dispatch(settingsPerPage.isHideCompletedItems ? showCompletedItems(pageKey) : hideCompletedItems(pageKey));
     dispatch(closeListOption());
   };
