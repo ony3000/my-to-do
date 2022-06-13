@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import invariant from 'tiny-invariant';
 import classNames from 'classnames/bind';
+import { isOneOf } from '@/types/guard';
 import { useAppDispatch, useAppSelector } from '@/hooks/index';
 import { openSidebar, closeSidebar } from '@/store/todoSlice';
 import dayjs from '@/plugins/dayjs';
@@ -139,7 +141,11 @@ export default function NavigationDrawer() {
         <div className={cx('sidebar-body')}>
           <ul>
             {anchors.map((anchorItem) => {
-              const isActiveSmartList = (smartListSettings[anchorItem.key] !== false) && !(autoHideEmptyLists && anchorItem.isHideAutomatically);
+              invariant(isOneOf(anchorItem.key, ['myday', 'important', 'planned', 'all', 'completed', 'inbox']));
+
+              const isActiveSmartList = isOneOf(anchorItem.key, ['myday', 'inbox']) || (
+                (smartListSettings[anchorItem.key] !== false) && !(autoHideEmptyLists && anchorItem.isHideAutomatically)
+              );
 
               return (isActiveSmartList ? (
                 <li

@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import invariant from 'tiny-invariant';
 import classNames from 'classnames/bind';
+import { isOneOf } from '@/types/guard';
+import { SettingsPerPage } from '@/types/store/todoSlice';
 import { useAppDispatch, useAppSelector } from '@/hooks/index';
 import { launchApp } from '@/store/todoSlice';
 import styles from './AppContainer.module.scss';
@@ -41,9 +44,12 @@ type AppContainerProps = {
 export default function AppContainer({ children }: AppContainerProps) {
   const router = useRouter();
   const pageKey = router.pathname.replace(/^\/tasks\/?/, '') || 'inbox';
+
+  invariant(isOneOf(pageKey, ['/', 'myday', 'important', 'planned', 'all', 'completed', 'inbox', 'search', 'search/[keyword]']));
+
   const dispatch = useAppDispatch();
   const isAppReady = useAppSelector(({ todo: state }) => state.isAppReady);
-  const settingsPerPage = useAppSelector(({ todo: state }) => state.pageSettings[pageKey]);
+  const settingsPerPage: SettingsPerPage = useAppSelector(({ todo: state }) => pageKey === '/' ? {} : state.pageSettings[pageKey]);
   const [ isMounted, setIsMounted ] = useState(false);
 
   useEffect(() => {
