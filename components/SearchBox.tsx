@@ -12,7 +12,7 @@ export default function SearchBox() {
   const dispatch = useAppDispatch();
   const isActiveSearchBox = useAppSelector(({ todo: state }) => state.isActiveSearchBox);
   const $refs = {
-    input: useRef(null),
+    input: useRef<HTMLInputElement>(null),
   };
 
   const { keyword = '' } = router.query;

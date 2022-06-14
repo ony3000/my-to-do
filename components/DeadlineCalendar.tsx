@@ -24,7 +24,7 @@ export default function DeadlineCalendar({
   const [ isMounted, setIsMounted ] = useState(false);
   const [ calendarDate, setCalendarDate ] = useState(new Date());
   const $refs = {
-    container: useRef(null),
+    container: useRef<HTMLDivElement>(null),
   };
 
   const isActiveDeadlineCalendar = deadlineCalendarPosition !== null;

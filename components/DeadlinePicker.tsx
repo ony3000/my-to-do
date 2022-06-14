@@ -25,7 +25,7 @@ export default function DeadlinePicker({
   const deadlineCalendarPosition = useAppSelector(({ todo: state }) => state.deadlineCalendarPosition);
   const [ isMounted, setIsMounted ] = useState(false);
   const $refs = {
-    container: useRef(null),
+    container: useRef<HTMLDivElement>(null),
   };
 
   const midnightToday = dayjs().startOf('day');

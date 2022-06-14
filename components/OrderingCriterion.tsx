@@ -36,7 +36,7 @@ export default function OrderingCriterion({
   const orderingCriterionPosition = useAppSelector(({ todo: state }) => state.orderingCriterionPosition);
   const settingsPerPage = useAppSelector(({ todo: state }) => state.pageSettings[pageKey]);
   const $refs = {
-    container: useRef(null),
+    container: useRef<HTMLDivElement>(null),
   };
 
   const isActiveOrderingCriterion = orderingCriterionPosition !== null;

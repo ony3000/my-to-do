@@ -19,7 +19,7 @@ export default function ThemePalette() {
   const themePalettePosition = useAppSelector(({ todo: state }) => state.themePalettePosition);
   const settingsPerPage = useAppSelector(({ todo: state }) => state.pageSettings[pageKey]);
   const $refs = {
-    container: useRef(null),
+    container: useRef<HTMLDivElement>(null),
   };
 
   const colors = [

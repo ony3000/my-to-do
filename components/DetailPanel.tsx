@@ -45,9 +45,9 @@ export default function DetailPanel() {
   const deadlineCalendarPosition = useAppSelector(({ todo: state }) => state.deadlineCalendarPosition);
   const [ isActivated, setIsActivated ] = useState(false);
   const $refs = {
-    titleArea: useRef(null),
-    separator: useRef(null),
-    memoArea: useRef(null),
+    titleArea: useRef<HTMLTextAreaElement>(null),
+    separator: useRef<HTMLDivElement>(null),
+    memoArea: useRef<HTMLTextAreaElement>(null),
   };
 
   const midnightThisYear = dayjs().startOf('year');
