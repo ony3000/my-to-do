@@ -1,8 +1,10 @@
-import { Fragment, useState, useRef, useEffect } from 'react';
+import { Fragment, useState, useRef, useEffect, MouseEventHandler } from 'react';
 import { useRouter } from 'next/router';
 import invariant from 'tiny-invariant';
 import classNames from 'classnames/bind';
+import { ReactFocusEvent } from '@/types/common';
 import { isOneOf } from '@/types/guard';
+import { TodoItem } from '@/types/store/todoSlice';
 import { SettingsPerPage } from '@/types/store/todoSlice';
 import { useAppDispatch, useAppSelector } from '@/hooks/index';
 import {
@@ -75,7 +77,7 @@ export default function DetailPanel() {
     }
   }
 
-  const closeHandler = () => {
+  const closeHandler: MouseEventHandler = () => {
     dispatch(closeDetailPanel());
     dispatch(closeDeadlinePicker());
 
@@ -83,7 +85,7 @@ export default function DetailPanel() {
       dispatch(closeDeadlineCalendar());
     }
   };
-  const titleInputHandler = (element) => {
+  const titleInputHandler = (element: HTMLTextAreaElement) => {
     element.style.setProperty('height', '');
 
     const computedStyle = window.getComputedStyle(element);
@@ -94,8 +96,8 @@ export default function DetailPanel() {
 
     $refs.separator.current.style.setProperty('top', `${element.closest(`.${cx('title-section')}`).getBoundingClientRect().height}px`);
   };
-  const titleBlurHandler = (event, taskId) => {
-    const inputElement = event.target;
+  const titleBlurHandler = (event: ReactFocusEvent<HTMLTextAreaElement>, taskId: string) => {
+    const inputElement = event.currentTarget;
     const trimmedMemo = inputElement.value.trim();
 
     if (trimmedMemo) {
@@ -110,8 +112,8 @@ export default function DetailPanel() {
     }
     titleInputHandler(inputElement);
   };
-  const stepTitleBlurHandler = (event, taskId, stepId) => {
-    const inputElement = event.target;
+  const stepTitleBlurHandler = (event: ReactFocusEvent<HTMLInputElement>, taskId: string, stepId: string) => {
+    const inputElement = event.currentTarget;
     const trimmedMemo = inputElement.value.trim();
 
     if (trimmedMemo) {
@@ -126,7 +128,7 @@ export default function DetailPanel() {
       inputElement.value = inputElement.defaultValue;
     }
   };
-  const memoInputHandler = (element) => {
+  const memoInputHandler = (element: HTMLTextAreaElement) => {
     element.style.setProperty('height', '');
 
     const computedStyle = window.getComputedStyle(element);
@@ -135,8 +137,8 @@ export default function DetailPanel() {
 
     element.style.setProperty('height', `${newHeight}px`);
   };
-  const memoBlurHandler = (event, taskId) => {
-    const inputElement = event.target;
+  const memoBlurHandler = (event: ReactFocusEvent<HTMLTextAreaElement>, taskId: string) => {
+    const inputElement = event.currentTarget;
     const trimmedMemo = inputElement.value.trim();
 
     dispatch(updateTodoItem({
@@ -146,12 +148,15 @@ export default function DetailPanel() {
     inputElement.value = trimmedMemo;
     memoInputHandler(inputElement);
   };
-  const removeHandler = ({ title, action }) => {
+  const removeHandler = ({ title, action }: {
+    title: string;
+    action: ReturnType<typeof removeSubStep | typeof removeTodoItem>;
+  }) => {
     if (!generalSettings.confirmBeforeRemoving || confirm(`"${title}"이(가) 영구적으로 삭제됩니다.\n이 작업은 취소할 수 없습니다.`)) {
       dispatch(action);
     }
   };
-  const importantHandler = ({ id, isImportant }) => {
+  const importantHandler = ({ id, isImportant }: TodoItem) => {
     if (isImportant) {
       dispatch(markAsUnimportant(id));
     }
@@ -204,7 +209,7 @@ export default function DetailPanel() {
     <Fragment key={task.id}>
       <div
         className={cx('overlay')}
-        onClick={() => closeHandler()}
+        onClick={closeHandler}
       />
       <div className={cx('container')}>
         <div className={cx('body')}>
@@ -235,7 +240,7 @@ export default function DetailPanel() {
                   className={cx('title-input')}
                   defaultValue={task.title}
                   maxLength={255}
-                  onInput={e => titleInputHandler(e.target)}
+                  onInput={e => titleInputHandler(e.currentTarget)}
                   onBlur={e => titleBlurHandler(e, task.id)}
                 />
                 <button
@@ -425,7 +430,7 @@ export default function DetailPanel() {
                 className={cx('memo-input')}
                 placeholder="메모 추가"
                 defaultValue={task.memo}
-                onInput={e => memoInputHandler(e.target)}
+                onInput={e => memoInputHandler(e.currentTarget)}
                 onBlur={e => memoBlurHandler(e, task.id)}
               />
             </div>
@@ -435,7 +440,7 @@ export default function DetailPanel() {
             <button
               className={cx('button')}
               title="세부 정보 화면 숨기기"
-              onClick={() => closeHandler()}
+              onClick={closeHandler}
             >
               <span className={cx('icon-wrapper')}>
                 <i className="fas fa-columns"></i>

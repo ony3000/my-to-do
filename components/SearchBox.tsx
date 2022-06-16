@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, FormEventHandler, FocusEventHandler } from 'react';
 import { useRouter } from 'next/router';
 import classNames from 'classnames/bind';
 import { useAppDispatch, useAppSelector } from '@/hooks/index';
@@ -33,8 +33,8 @@ export default function SearchBox() {
 
     router.push('/tasks/inbox');
   };
-  const inputHandler = (event) => {
-    const inputElement = event.target;
+  const inputHandler: FormEventHandler<HTMLInputElement> = (event) => {
+    const inputElement = event.currentTarget;
     const encodedKeyword = encodeURIComponent(inputElement.value);
 
     if (router.pathname.startsWith('/tasks/search')) {
@@ -44,8 +44,8 @@ export default function SearchBox() {
       router.push(`/tasks/search/${encodedKeyword}`);
     }
   };
-  const blurHandler = (event) => {
-    const inputElement = event.target;
+  const blurHandler: FocusEventHandler<HTMLInputElement> = (event) => {
+    const inputElement = event.currentTarget;
 
     if (!inputElement.value) {
       deactivateSearchBox();

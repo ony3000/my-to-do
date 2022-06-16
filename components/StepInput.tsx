@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, KeyboardEventHandler, FormEventHandler, FocusEventHandler } from 'react';
 import { useRouter } from 'next/router';
 import invariant from 'tiny-invariant';
 import classNames from 'classnames/bind';
@@ -44,23 +44,23 @@ export default function StepInput({
       inputElement.dataset.isEmpty = true;
     }
   };
-  const keyUpHandler = (event) => {
+  const keyUpHandler: KeyboardEventHandler<HTMLInputElement> = (event) => {
     if (event.key === 'Enter') {
       createStep();
 
       setTimeout(() => $refs.input.current.focus());
     }
   };
-  const inputHandler = (event) => {
-    const inputElement = event.target;
+  const inputHandler: FormEventHandler<HTMLInputElement> = (event) => {
+    const inputElement = event.currentTarget;
     const isInputEmpty = (inputElement.value === '');
 
     if (inputElement.dataset.isEmpty !== String(isInputEmpty)) {
       inputElement.dataset.isEmpty = isInputEmpty;
     }
   };
-  const blurHandler = (event) => {
-    const inputElement = event.target;
+  const blurHandler: FocusEventHandler<HTMLInputElement> = (event) => {
+    const inputElement = event.currentTarget;
     const trimmedTitle = inputElement.value.trim();
 
     if (trimmedTitle) {
