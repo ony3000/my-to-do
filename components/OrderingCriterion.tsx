@@ -56,15 +56,15 @@ export default function OrderingCriterion({
   };
 
   useEffect(() => {
-    function clickHandler(event) {
-      if (isActiveOrderingCriterion && $refs.container.current) {
+    const clickHandler: EventListener = (event) => {
+      if (isActiveOrderingCriterion && $refs.container.current && event.target instanceof HTMLElement) {
         const criterionContainer = event.target.closest(`.${$refs.container.current.className}`);
 
         if (criterionContainer === null) {
           dispatch(closeOrderingCriterion());
         }
       }
-    }
+    };
 
     document.addEventListener('click', clickHandler);
 

@@ -51,15 +51,15 @@ export default function ListOption({
   };
 
   useEffect(() => {
-    function clickHandler(event) {
-      if (isActiveListOption && $refs.container.current) {
+    const clickHandler: EventListener = (event) => {
+      if (isActiveListOption && $refs.container.current && event.target instanceof HTMLElement) {
         const optionContainer = event.target.closest(`.${$refs.container.current.className}`);
 
         if (optionContainer === null) {
           dispatch(closeListOption());
         }
       }
-    }
+    };
 
     document.addEventListener('click', clickHandler);
 

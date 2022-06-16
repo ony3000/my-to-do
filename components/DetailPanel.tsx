@@ -179,7 +179,7 @@ export default function DetailPanel() {
   useEffect(() => {
     const flexibleSection = document.querySelector(`.${cx('flexible-section')}`);
 
-    function scrollHandler(event) {
+    const scrollHandler: EventListener = (event) => {
       if (isActiveDeadlinePicker && flexibleSection) {
         dispatch(closeDeadlinePicker());
 
@@ -187,7 +187,7 @@ export default function DetailPanel() {
           dispatch(closeDeadlineCalendar());
         }
       }
-    }
+    };
 
     if (flexibleSection) {
       flexibleSection.addEventListener('scroll', scrollHandler);

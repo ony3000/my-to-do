@@ -40,15 +40,15 @@ export default function ThemePalette() {
   };
 
   useEffect(() => {
-    function clickHandler(event) {
-      if (isActiveThemePalette && $refs.container.current) {
+    const clickHandler: EventListener = (event) => {
+      if (isActiveThemePalette && $refs.container.current && event.target instanceof HTMLElement) {
         const optionContainer = event.target.closest(`.${$refs.container.current.className}`);
 
         if (optionContainer === null) {
           dispatch(closeThemePalette());
         }
       }
-    }
+    };
 
     document.addEventListener('click', clickHandler);
 
