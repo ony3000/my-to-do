@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import classNames from 'classnames/bind';
 import { Dict, Nullable } from '@/types/common';
+import { TodoItemBase } from '@/types/store/todoSlice';
 import { useAppDispatch, useAppSelector } from '@/hooks/index';
 import { openDetailPanel, updateSubStep } from '@/store/todoSlice';
 import styles from './TaskList.module.scss'; // shared
@@ -13,7 +14,9 @@ type StepListProps = {
   isCollapsedInitially?: boolean;
   isHideForEmptyList?: boolean;
   isHideCompletedItems?: boolean;
-  filter?: Dict;
+  filter?: {
+    [K in keyof TodoItemBase]?: TodoItemBase[K] | (TodoItemBase[K] extends string ? RegExp : never);
+  };
 };
 
 export default function StepList({
