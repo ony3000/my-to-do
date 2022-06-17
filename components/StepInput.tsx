@@ -32,23 +32,31 @@ export default function StepInput({
 
   const createStep = () => {
     const inputElement = $refs.input.current;
-    const trimmedTitle = inputElement.value.trim();
 
-    if (trimmedTitle) {
-      dispatch(createSubStep({
-        taskId,
-        title: trimmedTitle,
-      }));
+    if (inputElement) {
+      const trimmedTitle = inputElement.value.trim();
 
-      inputElement.value = '';
-      inputElement.dataset.isEmpty = true;
+      if (trimmedTitle) {
+        dispatch(createSubStep({
+          taskId,
+          title: trimmedTitle,
+        }));
+
+        inputElement.value = '';
+        inputElement.dataset.isEmpty = String(true);
+      }
+    }
+  };
+  const focusInput = () => {
+    if ($refs.input.current) {
+      $refs.input.current.focus();
     }
   };
   const keyUpHandler: KeyboardEventHandler<HTMLInputElement> = (event) => {
     if (event.key === 'Enter') {
       createStep();
 
-      setTimeout(() => $refs.input.current.focus());
+      setTimeout(() => focusInput());
     }
   };
   const inputHandler: FormEventHandler<HTMLInputElement> = (event) => {
@@ -56,7 +64,7 @@ export default function StepInput({
     const isInputEmpty = (inputElement.value === '');
 
     if (inputElement.dataset.isEmpty !== String(isInputEmpty)) {
-      inputElement.dataset.isEmpty = isInputEmpty;
+      inputElement.dataset.isEmpty = String(isInputEmpty);
     }
   };
   const blurHandler: FocusEventHandler<HTMLInputElement> = (event) => {
@@ -77,7 +85,7 @@ export default function StepInput({
             `text-${settingsPerPage.themeColor ? settingsPerPage.themeColor : 'blue'}-500`,
           )}
           title="작업 추가"
-          onClick={() => $refs.input.current.focus()}
+          onClick={() => focusInput()}
         >
           <span className={cx('icon-wrapper')}>
             <i className="fas fa-plus"></i>

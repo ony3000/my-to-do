@@ -94,7 +94,11 @@ export default function DetailPanel() {
 
     element.style.setProperty('height', `${newHeight}px`);
 
-    $refs.separator.current.style.setProperty('top', `${element.closest(`.${cx('title-section')}`).getBoundingClientRect().height}px`);
+    const closestSection = element.closest(`.${cx('title-section')}`);
+
+    if ($refs.separator.current && closestSection) {
+      $refs.separator.current.style.setProperty('top', `${closestSection.getBoundingClientRect().height}px`);
+    }
   };
   const titleBlurHandler = (event: ReactFocusEvent<HTMLTextAreaElement>, taskId: string) => {
     const inputElement = event.currentTarget;
@@ -448,7 +452,7 @@ export default function DetailPanel() {
               </span>
             </button>
             <span className={cx('date')}>
-              {task.isComplete ? (
+              {task.isComplete && task.completedAt ? (
                 `${dayjs(task.completedAt, 'x').format(task.completedAt < Number(midnightThisYear.format('x')) ? 'YYYY년 M월 D일, ddd' : 'M월 D일, ddd')}에 완료됨`
               ) : (
                 `${dayjs(task.createdAt, 'x').format(task.createdAt < Number(midnightThisYear.format('x')) ? 'YYYY년 M월 D일, ddd' : 'M월 D일, ddd')}에 생성됨`

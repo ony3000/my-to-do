@@ -22,10 +22,16 @@ export default function SearchBox() {
       dispatch(openSearchBox());
     }
 
-    setTimeout(() => $refs.input.current.focus());
+    setTimeout(() => {
+      if ($refs.input.current) {
+        $refs.input.current.focus();
+      }
+    });
   };
   const deactivateSearchBox = () => {
-    $refs.input.current.value = '';
+    if ($refs.input.current) {
+      $refs.input.current.value = '';
+    }
 
     if (isActiveSearchBox) {
       dispatch(closeSearchBox());

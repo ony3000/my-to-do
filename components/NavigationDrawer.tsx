@@ -53,8 +53,7 @@ export default function NavigationDrawer() {
     {
       isHideAutomatically: (
         todoItems
-          .filter(item => item.deadline)
-          .filter(item => item.deadline >= Number(midnightToday.format('x')) || !item.isComplete)
+          .filter(item => item.deadline && (item.deadline >= Number(midnightToday.format('x')) || !item.isComplete))
           .filter(item => !(item.isComplete && pageSettings['planned'].isHideCompletedItems))
           .length === 0
       ),
