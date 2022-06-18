@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import classNames from 'classnames/bind';
 import { Dict, Nullable } from '@/types/common';
-import { TodoItemBase } from '@/types/store/todoSlice';
+import { TodoItemBase, TodoItem } from '@/types/store/todoSlice';
 import { useAppDispatch, useAppSelector } from '@/hooks/index';
 import { openDetailPanel, updateSubStep } from '@/store/todoSlice';
 import styles from './TaskList.module.scss'; // shared
@@ -28,7 +28,7 @@ export default function StepList({
   filter = {},
 }: StepListProps) {
   const dispatch = useAppDispatch();
-  const filteredTodoItems = useAppSelector(
+  const filteredTodoItems: TodoItem[] = useAppSelector(
     ({ todo: state }) => state.todoItems
       .map((item) => {
         return {
@@ -46,7 +46,7 @@ export default function StepList({
       .filter((item) => (item.subSteps.length > 0))
       .filter((item) => !(item.isComplete && isHideCompletedItems))
   );
-  const filteredTodoSteps = filteredTodoItems.reduce((accumulator, currentItem) => [
+  const filteredTodoSteps = filteredTodoItems.reduce<Array<TodoItemBase & { taskId: string; taskTitle: string; }>>((accumulator, currentItem) => [
     ...accumulator,
     ...currentItem.subSteps.map((step) => ({
       ...step,
