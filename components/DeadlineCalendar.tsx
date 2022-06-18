@@ -85,7 +85,7 @@ export default function DeadlineCalendar({
           <div className={cx('title')}>날짜 선택</div>
           <DatePicker
             selected={calendarDate}
-            onChange={date => setCalendarDate(date)}
+            onChange={date => setCalendarDate(date as Date)}
             inline
             locale="ko"
             calendarClassName={cx('body')}
