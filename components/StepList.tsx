@@ -1,6 +1,8 @@
 import { useState } from 'react';
+import invariant from 'tiny-invariant';
 import classNames from 'classnames/bind';
 import { Dict, Nullable } from '@/types/common';
+import { isOneOf } from '@/types/guard';
 import { TodoItemBase, TodoItem } from '@/types/store/todoSlice';
 import { useAppDispatch, useAppSelector } from '@/hooks/index';
 import { openDetailPanel, updateSubStep } from '@/store/todoSlice';
@@ -34,7 +36,9 @@ export default function StepList({
         return {
           ...item,
           subSteps: item.subSteps.filter((step) => Object.entries(filter).every(([ key, value ]) => {
+            invariant(isOneOf(key, ['id', 'title', 'isComplete', 'createdAt']));
             if (value?.constructor === RegExp) {
+              invariant(isOneOf(key, ['id', 'title']));
               return step[key].match(value);
             }
             else {
