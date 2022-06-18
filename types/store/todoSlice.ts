@@ -62,10 +62,12 @@ export type TodoAppState = {
   }>;
   orderingCriterionPosition: Nullable<{
     top: number;
+    right?: undefined;
     left: number;
   } | {
     top: number;
     right: number;
+    left?: undefined;
   }>;
   deadlinePickerPosition: Nullable<{
     top: number;

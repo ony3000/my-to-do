@@ -84,8 +84,8 @@ export default function OrderingCriterion({
           className={cx('container')}
           style={{
             top: `${topPosition}px`,
-            right: (rightPosition !== undefined) && `${rightPosition}px`,
-            left: (leftPosition !== undefined) && `${leftPosition}px`,
+            right: rightPosition ? `${rightPosition}px` : '',
+            left: leftPosition ? `${leftPosition}px` : '',
           }}
         >
           <div className={cx('title')}>정렬 기준</div>
