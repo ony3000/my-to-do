@@ -176,8 +176,12 @@ export default function DetailPanel() {
 
   useEffect(() => {
     if (task && !isActivated) {
-      titleInputHandler($refs.titleArea.current);
-      memoInputHandler($refs.memoArea.current);
+      if ($refs.titleArea.current) {
+        titleInputHandler($refs.titleArea.current);
+      }
+      if ($refs.memoArea.current) {
+        memoInputHandler($refs.memoArea.current);
+      }
       setIsActivated(true);
     }
     else if (!task && isActivated) {
