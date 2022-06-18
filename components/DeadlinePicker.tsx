@@ -37,7 +37,7 @@ export default function DeadlinePicker({
   const rightPosition = deadlinePickerPosition?.right || 0;
   const isActiveDeadlineCalendar = deadlineCalendarPosition !== null;
 
-  const setFixedDeadline = (timestamp) => {
+  const setFixedDeadline = (timestamp: number) => {
     dispatch(setDeadline({
       taskId,
       deadline: timestamp,

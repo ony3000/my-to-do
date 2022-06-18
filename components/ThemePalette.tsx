@@ -2,6 +2,7 @@ import { useRef, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import invariant from 'tiny-invariant';
 import classNames from 'classnames/bind';
+import { ThemeColor } from '@/types/common';
 import { isOneOf } from '@/types/guard';
 import { useAppDispatch, useAppSelector } from '@/hooks/index';
 import { closeListOption, closeThemePalette, setThemeColor } from '@/store/todoSlice';
@@ -22,7 +23,7 @@ export default function ThemePalette() {
     container: useRef<HTMLDivElement>(null),
   };
 
-  const colors = [
+  const colors: ThemeColor[] = [
     'blue',
     'red',
     'violet',
@@ -33,7 +34,7 @@ export default function ThemePalette() {
   const topPosition = themePalettePosition?.top || 0;
   const leftPosition = themePalettePosition?.left || 0;
 
-  const changeTheme = (color) => {
+  const changeTheme = (color: ThemeColor) => {
     dispatch(setThemeColor({ pageKey, color }));
     dispatch(closeThemePalette());
     dispatch(closeListOption());

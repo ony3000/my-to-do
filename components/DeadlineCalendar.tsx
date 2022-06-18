@@ -31,7 +31,7 @@ export default function DeadlineCalendar({
   const topPosition = deadlineCalendarPosition?.top || 0;
   const rightPosition = deadlineCalendarPosition?.right || 0;
 
-  const set__Deadline = (timestamp) => {
+  const set__Deadline = (timestamp: number) => {
     dispatch(setDeadline({
       taskId,
       deadline: timestamp,
