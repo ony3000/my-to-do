@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import classNames from 'classnames/bind';
 import { useDispatch, useSelector } from 'react-redux';
 import { Dict, Nullable } from '@/types/common';
+import { isRegExp } from '@/types/guard';
 import {
   IMPORTANCE,
   DEADLINE,
@@ -52,7 +53,7 @@ export default function TaskList({
               && item.deadline <= ($lte ?? Infinity)
           );
         }
-        else if (value?.constructor === RegExp) {
+        else if (isRegExp(value)) {
           return item[key].match(value);
         }
         else {
