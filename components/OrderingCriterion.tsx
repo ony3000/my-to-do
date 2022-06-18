@@ -2,7 +2,7 @@ import { useRef, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import invariant from 'tiny-invariant';
 import classNames from 'classnames/bind';
-import { OrderingCriterion as OrderingCriterionType } from '@/types/common';
+import { OrderingCriterion as OrderingCriterionType, OrderingDirection } from '@/types/common';
 import { isOneOf } from '@/types/guard';
 import { useAppDispatch, useAppSelector } from '@/hooks/index';
 import {
@@ -44,7 +44,10 @@ export default function OrderingCriterion({
   const rightPosition = orderingCriterionPosition?.right;
   const leftPosition = orderingCriterionPosition?.left;
 
-  const setOrderingCriterionToDefault = ({ criterion, direction }) => {
+  const setOrderingCriterionToDefault = ({ criterion, direction }: {
+    criterion: OrderingCriterionType;
+    direction: OrderingDirection;
+  }) => {
     if (settingsPerPage.ordering === null || criterion !== settingsPerPage.ordering.criterion || direction !== settingsPerPage.ordering.direction) {
       dispatch(setOrderingCriterion({
         pageKey,
