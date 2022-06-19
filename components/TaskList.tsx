@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import classNames from 'classnames/bind';
 import { Dict, Nullable } from '@/types/common';
 import { isRegExp } from '@/types/guard';
+import { TodoItem } from '@/types/store/todoSlice';
 import { useAppDispatch, useAppSelector } from '@/hooks/index';
 import {
   IMPORTANCE,
@@ -24,9 +25,18 @@ import styles from './TaskList.module.scss';
 
 const cx = classNames.bind(styles);
 
-/**
- * @type {(props: { title?: Nullable<string> } & Dict) => Nullable<JSX.Element>}
- */
+type TaskListProps = {
+  title?: Nullable<string>;
+  isCollapsible?: boolean;
+  isCollapsedInitially?: boolean;
+  isHideForEmptyList?: boolean;
+  isHideTodayIndicator?: boolean;
+  isHideCompletedItems?: boolean;
+  filter?: {
+    [K in keyof TodoItem]?: TodoItem[K] | (TodoItem[K] extends string ? RegExp : never);
+  };
+};
+
 export default function TaskList({
   title = '작업',
   isCollapsible = true,
@@ -35,7 +45,7 @@ export default function TaskList({
   isHideTodayIndicator = false,
   isHideCompletedItems = false,
   filter = {},
-}) {
+}: TaskListProps) {
   const router = useRouter();
   const pageKey = router.pathname.replace(/^\/tasks\/?/, '') || 'inbox';
   const dispatch = useAppDispatch();
