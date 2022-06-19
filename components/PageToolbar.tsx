@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import classNames from 'classnames/bind';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '@/hooks/index';
 import { openListOption, openOrderingCriterion } from '@/store/todoSlice';
 import dayjs from '@/plugins/dayjs';
 import styles from './PageToolbar.module.scss';
@@ -15,11 +15,11 @@ export default function PageToolbar({
 }) {
   const router = useRouter();
   const pageKey = router.pathname.replace(/^\/tasks\/?/, '') || 'inbox';
-  const dispatch = useDispatch();
-  const listOptionPosition = useSelector(({ todo: state }) => state.listOptionPosition);
-  const orderingCriterionPosition = useSelector(({ todo: state }) => state.orderingCriterionPosition);
-  const functionsPerPage = useSelector(({ todo: state }) => state.toolbarFunctions[pageKey]);
-  const settingsPerPage = useSelector(({ todo: state }) => state.pageSettings[pageKey]);
+  const dispatch = useAppDispatch();
+  const listOptionPosition = useAppSelector(({ todo: state }) => state.listOptionPosition);
+  const orderingCriterionPosition = useAppSelector(({ todo: state }) => state.orderingCriterionPosition);
+  const functionsPerPage = useAppSelector(({ todo: state }) => state.toolbarFunctions[pageKey]);
+  const settingsPerPage = useAppSelector(({ todo: state }) => state.pageSettings[pageKey]);
   const midnightToday = dayjs().startOf('day');
 
   const isActiveListOption = listOptionPosition !== null;

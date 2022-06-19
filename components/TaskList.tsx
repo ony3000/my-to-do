@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import classNames from 'classnames/bind';
-import { useDispatch, useSelector } from 'react-redux';
 import { Dict, Nullable } from '@/types/common';
 import { isRegExp } from '@/types/guard';
+import { useAppDispatch, useAppSelector } from '@/hooks/index';
 import {
   IMPORTANCE,
   DEADLINE,
@@ -38,8 +38,8 @@ export default function TaskList({
 }) {
   const router = useRouter();
   const pageKey = router.pathname.replace(/^\/tasks\/?/, '') || 'inbox';
-  const dispatch = useDispatch();
-  const filteredTodoItems = useSelector(
+  const dispatch = useAppDispatch();
+  const filteredTodoItems = useAppSelector(
     ({ todo: state }) => state.todoItems
       .filter((item) => Object.entries(filter).every(([ key, value ]) => {
         if (key === 'deadline') {
@@ -62,9 +62,9 @@ export default function TaskList({
       }))
       .filter((item) => !(item.isComplete && isHideCompletedItems))
   );
-  const generalSettings = useSelector(({ todo: state }) => state.settings.general);
-  const settingsPerPage = useSelector(({ todo: state }) => state.pageSettings[pageKey]);
-  const focusedTaskId = useSelector(({ todo: state }) => state.focusedTaskId);
+  const generalSettings = useAppSelector(({ todo: state }) => state.settings.general);
+  const settingsPerPage = useAppSelector(({ todo: state }) => state.pageSettings[pageKey]);
+  const focusedTaskId = useAppSelector(({ todo: state }) => state.focusedTaskId);
   const [ isCollapsed, setIsCollapsed ] = useState(isCollapsedInitially || false);
 
   const midnightToday = dayjs().startOf('day');
