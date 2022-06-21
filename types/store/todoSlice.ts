@@ -123,3 +123,14 @@ export type TodoAppState = {
   };
   focusedTaskId: Nullable<string>;
 };
+
+export type FilteringCondition<T> = (
+  T extends number
+    ? {
+      $gt?: number;
+      $gte?: number;
+      $lt?: number;
+      $lte?: number;
+    }
+    : T | (T extends string ? RegExp : never)
+);

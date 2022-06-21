@@ -3,7 +3,7 @@ import invariant from 'tiny-invariant';
 import classNames from 'classnames/bind';
 import { Dict, Nullable } from '@/types/common';
 import { isRegExp, isOneOf } from '@/types/guard';
-import { TodoItemBase, TodoItem } from '@/types/store/todoSlice';
+import { TodoItemBase, TodoItem, FilteringCondition } from '@/types/store/todoSlice';
 import { useAppDispatch, useAppSelector } from '@/hooks/index';
 import { openDetailPanel, updateSubStep } from '@/store/todoSlice';
 import styles from './TaskList.module.scss'; // shared
@@ -17,7 +17,7 @@ type StepListProps = {
   isHideForEmptyList?: boolean;
   isHideCompletedItems?: boolean;
   filter?: {
-    [K in keyof TodoItemBase]?: TodoItemBase[K] | (TodoItemBase[K] extends string ? RegExp : never);
+    [K in keyof TodoItemBase]?: FilteringCondition<TodoItemBase[K]>;
   };
 };
 

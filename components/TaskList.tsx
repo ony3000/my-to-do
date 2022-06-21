@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import classNames from 'classnames/bind';
 import { Dict, Nullable } from '@/types/common';
 import { isRegExp } from '@/types/guard';
-import { TodoItem } from '@/types/store/todoSlice';
+import { TodoItem, FilteringCondition } from '@/types/store/todoSlice';
 import { useAppDispatch, useAppSelector } from '@/hooks/index';
 import {
   IMPORTANCE,
@@ -33,7 +33,7 @@ type TaskListProps = {
   isHideTodayIndicator?: boolean;
   isHideCompletedItems?: boolean;
   filter?: {
-    [K in keyof TodoItem]?: TodoItem[K] | (TodoItem[K] extends string ? RegExp : never);
+    [K in keyof TodoItem]?: FilteringCondition<TodoItem[K]>;
   };
 };
 
