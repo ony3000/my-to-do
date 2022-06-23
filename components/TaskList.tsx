@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import invariant from 'tiny-invariant';
 import classNames from 'classnames/bind';
-import { Dict, Nullable } from '@/types/common';
+import { Dict, Nullable, OrderingCriterion, OrderingDirection } from '@/types/common';
 import { isRegExp, isOneOf } from '@/types/guard';
 import { TodoItem, SettingsPerPage, FilteringCondition } from '@/types/store/todoSlice';
 import { useAppDispatch, useAppSelector } from '@/hooks/index';
@@ -85,7 +85,14 @@ export default function TaskList({
   const midnightTomorrow = midnightToday.add(1, 'day');
   const midnightAfter2Days = midnightToday.add(2, 'day');
 
-  const compareByStoredCriterion = ({ criterion, direction }, former, latter) => {
+  const compareByStoredCriterion = (
+    { criterion, direction }: {
+      criterion: OrderingCriterion;
+      direction: OrderingDirection;
+    },
+    former: TodoItem,
+    latter: TodoItem,
+  ) => {
     switch (criterion) {
       case IMPORTANCE:
         return (latter.isImportant - former.isImportant) * (direction === ASCENDING ? -1 : 1);
