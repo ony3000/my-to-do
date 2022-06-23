@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, KeyboardEventHandler, FormEventHandler, FocusEventHandler } from 'react';
 import { useRouter } from 'next/router';
 import invariant from 'tiny-invariant';
 import classNames from 'classnames/bind';
@@ -39,14 +39,14 @@ export default function TaskInput({
       inputElement.dataset.isEmpty = true;
     }
   };
-  const keyUpHandler = (event) => {
+  const keyUpHandler: KeyboardEventHandler<HTMLInputElement> = (event) => {
     if (event.key === 'Enter') {
       createTask();
 
       setTimeout(() => $refs.input.current.focus());
     }
   };
-  const inputHandler = (event) => {
+  const inputHandler: FormEventHandler<HTMLInputElement> = (event) => {
     const inputElement = event.target;
     const isInputEmpty = (inputElement.value === '');
 
@@ -54,7 +54,7 @@ export default function TaskInput({
       inputElement.dataset.isEmpty = isInputEmpty;
     }
   };
-  const blurHandler = (event) => {
+  const blurHandler: FocusEventHandler<HTMLInputElement> = (event) => {
     const inputElement = event.target;
     const trimmedTitle = inputElement.value.trim();
 

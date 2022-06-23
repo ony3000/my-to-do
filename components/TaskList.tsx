@@ -105,7 +105,10 @@ export default function TaskList({
         return false;
     }
   };
-  const importantHandler = ({ id, isImportant }) => {
+  const importantHandler = ({ id, isImportant }: {
+    id: string;
+    isImportant: boolean;
+  }) => {
     if (isImportant) {
       dispatch(markAsUnimportant(id));
     }
