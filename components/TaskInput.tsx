@@ -1,6 +1,9 @@
 import { useRef } from 'react';
 import { useRouter } from 'next/router';
+import invariant from 'tiny-invariant';
 import classNames from 'classnames/bind';
+import { isOneOf } from '@/types/guard';
+import { SettingsPerPage } from '@/types/store/todoSlice';
 import { useAppDispatch, useAppSelector } from '@/hooks/index';
 import { createTodoItem } from '@/store/todoSlice';
 import styles from './TaskInput.module.scss';
@@ -13,8 +16,11 @@ export default function TaskInput({
 }) {
   const router = useRouter();
   const pageKey = router.pathname.replace(/^\/tasks\/?/, '') || 'inbox';
+
+  invariant(isOneOf(pageKey, ['myday', 'important', 'planned', 'all', 'inbox']));
+
   const dispatch = useAppDispatch();
-  const settingsPerPage = useAppSelector(({ todo: state }) => state.pageSettings[pageKey]);
+  const settingsPerPage: SettingsPerPage = useAppSelector(({ todo: state }) => state.pageSettings[pageKey]);
   const $refs = {
     input: useRef(null),
   };

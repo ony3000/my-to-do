@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import invariant from 'tiny-invariant';
 import classNames from 'classnames/bind';
 import { Dict, Nullable } from '@/types/common';
-import { isRegExp } from '@/types/guard';
-import { TodoItem, FilteringCondition } from '@/types/store/todoSlice';
+import { isRegExp, isOneOf } from '@/types/guard';
+import { TodoItem, SettingsPerPage, FilteringCondition } from '@/types/store/todoSlice';
 import { useAppDispatch, useAppSelector } from '@/hooks/index';
 import {
   IMPORTANCE,
@@ -48,6 +49,9 @@ export default function TaskList({
 }: TaskListProps) {
   const router = useRouter();
   const pageKey = router.pathname.replace(/^\/tasks\/?/, '') || 'inbox';
+
+  invariant(isOneOf(pageKey, ['myday', 'important', 'planned', 'all', 'completed', 'inbox', 'search/[keyword]']));
+
   const dispatch = useAppDispatch();
   const filteredTodoItems = useAppSelector(
     ({ todo: state }) => state.todoItems
@@ -73,7 +77,7 @@ export default function TaskList({
       .filter((item) => !(item.isComplete && isHideCompletedItems))
   );
   const generalSettings = useAppSelector(({ todo: state }) => state.settings.general);
-  const settingsPerPage = useAppSelector(({ todo: state }) => state.pageSettings[pageKey]);
+  const settingsPerPage: SettingsPerPage = useAppSelector(({ todo: state }) => state.pageSettings[pageKey]);
   const focusedTaskId = useAppSelector(({ todo: state }) => state.focusedTaskId);
   const [ isCollapsed, setIsCollapsed ] = useState(isCollapsedInitially || false);
 

@@ -1,5 +1,8 @@
 import { useRouter } from 'next/router';
+import invariant from 'tiny-invariant';
 import classNames from 'classnames/bind';
+import { isOneOf } from '@/types/guard';
+import { SettingsPerPage } from '@/types/store/todoSlice';
 import { useAppDispatch, useAppSelector } from '@/hooks/index';
 import { openListOption, openOrderingCriterion } from '@/store/todoSlice';
 import dayjs from '@/plugins/dayjs';
@@ -15,11 +18,14 @@ export default function PageToolbar({
 }) {
   const router = useRouter();
   const pageKey = router.pathname.replace(/^\/tasks\/?/, '') || 'inbox';
+
+  invariant(isOneOf(pageKey, ['myday', 'important', 'planned', 'all', 'completed', 'inbox', 'search', 'search/[keyword]']));
+
   const dispatch = useAppDispatch();
   const listOptionPosition = useAppSelector(({ todo: state }) => state.listOptionPosition);
   const orderingCriterionPosition = useAppSelector(({ todo: state }) => state.orderingCriterionPosition);
   const functionsPerPage = useAppSelector(({ todo: state }) => state.toolbarFunctions[pageKey]);
-  const settingsPerPage = useAppSelector(({ todo: state }) => state.pageSettings[pageKey]);
+  const settingsPerPage: SettingsPerPage = useAppSelector(({ todo: state }) => state.pageSettings[pageKey]);
   const midnightToday = dayjs().startOf('day');
 
   const isActiveListOption = listOptionPosition !== null;
