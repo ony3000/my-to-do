@@ -95,15 +95,15 @@ export default function TaskList({
   ) => {
     switch (criterion) {
       case IMPORTANCE:
-        return (latter.isImportant - former.isImportant) * (direction === ASCENDING ? -1 : 1);
+        return (Number(latter.isImportant) - Number(former.isImportant)) * (direction === ASCENDING ? -1 : 1);
       case DEADLINE:
         return (
-          (!!latter.deadline - !!former.deadline)
-            || (former.deadline - latter.deadline) * (direction === DESCENDING ? -1 : 1)
+          (Number(!!latter.deadline) - Number(!!former.deadline))
+            || (Number(former.deadline) - Number(latter.deadline)) * (direction === DESCENDING ? -1 : 1)
             || former.createdAt - latter.createdAt
         );
       case MYDAY:
-        return (latter.isMarkedAsTodayTask - former.isMarkedAsTodayTask) * (direction === ASCENDING ? -1 : 1);
+        return (Number(latter.isMarkedAsTodayTask) - Number(former.isMarkedAsTodayTask)) * (direction === ASCENDING ? -1 : 1);
       case TITLE:
         return (former.title.localeCompare(latter.title)) * (direction === DESCENDING ? -1 : 1);
       case CREATION_DATE:
@@ -133,12 +133,12 @@ export default function TaskList({
     case 'myday':
       filteredTodoItems.sort((former, latter) => (
         (settingsPerPage.ordering ? compareByStoredCriterion(settingsPerPage.ordering, former, latter) : false)
-          || (latter.markedAsImportantAt || latter.markedAsTodayTaskAt) - (former.markedAsImportantAt || former.markedAsTodayTaskAt)
+          || Number(latter.markedAsImportantAt || latter.markedAsTodayTaskAt) - Number(former.markedAsImportantAt || former.markedAsTodayTaskAt)
       ));
       break;
     case 'planned':
       filteredTodoItems.sort((former, latter) => (
-        former.deadline - latter.deadline || former.createdAt - latter.createdAt
+        Number(former.deadline) - Number(latter.deadline) || former.createdAt - latter.createdAt
       ));
       break;
     case 'all':
@@ -147,7 +147,7 @@ export default function TaskList({
       ));
       break;
     case 'completed':
-      filteredTodoItems.sort((former, latter) => (latter.completedAt - former.completedAt));
+      filteredTodoItems.sort((former, latter) => (Number(latter.completedAt) - Number(former.completedAt)));
       break;
     case 'inbox':
       filteredTodoItems.sort((former, latter) => (
