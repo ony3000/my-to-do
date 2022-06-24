@@ -55,7 +55,7 @@ export default function TaskInput({
     }
   };
   const inputHandler: FormEventHandler<HTMLInputElement> = (event) => {
-    const inputElement = event.target;
+    const inputElement = event.currentTarget;
     const isInputEmpty = (inputElement.value === '');
 
     if (inputElement.dataset.isEmpty !== String(isInputEmpty)) {
@@ -63,7 +63,7 @@ export default function TaskInput({
     }
   };
   const blurHandler: FocusEventHandler<HTMLInputElement> = (event) => {
-    const inputElement = event.target;
+    const inputElement = event.currentTarget;
     const trimmedTitle = inputElement.value.trim();
 
     if (trimmedTitle) {
