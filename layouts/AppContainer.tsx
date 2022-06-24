@@ -73,7 +73,7 @@ export default function AppContainer({ children }: AppContainerProps) {
         { [`is-${settingsPerPage?.themeColor}-theme`]: settingsPerPage?.themeColor },
       )}
     >
-      {isAppReady ? (
+      {isAppReady && pageKey !== '/' ? (
         <>
           <AppHeader />
 
