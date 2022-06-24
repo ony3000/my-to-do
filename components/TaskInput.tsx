@@ -22,7 +22,7 @@ export default function TaskInput({
   const dispatch = useAppDispatch();
   const settingsPerPage: SettingsPerPage = useAppSelector(({ todo: state }) => state.pageSettings[pageKey]);
   const $refs = {
-    input: useRef(null),
+    input: useRef<HTMLInputElement>(null),
   };
 
   const createTask = () => {
