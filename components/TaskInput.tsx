@@ -27,23 +27,31 @@ export default function TaskInput({
 
   const createTask = () => {
     const inputElement = $refs.input.current;
-    const trimmedTitle = inputElement.value.trim();
 
-    if (trimmedTitle) {
-      dispatch(createTodoItem({
-        title: trimmedTitle,
-        ...itemProps,
-      }));
+    if (inputElement) {
+      const trimmedTitle = inputElement.value.trim();
 
-      inputElement.value = '';
-      inputElement.dataset.isEmpty = true;
+      if (trimmedTitle) {
+        dispatch(createTodoItem({
+          title: trimmedTitle,
+          ...itemProps,
+        }));
+
+        inputElement.value = '';
+        inputElement.dataset.isEmpty = true;
+      }
+    }
+  };
+  const focusInput = () => {
+    if ($refs.input.current) {
+      $refs.input.current.focus();
     }
   };
   const keyUpHandler: KeyboardEventHandler<HTMLInputElement> = (event) => {
     if (event.key === 'Enter') {
       createTask();
 
-      setTimeout(() => $refs.input.current.focus());
+      setTimeout(() => focusInput());
     }
   };
   const inputHandler: FormEventHandler<HTMLInputElement> = (event) => {
@@ -72,7 +80,7 @@ export default function TaskInput({
           `text-${settingsPerPage.themeColor ? settingsPerPage.themeColor : 'blue'}-500`,
         )}
         title="작업 추가"
-        onClick={() => $refs.input.current.focus()}
+        onClick={() => focusInput()}
       >
         <span className={cx('icon-wrapper')}>
           <i className="fas fa-plus"></i>
