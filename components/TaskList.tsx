@@ -56,6 +56,7 @@ export default function TaskList({
   const filteredTodoItems = useAppSelector(
     ({ todo: state }) => state.todoItems
       .filter((item) => Object.entries(filter).every(([ key, value ]) => {
+        invariant(isOneOf(key, ['id', 'title', 'isComplete', 'createdAt', 'subSteps', 'isImportant', 'isMarkedAsTodayTask', 'deadline', 'memo', 'completedAt', 'markedAsImportantAt', 'markedAsTodayTaskAt']));
         if (key === 'deadline') {
           const { $gt, $gte, $lt, $lte } = filter.deadline ?? {};
 
@@ -68,6 +69,7 @@ export default function TaskList({
           );
         }
         else if (isRegExp(value)) {
+          invariant(isOneOf(key, ['id', 'title', 'memo']));
           return item[key].match(value);
         }
         else {
