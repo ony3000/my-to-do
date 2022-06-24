@@ -38,7 +38,7 @@ export default function TaskInput({
         }));
 
         inputElement.value = '';
-        inputElement.dataset.isEmpty = true;
+        inputElement.dataset.isEmpty = String(true);
       }
     }
   };
@@ -59,7 +59,7 @@ export default function TaskInput({
     const isInputEmpty = (inputElement.value === '');
 
     if (inputElement.dataset.isEmpty !== String(isInputEmpty)) {
-      inputElement.dataset.isEmpty = isInputEmpty;
+      inputElement.dataset.isEmpty = String(isInputEmpty);
     }
   };
   const blurHandler: FocusEventHandler<HTMLInputElement> = (event) => {
