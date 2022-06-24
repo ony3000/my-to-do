@@ -57,7 +57,7 @@ export default function TaskList({
     ({ todo: state }) => state.todoItems
       .filter((item) => Object.entries(filter).every(([ key, value ]) => {
         if (key === 'deadline') {
-          const { $gt, $gte, $lt, $lte } = filter.deadline;
+          const { $gt, $gte, $lt, $lte } = filter.deadline ?? {};
 
           return (
             item.deadline
