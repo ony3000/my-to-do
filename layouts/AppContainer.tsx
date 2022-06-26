@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import invariant from 'tiny-invariant';
 import classNames from 'classnames/bind';
 import { isOneOf } from '@/types/guard';
 import { SettingsPerPage } from '@/types/store/todoSlice';
@@ -44,12 +43,10 @@ type AppContainerProps = {
 export default function AppContainer({ children }: AppContainerProps) {
   const router = useRouter();
   const pageKey = router.pathname.replace(/^\/tasks\/?/, '') || 'inbox';
-
-  invariant(isOneOf(pageKey, ['/', 'myday', 'important', 'planned', 'all', 'completed', 'inbox', 'search', 'search/[keyword]']));
-
+  const isExpectedPage = isOneOf(pageKey, ['myday', 'important', 'planned', 'all', 'completed', 'inbox', 'search', 'search/[keyword]']);
   const dispatch = useAppDispatch();
   const isAppReady = useAppSelector(({ todo: state }) => state.isAppReady);
-  const settingsPerPage: SettingsPerPage = useAppSelector(({ todo: state }) => pageKey === '/' ? {} : state.pageSettings[pageKey]);
+  const settingsPerPage: SettingsPerPage = useAppSelector(({ todo: state }) => isExpectedPage ? state.pageSettings[pageKey] : {});
   const [ isMounted, setIsMounted ] = useState(false);
 
   useEffect(() => {
@@ -73,7 +70,9 @@ export default function AppContainer({ children }: AppContainerProps) {
         { [`is-${settingsPerPage?.themeColor}-theme`]: settingsPerPage?.themeColor },
       )}
     >
-      {isAppReady && pageKey !== '/' ? (
+      {!isAppReady && <AppSplash />}
+      {(isAppReady && !isExpectedPage) && <>{children}</>}
+      {(isAppReady && isExpectedPage) && (
         <>
           <AppHeader />
 
@@ -89,8 +88,6 @@ export default function AppContainer({ children }: AppContainerProps) {
             <DetailPanel />
           </div>
         </>
-      ) : (
-        <AppSplash />
       )}
     </div>
   );
