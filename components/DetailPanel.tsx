@@ -40,7 +40,7 @@ export default function DetailPanel() {
 
   const dispatch = useAppDispatch();
   const generalSettings = useAppSelector(({ todo: state }) => state.settings.general);
-  const settingsPerPage: SettingsPerPage = useAppSelector(({ todo: state }) => state.pageSettings[pageKey]);
+  const settingsPerPage = useAppSelector<SettingsPerPage>(({ todo: state }) => state.pageSettings[pageKey]);
   const focusedTaskId = useAppSelector(({ todo: state }) => state.focusedTaskId);
   const task = useAppSelector(({ todo: state }) => state.todoItems.find(({ id }) => (id === focusedTaskId)));
   const deadlinePickerPosition = useAppSelector(({ todo: state }) => state.deadlinePickerPosition);

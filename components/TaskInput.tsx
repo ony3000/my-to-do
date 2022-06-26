@@ -20,7 +20,7 @@ export default function TaskInput({
   invariant(isOneOf(pageKey, ['myday', 'important', 'planned', 'all', 'inbox']));
 
   const dispatch = useAppDispatch();
-  const settingsPerPage: SettingsPerPage = useAppSelector(({ todo: state }) => state.pageSettings[pageKey]);
+  const settingsPerPage = useAppSelector<SettingsPerPage>(({ todo: state }) => state.pageSettings[pageKey]);
   const $refs = {
     input: useRef<HTMLInputElement>(null),
   };

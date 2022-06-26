@@ -46,7 +46,7 @@ export default function AppContainer({ children }: AppContainerProps) {
   const isExpectedPage = isOneOf(pageKey, ['myday', 'important', 'planned', 'all', 'completed', 'inbox', 'search', 'search/[keyword]']);
   const dispatch = useAppDispatch();
   const isAppReady = useAppSelector(({ todo: state }) => state.isAppReady);
-  const settingsPerPage: SettingsPerPage = useAppSelector(({ todo: state }) => isExpectedPage ? state.pageSettings[pageKey] : {});
+  const settingsPerPage = useAppSelector<SettingsPerPage>(({ todo: state }) => isExpectedPage ? state.pageSettings[pageKey] : {});
   const [ isMounted, setIsMounted ] = useState(false);
 
   useEffect(() => {

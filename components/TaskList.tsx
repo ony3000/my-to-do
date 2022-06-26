@@ -79,7 +79,7 @@ export default function TaskList({
       .filter((item) => !(item.isComplete && isHideCompletedItems))
   );
   const generalSettings = useAppSelector(({ todo: state }) => state.settings.general);
-  const settingsPerPage: SettingsPerPage = useAppSelector(({ todo: state }) => state.pageSettings[pageKey]);
+  const settingsPerPage = useAppSelector<SettingsPerPage>(({ todo: state }) => state.pageSettings[pageKey]);
   const focusedTaskId = useAppSelector(({ todo: state }) => state.focusedTaskId);
   const [ isCollapsed, setIsCollapsed ] = useState(isCollapsedInitially || false);
 

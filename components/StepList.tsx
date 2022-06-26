@@ -30,7 +30,7 @@ export default function StepList({
   filter = {},
 }: StepListProps) {
   const dispatch = useAppDispatch();
-  const filteredTodoItems: TodoItem[] = useAppSelector(
+  const filteredTodoItems = useAppSelector<TodoItem[]>(
     ({ todo: state }) => state.todoItems
       .map((item) => {
         return {

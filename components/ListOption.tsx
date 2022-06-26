@@ -34,7 +34,7 @@ export default function ListOption({
   const dispatch = useAppDispatch();
   const listOptionPosition = useAppSelector(({ todo: state }) => state.listOptionPosition);
   const themePalettePosition = useAppSelector(({ todo: state }) => state.themePalettePosition);
-  const settingsPerPage: SettingsPerPage = useAppSelector(({ todo: state }) => state.pageSettings[pageKey]);
+  const settingsPerPage = useAppSelector<SettingsPerPage>(({ todo: state }) => state.pageSettings[pageKey]);
   const $refs = {
     container: useRef<HTMLDivElement>(null),
   };

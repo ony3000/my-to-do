@@ -25,7 +25,7 @@ export default function PageToolbar({
   const listOptionPosition = useAppSelector(({ todo: state }) => state.listOptionPosition);
   const orderingCriterionPosition = useAppSelector(({ todo: state }) => state.orderingCriterionPosition);
   const functionsPerPage = useAppSelector(({ todo: state }) => state.toolbarFunctions[pageKey]);
-  const settingsPerPage: SettingsPerPage = useAppSelector(({ todo: state }) => state.pageSettings[pageKey]);
+  const settingsPerPage = useAppSelector<SettingsPerPage>(({ todo: state }) => state.pageSettings[pageKey]);
   const midnightToday = dayjs().startOf('day');
 
   const isActiveListOption = listOptionPosition !== null;

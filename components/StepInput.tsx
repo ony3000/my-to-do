@@ -25,7 +25,7 @@ export default function StepInput({
   invariant(isOneOf(pageKey, ['myday', 'important', 'planned', 'all', 'completed', 'inbox', 'search', 'search/[keyword]']));
 
   const dispatch = useAppDispatch();
-  const settingsPerPage: SettingsPerPage = useAppSelector(({ todo: state }) => state.pageSettings[pageKey]);
+  const settingsPerPage = useAppSelector<SettingsPerPage>(({ todo: state }) => state.pageSettings[pageKey]);
   const $refs = {
     input: useRef<HTMLInputElement>(null),
   };
