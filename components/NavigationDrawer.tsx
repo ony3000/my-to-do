@@ -11,6 +11,19 @@ import styles from './NavigationDrawer.module.scss';
 
 const cx = classNames.bind(styles);
 
+type AnchorItem = {
+  isHideAutomatically: boolean;
+  key: string;
+  text: string;
+  href: string;
+  hrefAliases?: string[];
+  icon: {
+    className: string;
+  },
+  count?: number;
+  textColor?: string;
+};
+
 export default function NavigationDrawer() {
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -23,7 +36,7 @@ export default function NavigationDrawer() {
   const midnightToday = dayjs().startOf('day');
   const { autoHideEmptyLists } = smartListSettings;
   const incompleteTodoItems = todoItems.filter(item => !item.isComplete);
-  const anchors = [
+  const anchors: AnchorItem[] = [
     {
       isHideAutomatically: false,
       key: 'myday',
