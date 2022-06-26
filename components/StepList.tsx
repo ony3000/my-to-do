@@ -30,9 +30,9 @@ export default function StepList({
   filter = {},
 }: StepListProps) {
   const dispatch = useAppDispatch();
-  const filteredTodoItems = useAppSelector<TodoItem[]>(
+  const filteredTodoItems = useAppSelector(
     ({ todo: state }) => state.todoItems
-      .map((item) => {
+      .map<TodoItem>((item) => {
         return {
           ...item,
           subSteps: item.subSteps.filter((step) => Object.entries(filter).every(([ key, value ]) => {
@@ -52,7 +52,7 @@ export default function StepList({
   );
   const filteredTodoSteps = filteredTodoItems.reduce<Array<TodoItemBase & { taskId: string; taskTitle: string; }>>((accumulator, currentItem) => [
     ...accumulator,
-    ...currentItem.subSteps.map((step) => ({
+    ...currentItem.subSteps.map<TodoItemBase & { taskId: string; taskTitle: string; }>((step) => ({
       ...step,
       taskId: currentItem.id,
       taskTitle: currentItem.title,
