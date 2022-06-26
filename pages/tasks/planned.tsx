@@ -1,8 +1,8 @@
 import Head from 'next/head';
 import classNames from 'classnames/bind';
-import { useSelector } from 'react-redux';
 import dayjs from '@/plugins/dayjs';
 import styles from './inbox.module.scss'; // shared
+import { useAppSelector } from '@/hooks/index';
 import PageToolbar from '@/components/PageToolbar';
 import TaskInput from '@/components/TaskInput';
 import TaskList from '@/components/TaskList';
@@ -10,7 +10,7 @@ import TaskList from '@/components/TaskList';
 const cx = classNames.bind(styles);
 
 export default function Planned() {
-  const settingsPerPage = useSelector(({ todo: state }) => state.pageSettings['planned']);
+  const settingsPerPage = useAppSelector(({ todo: state }) => state.pageSettings['planned']);
 
   const midnightToday = dayjs().startOf('day');
   const midnightTomorrow = midnightToday.add(1, 'day');

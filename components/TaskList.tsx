@@ -1,7 +1,11 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import invariant from 'tiny-invariant';
 import classNames from 'classnames/bind';
-import { useDispatch, useSelector } from 'react-redux';
+import { Dict, Nullable, OrderingCriterion, OrderingDirection } from '@/types/common';
+import { isRegExp, isOneOf } from '@/types/guard';
+import { TodoItem, SettingsPerPage, FilteringCondition } from '@/types/store/todoSlice';
+import { useAppDispatch, useAppSelector } from '@/hooks/index';
 import {
   IMPORTANCE,
   DEADLINE,
@@ -22,6 +26,18 @@ import styles from './TaskList.module.scss';
 
 const cx = classNames.bind(styles);
 
+type TaskListProps = {
+  title?: Nullable<string>;
+  isCollapsible?: boolean;
+  isCollapsedInitially?: boolean;
+  isHideForEmptyList?: boolean;
+  isHideTodayIndicator?: boolean;
+  isHideCompletedItems?: boolean;
+  filter?: {
+    [K in keyof TodoItem]?: FilteringCondition<TodoItem[K]>;
+  };
+};
+
 export default function TaskList({
   title = '작업',
   isCollapsible = true,
@@ -30,15 +46,19 @@ export default function TaskList({
   isHideTodayIndicator = false,
   isHideCompletedItems = false,
   filter = {},
-}) {
+}: TaskListProps) {
   const router = useRouter();
   const pageKey = router.pathname.replace(/^\/tasks\/?/, '') || 'inbox';
-  const dispatch = useDispatch();
-  const filteredTodoItems = useSelector(
+
+  invariant(isOneOf(pageKey, ['myday', 'important', 'planned', 'all', 'completed', 'inbox', 'search/[keyword]']));
+
+  const dispatch = useAppDispatch();
+  const filteredTodoItems = useAppSelector(
     ({ todo: state }) => state.todoItems
       .filter((item) => Object.entries(filter).every(([ key, value ]) => {
+        invariant(isOneOf(key, ['id', 'title', 'isComplete', 'createdAt', 'subSteps', 'isImportant', 'isMarkedAsTodayTask', 'deadline', 'memo', 'completedAt', 'markedAsImportantAt', 'markedAsTodayTaskAt']));
         if (key === 'deadline') {
-          const { $gt, $gte, $lt, $lte } = filter.deadline;
+          const { $gt, $gte, $lt, $lte } = filter.deadline ?? {};
 
           return (
             item.deadline
@@ -48,7 +68,8 @@ export default function TaskList({
               && item.deadline <= ($lte ?? Infinity)
           );
         }
-        else if (value?.constructor === RegExp) {
+        else if (isRegExp(value)) {
+          invariant(isOneOf(key, ['id', 'title', 'memo']));
           return item[key].match(value);
         }
         else {
@@ -57,27 +78,34 @@ export default function TaskList({
       }))
       .filter((item) => !(item.isComplete && isHideCompletedItems))
   );
-  const generalSettings = useSelector(({ todo: state }) => state.settings.general);
-  const settingsPerPage = useSelector(({ todo: state }) => state.pageSettings[pageKey]);
-  const focusedTaskId = useSelector(({ todo: state }) => state.focusedTaskId);
+  const generalSettings = useAppSelector(({ todo: state }) => state.settings.general);
+  const settingsPerPage = useAppSelector<SettingsPerPage>(({ todo: state }) => state.pageSettings[pageKey]);
+  const focusedTaskId = useAppSelector(({ todo: state }) => state.focusedTaskId);
   const [ isCollapsed, setIsCollapsed ] = useState(isCollapsedInitially || false);
 
   const midnightToday = dayjs().startOf('day');
   const midnightTomorrow = midnightToday.add(1, 'day');
   const midnightAfter2Days = midnightToday.add(2, 'day');
 
-  const compareByStoredCriterion = ({ criterion, direction }, former, latter) => {
+  const compareByStoredCriterion = (
+    { criterion, direction }: {
+      criterion: OrderingCriterion;
+      direction: OrderingDirection;
+    },
+    former: TodoItem,
+    latter: TodoItem,
+  ) => {
     switch (criterion) {
       case IMPORTANCE:
-        return (latter.isImportant - former.isImportant) * (direction === ASCENDING ? -1 : 1);
+        return (Number(latter.isImportant) - Number(former.isImportant)) * (direction === ASCENDING ? -1 : 1);
       case DEADLINE:
         return (
-          (!!latter.deadline - !!former.deadline)
-            || (former.deadline - latter.deadline) * (direction === DESCENDING ? -1 : 1)
+          (Number(!!latter.deadline) - Number(!!former.deadline))
+            || (Number(former.deadline) - Number(latter.deadline)) * (direction === DESCENDING ? -1 : 1)
             || former.createdAt - latter.createdAt
         );
       case MYDAY:
-        return (latter.isMarkedAsTodayTask - former.isMarkedAsTodayTask) * (direction === ASCENDING ? -1 : 1);
+        return (Number(latter.isMarkedAsTodayTask) - Number(former.isMarkedAsTodayTask)) * (direction === ASCENDING ? -1 : 1);
       case TITLE:
         return (former.title.localeCompare(latter.title)) * (direction === DESCENDING ? -1 : 1);
       case CREATION_DATE:
@@ -86,7 +114,10 @@ export default function TaskList({
         return false;
     }
   };
-  const importantHandler = ({ id, isImportant }) => {
+  const importantHandler = ({ id, isImportant }: {
+    id: string;
+    isImportant: boolean;
+  }) => {
     if (isImportant) {
       dispatch(markAsUnimportant(id));
     }
@@ -104,12 +135,12 @@ export default function TaskList({
     case 'myday':
       filteredTodoItems.sort((former, latter) => (
         (settingsPerPage.ordering ? compareByStoredCriterion(settingsPerPage.ordering, former, latter) : false)
-          || (latter.markedAsImportantAt || latter.markedAsTodayTaskAt) - (former.markedAsImportantAt || former.markedAsTodayTaskAt)
+          || Number(latter.markedAsImportantAt || latter.markedAsTodayTaskAt) - Number(former.markedAsImportantAt || former.markedAsTodayTaskAt)
       ));
       break;
     case 'planned':
       filteredTodoItems.sort((former, latter) => (
-        former.deadline - latter.deadline || former.createdAt - latter.createdAt
+        Number(former.deadline) - Number(latter.deadline) || former.createdAt - latter.createdAt
       ));
       break;
     case 'all':
@@ -118,7 +149,7 @@ export default function TaskList({
       ));
       break;
     case 'completed':
-      filteredTodoItems.sort((former, latter) => (latter.completedAt - former.completedAt));
+      filteredTodoItems.sort((former, latter) => (Number(latter.completedAt) - Number(former.completedAt)));
       break;
     case 'inbox':
       filteredTodoItems.sort((former, latter) => (

@@ -1,7 +1,7 @@
-import { useRef } from 'react';
+import { useRef, FormEventHandler, FocusEventHandler } from 'react';
 import { useRouter } from 'next/router';
 import classNames from 'classnames/bind';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '@/hooks/index';
 import { openSearchBox, closeSearchBox } from '@/store/todoSlice';
 import styles from './SearchBox.module.scss';
 
@@ -9,10 +9,10 @@ const cx = classNames.bind(styles);
 
 export default function SearchBox() {
   const router = useRouter();
-  const dispatch = useDispatch();
-  const isActiveSearchBox = useSelector(({ todo: state }) => state.isActiveSearchBox);
+  const dispatch = useAppDispatch();
+  const isActiveSearchBox = useAppSelector(({ todo: state }) => state.isActiveSearchBox);
   const $refs = {
-    input: useRef(null),
+    input: useRef<HTMLInputElement>(null),
   };
 
   const { keyword = '' } = router.query;
@@ -22,10 +22,16 @@ export default function SearchBox() {
       dispatch(openSearchBox());
     }
 
-    setTimeout(() => $refs.input.current.focus());
+    setTimeout(() => {
+      if ($refs.input.current) {
+        $refs.input.current.focus();
+      }
+    });
   };
   const deactivateSearchBox = () => {
-    $refs.input.current.value = '';
+    if ($refs.input.current) {
+      $refs.input.current.value = '';
+    }
 
     if (isActiveSearchBox) {
       dispatch(closeSearchBox());
@@ -33,8 +39,8 @@ export default function SearchBox() {
 
     router.push('/tasks/inbox');
   };
-  const inputHandler = (event) => {
-    const inputElement = event.target;
+  const inputHandler: FormEventHandler<HTMLInputElement> = (event) => {
+    const inputElement = event.currentTarget;
     const encodedKeyword = encodeURIComponent(inputElement.value);
 
     if (router.pathname.startsWith('/tasks/search')) {
@@ -44,8 +50,8 @@ export default function SearchBox() {
       router.push(`/tasks/search/${encodedKeyword}`);
     }
   };
-  const blurHandler = (event) => {
-    const inputElement = event.target;
+  const blurHandler: FocusEventHandler<HTMLInputElement> = (event) => {
+    const inputElement = event.currentTarget;
 
     if (!inputElement.value) {
       deactivateSearchBox();

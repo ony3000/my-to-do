@@ -1,10 +1,25 @@
 import { useState } from 'react';
+import invariant from 'tiny-invariant';
 import classNames from 'classnames/bind';
-import { useDispatch, useSelector } from 'react-redux';
+import { Dict, Nullable } from '@/types/common';
+import { isRegExp, isOneOf } from '@/types/guard';
+import { TodoItemBase, TodoItem, FilteringCondition } from '@/types/store/todoSlice';
+import { useAppDispatch, useAppSelector } from '@/hooks/index';
 import { openDetailPanel, updateSubStep } from '@/store/todoSlice';
 import styles from './TaskList.module.scss'; // shared
 
 const cx = classNames.bind(styles);
+
+type StepListProps = {
+  title?: Nullable<string>;
+  isCollapsible?: boolean;
+  isCollapsedInitially?: boolean;
+  isHideForEmptyList?: boolean;
+  isHideCompletedItems?: boolean;
+  filter?: {
+    [K in keyof TodoItemBase]?: FilteringCondition<TodoItemBase[K]>;
+  };
+};
 
 export default function StepList({
   title = '단계',
@@ -13,15 +28,17 @@ export default function StepList({
   isHideForEmptyList = false,
   isHideCompletedItems = false,
   filter = {},
-}) {
-  const dispatch = useDispatch();
-  const filteredTodoItems = useSelector(
+}: StepListProps) {
+  const dispatch = useAppDispatch();
+  const filteredTodoItems = useAppSelector(
     ({ todo: state }) => state.todoItems
-      .map((item) => {
+      .map<TodoItem>((item) => {
         return {
           ...item,
           subSteps: item.subSteps.filter((step) => Object.entries(filter).every(([ key, value ]) => {
-            if (value?.constructor === RegExp) {
+            invariant(isOneOf(key, ['id', 'title', 'isComplete', 'createdAt']));
+            if (isRegExp(value)) {
+              invariant(isOneOf(key, ['id', 'title']));
               return step[key].match(value);
             }
             else {
@@ -33,15 +50,15 @@ export default function StepList({
       .filter((item) => (item.subSteps.length > 0))
       .filter((item) => !(item.isComplete && isHideCompletedItems))
   );
-  const filteredTodoSteps = filteredTodoItems.reduce((accumulator, currentItem) => [
+  const filteredTodoSteps = filteredTodoItems.reduce<Array<TodoItemBase & { taskId: string; taskTitle: string; }>>((accumulator, currentItem) => [
     ...accumulator,
-    ...currentItem.subSteps.map((step) => ({
+    ...currentItem.subSteps.map<TodoItemBase & { taskId: string; taskTitle: string; }>((step) => ({
       ...step,
       taskId: currentItem.id,
       taskTitle: currentItem.title,
     })),
   ], []);
-  const focusedTaskId = useSelector(({ todo: state }) => state.focusedTaskId);
+  const focusedTaskId = useAppSelector(({ todo: state }) => state.focusedTaskId);
   const [ isCollapsed, setIsCollapsed ] = useState(isCollapsedInitially || false);
 
   filteredTodoSteps.sort((former, latter) => (latter.createdAt - former.createdAt));

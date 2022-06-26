@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import classNames from 'classnames/bind';
-import { useDispatch, useSelector } from 'react-redux';
+import { isOneOf } from '@/types/guard';
+import { SettingsPerPage } from '@/types/store/todoSlice';
+import { useAppDispatch, useAppSelector } from '@/hooks/index';
 import { launchApp } from '@/store/todoSlice';
 import styles from './AppContainer.module.scss';
 import AppSplash from '@/components/AppSplash';
@@ -34,12 +36,17 @@ const cx = classNames.bind(styles);
  * text-amber-700
  */
 
-export default function AppContainer({ children }) {
+type AppContainerProps = {
+  children: JSX.Element;
+};
+
+export default function AppContainer({ children }: AppContainerProps) {
   const router = useRouter();
   const pageKey = router.pathname.replace(/^\/tasks\/?/, '') || 'inbox';
-  const dispatch = useDispatch();
-  const isAppReady = useSelector(({ todo: state }) => state.isAppReady);
-  const settingsPerPage = useSelector(({ todo: state }) => state.pageSettings[pageKey]);
+  const isExpectedPage = isOneOf(pageKey, ['myday', 'important', 'planned', 'all', 'completed', 'inbox', 'search', 'search/[keyword]']);
+  const dispatch = useAppDispatch();
+  const isAppReady = useAppSelector(({ todo: state }) => state.isAppReady);
+  const settingsPerPage = useAppSelector<SettingsPerPage>(({ todo: state }) => isExpectedPage ? state.pageSettings[pageKey] : {});
   const [ isMounted, setIsMounted ] = useState(false);
 
   useEffect(() => {
@@ -63,7 +70,9 @@ export default function AppContainer({ children }) {
         { [`is-${settingsPerPage?.themeColor}-theme`]: settingsPerPage?.themeColor },
       )}
     >
-      {isAppReady ? (
+      {!isAppReady && <AppSplash />}
+      {(isAppReady && !isExpectedPage) && <>{children}</>}
+      {(isAppReady && isExpectedPage) && (
         <>
           <AppHeader />
 
@@ -79,8 +88,6 @@ export default function AppContainer({ children }) {
             <DetailPanel />
           </div>
         </>
-      ) : (
-        <AppSplash />
       )}
     </div>
   );

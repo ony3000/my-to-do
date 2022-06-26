@@ -1,55 +1,74 @@
-import { useRef } from 'react';
+import { useRef, KeyboardEventHandler, FormEventHandler, FocusEventHandler } from 'react';
 import { useRouter } from 'next/router';
+import invariant from 'tiny-invariant';
 import classNames from 'classnames/bind';
-import { useDispatch, useSelector } from 'react-redux';
+import { isOneOf } from '@/types/guard';
+import { SettingsPerPage } from '@/types/store/todoSlice';
+import { useAppDispatch, useAppSelector } from '@/hooks/index';
 import { createTodoItem, createSubStep } from '@/store/todoSlice';
 import styles from './StepInput.module.scss';
 
 const cx = classNames.bind(styles);
 
+type StepInputProps = {
+  placeholder?: string;
+  taskId: string;
+};
+
 export default function StepInput({
   placeholder = '다음 단계',
   taskId,
-}) {
+}: StepInputProps) {
   const router = useRouter();
   const pageKey = router.pathname.replace(/^\/tasks\/?/, '') || 'inbox';
-  const dispatch = useDispatch();
-  const settingsPerPage = useSelector(({ todo: state }) => state.pageSettings[pageKey]);
+
+  invariant(isOneOf(pageKey, ['myday', 'important', 'planned', 'all', 'completed', 'inbox', 'search', 'search/[keyword]']));
+
+  const dispatch = useAppDispatch();
+  const settingsPerPage = useAppSelector<SettingsPerPage>(({ todo: state }) => state.pageSettings[pageKey]);
   const $refs = {
-    input: useRef(null),
+    input: useRef<HTMLInputElement>(null),
   };
 
   const createStep = () => {
     const inputElement = $refs.input.current;
-    const trimmedTitle = inputElement.value.trim();
 
-    if (trimmedTitle) {
-      dispatch(createSubStep({
-        taskId,
-        title: trimmedTitle,
-      }));
+    if (inputElement) {
+      const trimmedTitle = inputElement.value.trim();
 
-      inputElement.value = '';
-      inputElement.dataset.isEmpty = true;
+      if (trimmedTitle) {
+        dispatch(createSubStep({
+          taskId,
+          title: trimmedTitle,
+        }));
+
+        inputElement.value = '';
+        inputElement.dataset.isEmpty = String(true);
+      }
     }
   };
-  const keyUpHandler = (event) => {
+  const focusInput = () => {
+    if ($refs.input.current) {
+      $refs.input.current.focus();
+    }
+  };
+  const keyUpHandler: KeyboardEventHandler<HTMLInputElement> = (event) => {
     if (event.key === 'Enter') {
       createStep();
 
-      setTimeout(() => $refs.input.current.focus());
+      setTimeout(() => focusInput());
     }
   };
-  const inputHandler = (event) => {
-    const inputElement = event.target;
+  const inputHandler: FormEventHandler<HTMLInputElement> = (event) => {
+    const inputElement = event.currentTarget;
     const isInputEmpty = (inputElement.value === '');
 
     if (inputElement.dataset.isEmpty !== String(isInputEmpty)) {
-      inputElement.dataset.isEmpty = isInputEmpty;
+      inputElement.dataset.isEmpty = String(isInputEmpty);
     }
   };
-  const blurHandler = (event) => {
-    const inputElement = event.target;
+  const blurHandler: FocusEventHandler<HTMLInputElement> = (event) => {
+    const inputElement = event.currentTarget;
     const trimmedTitle = inputElement.value.trim();
 
     if (trimmedTitle) {
@@ -66,7 +85,7 @@ export default function StepInput({
             `text-${settingsPerPage.themeColor ? settingsPerPage.themeColor : 'blue'}-500`,
           )}
           title="작업 추가"
-          onClick={() => $refs.input.current.focus()}
+          onClick={() => focusInput()}
         >
           <span className={cx('icon-wrapper')}>
             <i className="fas fa-plus"></i>

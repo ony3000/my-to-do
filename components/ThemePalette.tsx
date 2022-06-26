@@ -1,7 +1,10 @@
 import { useRef, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import invariant from 'tiny-invariant';
 import classNames from 'classnames/bind';
-import { useDispatch, useSelector } from 'react-redux';
+import { ThemeColor } from '@/types/common';
+import { isOneOf } from '@/types/guard';
+import { useAppDispatch, useAppSelector } from '@/hooks/index';
 import { closeListOption, closeThemePalette, setThemeColor } from '@/store/todoSlice';
 import styles from './ThemePalette.module.scss';
 
@@ -10,38 +13,43 @@ const cx = classNames.bind(styles);
 export default function ThemePalette() {
   const router = useRouter();
   const pageKey = router.pathname.replace(/^\/tasks\/?/, '') || 'inbox';
-  const dispatch = useDispatch();
-  const isActiveThemePalette = useSelector(({ todo: state }) => state.isActiveThemePalette);
-  const { top: topPosition, left: leftPosition } = useSelector(({ todo: state }) => state.themePalettePosition);
-  const settingsPerPage = useSelector(({ todo: state }) => state.pageSettings[pageKey]);
+
+  invariant(isOneOf(pageKey, ['all', 'completed', 'inbox']));
+
+  const dispatch = useAppDispatch();
+  const themePalettePosition = useAppSelector(({ todo: state }) => state.themePalettePosition);
+  const settingsPerPage = useAppSelector(({ todo: state }) => state.pageSettings[pageKey]);
   const $refs = {
-    container: useRef(null),
+    container: useRef<HTMLDivElement>(null),
   };
 
-  const colors = [
+  const colors: ThemeColor[] = [
     'blue',
     'red',
     'violet',
     'lime',
     'amber',
   ];
+  const isActiveThemePalette = themePalettePosition !== null;
+  const topPosition = themePalettePosition?.top || 0;
+  const leftPosition = themePalettePosition?.left || 0;
 
-  const changeTheme = (color) => {
+  const changeTheme = (color: ThemeColor) => {
     dispatch(setThemeColor({ pageKey, color }));
     dispatch(closeThemePalette());
     dispatch(closeListOption());
   };
 
   useEffect(() => {
-    function clickHandler(event) {
-      if (isActiveThemePalette && $refs.container.current) {
+    const clickHandler: EventListener = (event) => {
+      if (isActiveThemePalette && $refs.container.current && event.target instanceof HTMLElement) {
         const optionContainer = event.target.closest(`.${$refs.container.current.className}`);
 
         if (optionContainer === null) {
           dispatch(closeThemePalette());
         }
       }
-    }
+    };
 
     document.addEventListener('click', clickHandler);
 

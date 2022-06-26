@@ -1,6 +1,10 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import invariant from 'tiny-invariant';
 import { v4 as uuid } from 'uuid';
 import merge from 'lodash.merge';
+import { Dict, ReactMouseEvent, OrderingCriterion, OrderingDirection, ThemeColor } from '@/types/common';
+import { isDict } from '@/types/guard';
+import { TodoItemBase, TodoItem, TodoAppState } from '@/types/store/todoSlice';
 
 export const CHANGE_THEME = 'CHANGE_THEME';
 export const TOGGLE_COMPLETED_ITEMS = 'TOGGLE_COMPLETED_ITEMS';
@@ -12,15 +16,10 @@ export const CREATION_DATE = 'CREATION_DATE';
 export const ASCENDING = 'ASCENDING';
 export const DESCENDING = 'DESCENDING';
 
-const initialState = {
+const initialState: TodoAppState = {
   isAppReady: false,
   isActiveSearchBox: false,
   isActiveSidebar: true,
-  isActiveListOption: false,
-  isActiveThemePalette: false,
-  isActiveOrderingCriterion: false,
-  isActiveDeadlinePicker: false,
-  isActiveDeadlineCalendar: false,
   isActiveSettingPanel: false,
   settings: {
     general: {
@@ -36,14 +35,13 @@ const initialState = {
     },
   },
   todoItems: [],
-  listOptionPosition: {},
-  themePalettePosition: {},
-  orderingCriterionPosition: {},
-  deadlinePickerPosition: {},
-  deadlineCalendarPosition: {},
+  listOptionPosition: null,
+  themePalettePosition: null,
+  orderingCriterionPosition: null,
+  deadlinePickerPosition: null,
+  deadlineCalendarPosition: null,
   toolbarFunctions: {
     myday: {
-      listOption: null,
       listOrdering: [
         IMPORTANCE,
         DEADLINE,
@@ -53,19 +51,15 @@ const initialState = {
     },
     important: {
       listOption: [TOGGLE_COMPLETED_ITEMS],
-      listOrdering: null,
     },
     planned: {
       listOption: [TOGGLE_COMPLETED_ITEMS],
-      listOrdering: null,
     },
     all: {
       listOption: [CHANGE_THEME],
-      listOrdering: null,
     },
     completed: {
       listOption: [CHANGE_THEME],
-      listOrdering: null,
     },
     inbox: {
       listOption: [CHANGE_THEME],
@@ -104,32 +98,48 @@ const initialState = {
       themeColor: 'blue',
       ordering: null,
     },
-    search: {},
-    'search/[keyword]': {},
+    search: {
+      isHideCompletedItems: false,
+    },
+    'search/[keyword]': {
+      isHideCompletedItems: false,
+    },
   },
   focusedTaskId: null,
 };
 
-const saveState = (state) => localStorage.setItem('cloneCoding:my-to-do', JSON.stringify(state));
+const saveState = (state: TodoAppState) => localStorage.setItem('cloneCoding:my-to-do', JSON.stringify(state));
 
-const loadState = () => JSON.parse(localStorage.getItem('cloneCoding:my-to-do')) || {};
+const loadState = (): Dict => {
+  const storedValue = localStorage.getItem('cloneCoding:my-to-do');
+  let state = null;
+
+  try {
+    invariant(typeof storedValue === 'string');
+    state = JSON.parse(storedValue);
+    invariant(isDict(state)); // explicit throw for non-object
+  }
+  catch (err) {
+    state = {};
+  }
+  finally {
+    invariant(isDict(state)); // type narrowing
+  }
+
+  return state;
+};
 
 export const launchApp = createAsyncThunk('todo/launchApp', async () => {
-  const promise = new Promise(async (resolve) => {
+  const promise = new Promise<{ data: TodoAppState & Dict }>(async (resolve) => {
     // API 호출로 데이터를 가져온다고 가정했을 때, 요청 완료되는 시간이 고정되어있지 않음을 나타냄
     const delay = 350 + Math.floor(Math.random() * 150);
 
-    const combinedState = merge({}, initialState, loadState(), {
-      isActiveListOption: false,
-      isActiveThemePalette: false,
-      isActiveOrderingCriterion: false,
-      isActiveDeadlinePicker: false,
-      isActiveDeadlineCalendar: false,
-      listOptionPosition: {},
-      themePalettePosition: {},
-      orderingCriterionPosition: {},
-      deadlinePickerPosition: {},
-      deadlineCalendarPosition: {},
+    const combinedState: TodoAppState & Dict = merge({}, initialState, loadState(), {
+      listOptionPosition: null,
+      themePalettePosition: null,
+      orderingCriterionPosition: null,
+      deadlinePickerPosition: null,
+      deadlineCalendarPosition: null,
       focusedTaskId: null,
     });
 
@@ -144,10 +154,15 @@ export const launchApp = createAsyncThunk('todo/launchApp', async () => {
   return response.data;
 });
 
-export const openListOption = createAsyncThunk('todo/openListOption', ({ event, selector }) => {
-  const button = event.target.closest(selector);
-  const { top, left, width, height } = button.getBoundingClientRect();
+export const openListOption = createAsyncThunk<
+  { top: number; left: number; },
+  { event: ReactMouseEvent<HTMLButtonElement>, selector: string }
+>('todo/openListOption', ({ event, selector }) => {
+  const button = event.currentTarget.closest(selector);
 
+  invariant(button, '요소를 찾을 수 없습니다.');
+
+  const { top, left, width, height } = button.getBoundingClientRect();
   const optionWidth = 200;
   const optionPosition = {
     top: Math.floor(top + height - 2),
@@ -157,10 +172,15 @@ export const openListOption = createAsyncThunk('todo/openListOption', ({ event, 
   return Promise.resolve(optionPosition);
 });
 
-export const openThemePalette = createAsyncThunk('todo/openThemePalette', ({ event, selector }) => {
-  const option = event.target.closest(selector);
-  const { top, left, width } = option.getBoundingClientRect();
+export const openThemePalette = createAsyncThunk<
+  { top: number; left: number; },
+  { event: ReactMouseEvent<HTMLButtonElement>, selector: string }
+>('todo/openThemePalette', ({ event, selector }) => {
+  const option = event.currentTarget.closest(selector);
 
+  invariant(option, '요소를 찾을 수 없습니다.');
+
+  const { top, left, width } = option.getBoundingClientRect();
   const paletteWidth = 282;
   const paletteHeight = 82;
   const palettePosition = {
@@ -176,29 +196,40 @@ export const openThemePalette = createAsyncThunk('todo/openThemePalette', ({ eve
   return Promise.resolve(palettePosition);
 });
 
-export const openOrderingCriterion = createAsyncThunk('todo/openOrderingCriterion', ({ event, selector }) => {
-  const button = event.target.closest(selector);
+export const openOrderingCriterion = createAsyncThunk<
+  { top: number; left: number; } | { top: number; right: number; },
+  { event: ReactMouseEvent<HTMLButtonElement>, selector: string }
+>('todo/openOrderingCriterion', ({ event, selector }) => {
+  const button = event.currentTarget.closest(selector);
+
+  invariant(button, '요소를 찾을 수 없습니다.');
+
   const { top, left, width, height } = button.getBoundingClientRect();
-
   const criterionWidth = 200;
-  const criterionPosition = {
-    top: Math.floor(top + height - 2),
-    left: Math.floor(left + width / 2 - criterionWidth / 2),
-  };
-
-  if (criterionPosition.left + criterionWidth + 8 > window.innerWidth) {
-    delete criterionPosition.left;
-    criterionPosition.right = 8;
-  }
+  const topPosition = Math.floor(top + height - 2);
+  const leftPosition = Math.floor(left + width / 2 - criterionWidth / 2);
+  const criterionPosition = (
+    leftPosition + criterionWidth + 8 > window.innerWidth
+      ? { top: topPosition, right: 8 }
+      : { top: topPosition, left: leftPosition }
+  );
 
   return Promise.resolve(criterionPosition);
 });
 
-export const openDeadlinePicker = createAsyncThunk('todo/openDeadlinePicker', ({ event, selector }) => {
-  const button = event.target.closest(selector);
-  const section = button.parentElement;
-  const { top, left, height } = button.getBoundingClientRect();
+export const openDeadlinePicker = createAsyncThunk<
+  { top: number; right: number; },
+  { event: ReactMouseEvent<HTMLButtonElement>, selector: string }
+>('todo/openDeadlinePicker', ({ event, selector }) => {
+  const button = event.currentTarget.closest(selector);
 
+  invariant(button, '요소를 찾을 수 없습니다.');
+
+  const section = button.parentElement;
+
+  invariant(section, '요소를 찾을 수 없습니다.');
+
+  const { top, left, height } = button.getBoundingClientRect();
   const pickerWidth = 200;
   const pickerHeight = 217;
   const pickerPosition = {
@@ -213,10 +244,15 @@ export const openDeadlinePicker = createAsyncThunk('todo/openDeadlinePicker', ({
   return Promise.resolve(pickerPosition);
 });
 
-export const openDeadlineCalendar = createAsyncThunk('todo/openDeadlineCalendar', ({ event, selector }) => {
-  const button = event.target.closest(selector);
-  const { top, left } = button.getBoundingClientRect();
+export const openDeadlineCalendar = createAsyncThunk<
+  { top: number; right: number; },
+  { event: ReactMouseEvent<HTMLButtonElement>, selector: string }
+>('todo/openDeadlineCalendar', ({ event, selector }) => {
+  const button = event.currentTarget.closest(selector);
 
+  invariant(button, '요소를 찾을 수 없습니다.');
+
+  const { top, left } = button.getBoundingClientRect();
   const calendarWidth = 220;
   const calendarHeight = 371;
   const calendarPosition = {
@@ -257,31 +293,26 @@ const todoSlice = createSlice({
       saveState(state);
     },
     closeListOption(state) {
-      state.listOptionPosition = {};
-      state.isActiveListOption = false;
+      state.listOptionPosition = null;
       saveState(state);
     },
     closeThemePalette(state) {
-      state.themePalettePosition = {};
-      state.isActiveThemePalette = false;
+      state.themePalettePosition = null;
       saveState(state);
     },
     closeOrderingCriterion(state) {
-      state.orderingCriterionPosition = {};
-      state.isActiveOrderingCriterion = false;
+      state.orderingCriterionPosition = null;
       saveState(state);
     },
     closeDeadlinePicker(state) {
-      state.deadlinePickerPosition = {};
-      state.isActiveDeadlinePicker = false;
+      state.deadlinePickerPosition = null;
       saveState(state);
     },
     closeDeadlineCalendar(state) {
-      state.deadlineCalendarPosition = {};
-      state.isActiveDeadlineCalendar = false;
+      state.deadlineCalendarPosition = null;
       saveState(state);
     },
-    openDetailPanel(state, { payload }) {
+    openDetailPanel(state, { payload }: PayloadAction<string>) {
       state.focusedTaskId = payload;
       saveState(state);
     },
@@ -297,25 +328,25 @@ const todoSlice = createSlice({
       state.isActiveSettingPanel = false;
       saveState(state);
     },
-    turnOnGeneral(state, { payload }) {
+    turnOnGeneral(state, { payload }: PayloadAction<keyof TodoAppState['settings']['general']>) {
       state.settings.general[payload] = true;
       saveState(state);
     },
-    turnOffGeneral(state, { payload }) {
+    turnOffGeneral(state, { payload }: PayloadAction<keyof TodoAppState['settings']['general']>) {
       state.settings.general[payload] = false;
       saveState(state);
     },
-    turnOnSmartList(state, { payload }) {
+    turnOnSmartList(state, { payload }: PayloadAction<keyof TodoAppState['settings']['smartList']>) {
       state.settings.smartList[payload] = true;
       saveState(state);
     },
-    turnOffSmartList(state, { payload }) {
+    turnOffSmartList(state, { payload }: PayloadAction<keyof TodoAppState['settings']['smartList']>) {
       state.settings.smartList[payload] = false;
       saveState(state);
     },
-    createTodoItem(state, { payload }) {
+    createTodoItem(state, { payload }: PayloadAction<Partial<TodoItem>>) {
       const now = new Date();
-      const newTask = Object.assign({}, {
+      const newTask: TodoItem = Object.assign({}, {
         id: uuid(),
         title: '',
         isComplete: false,
@@ -340,86 +371,108 @@ const todoSlice = createSlice({
       state.todoItems.push(newTask);
       saveState(state);
     },
-    removeTodoItem(state, { payload }) {
+    removeTodoItem(state, { payload }: PayloadAction<string>) {
       const targetTaskIndex = state.todoItems.findIndex(({ id }) => (id === payload));
 
       state.todoItems.splice(targetTaskIndex, 1);
       saveState(state);
     },
-    updateTodoItem(state, { payload }) {
+    updateTodoItem(state, { payload }: PayloadAction<Pick<TodoItem, 'id'> & Partial<Omit<TodoItem, 'id'>>>) {
       const targetTaskIndex = state.todoItems.findIndex(({ id }) => (id === payload.id));
 
       state.todoItems[targetTaskIndex] = Object.assign({}, state.todoItems[targetTaskIndex], payload);
       saveState(state);
     },
-    markAsCompleteWithOrderingFlag(state, { payload }) {
+    markAsCompleteWithOrderingFlag(state, { payload }: PayloadAction<string>) {
       const targetTask = state.todoItems.find(({ id }) => (id === payload));
 
+      invariant(targetTask, '작업을 찾을 수 없습니다.');
       targetTask.isComplete = true;
       targetTask.completedAt = new Date().getTime();
       saveState(state);
     },
-    markAsIncomplete(state, { payload }) {
-      state.todoItems.find(({ id }) => (id === payload)).isComplete = false;
-      saveState(state);
-    },
-    markAsImportant(state, { payload }) {
-      state.todoItems.find(({ id }) => (id === payload)).isImportant = true;
-      saveState(state);
-    },
-    markAsImportantWithOrderingFlag(state, { payload }) {
+    markAsIncomplete(state, { payload }: PayloadAction<string>) {
       const targetTask = state.todoItems.find(({ id }) => (id === payload));
 
+      invariant(targetTask, '작업을 찾을 수 없습니다.');
+      targetTask.isComplete = false;
+      saveState(state);
+    },
+    markAsImportant(state, { payload }: PayloadAction<string>) {
+      const targetTask = state.todoItems.find(({ id }) => (id === payload));
+
+      invariant(targetTask, '작업을 찾을 수 없습니다.');
+      targetTask.isImportant = true;
+      saveState(state);
+    },
+    markAsImportantWithOrderingFlag(state, { payload }: PayloadAction<string>) {
+      const targetTask = state.todoItems.find(({ id }) => (id === payload));
+
+      invariant(targetTask, '작업을 찾을 수 없습니다.');
       targetTask.isImportant = true;
       targetTask.markedAsImportantAt = new Date().getTime();
       saveState(state);
     },
-    markAsUnimportant(state, { payload }) {
-      state.todoItems.find(({ id }) => (id === payload)).isImportant = false;
-      saveState(state);
-    },
-    markAsTodayTaskWithOrderingFlag(state, { payload }) {
+    markAsUnimportant(state, { payload }: PayloadAction<string>) {
       const targetTask = state.todoItems.find(({ id }) => (id === payload));
 
+      invariant(targetTask, '작업을 찾을 수 없습니다.');
+      targetTask.isImportant = false;
+      saveState(state);
+    },
+    markAsTodayTaskWithOrderingFlag(state, { payload }: PayloadAction<string>) {
+      const targetTask = state.todoItems.find(({ id }) => (id === payload));
+
+      invariant(targetTask, '작업을 찾을 수 없습니다.');
       targetTask.isMarkedAsTodayTask = true;
       targetTask.markedAsTodayTaskAt = new Date().getTime();
       saveState(state);
     },
-    markAsNonTodayTask(state, { payload }) {
-      state.todoItems.find(({ id }) => (id === payload)).isMarkedAsTodayTask = false;
+    markAsNonTodayTask(state, { payload }: PayloadAction<string>) {
+      const targetTask = state.todoItems.find(({ id }) => (id === payload));
+
+      invariant(targetTask, '작업을 찾을 수 없습니다.');
+      targetTask.isMarkedAsTodayTask = false;
       saveState(state);
     },
-    showCompletedItems(state, { payload }) {
+    showCompletedItems(state, { payload }: PayloadAction<'important' | 'planned' | 'search' | 'search/[keyword]'>) {
       state.pageSettings[payload].isHideCompletedItems = false;
       saveState(state);
     },
-    hideCompletedItems(state, { payload }) {
+    hideCompletedItems(state, { payload }: PayloadAction<'important' | 'planned' | 'search' | 'search/[keyword]'>) {
       state.pageSettings[payload].isHideCompletedItems = true;
       saveState(state);
     },
-    setThemeColor(state, { payload: { pageKey, color } }) {
+    setThemeColor(state, { payload: { pageKey, color } }: PayloadAction<{ pageKey: 'all' | 'completed' | 'inbox', color: ThemeColor }>) {
       state.pageSettings[pageKey].themeColor = color;
       saveState(state);
     },
-    setOrderingCriterion(state, { payload: { pageKey, criterion, direction } }) {
+    setOrderingCriterion(state, { payload: { pageKey, criterion, direction } }: PayloadAction<{ pageKey: 'myday' | 'inbox', criterion: OrderingCriterion, direction: OrderingDirection }>) {
       state.pageSettings[pageKey].ordering = {
         criterion,
         direction,
       };
       saveState(state);
     },
-    reverseOrderingCriterion(state, { payload: { pageKey } }) {
-      const oldDirection = state.pageSettings[pageKey].ordering.direction;
+    reverseOrderingCriterion(state, { payload: { pageKey } }: PayloadAction<{ pageKey: 'myday' | 'inbox' }>) {
+      const ordering = state.pageSettings[pageKey].ordering;
 
-      state.pageSettings[pageKey].ordering.direction = oldDirection === ASCENDING ? DESCENDING : ASCENDING;
+      invariant(ordering, '정렬 기준이 없습니다.');
+
+      const oldDirection = ordering.direction;
+
+      ordering.direction = oldDirection === ASCENDING ? DESCENDING : ASCENDING;
       saveState(state);
     },
-    unsetOrderingCriterion(state, { payload: { pageKey } }) {
+    unsetOrderingCriterion(state, { payload: { pageKey } }: PayloadAction<{ pageKey: 'myday' | 'inbox' }>) {
       state.pageSettings[pageKey].ordering = null;
       saveState(state);
     },
-    createSubStep(state, { payload: { taskId, title } }) {
-      state.todoItems.find(({ id }) => (id === taskId)).subSteps.push({
+    createSubStep(state, { payload: { taskId, title } }: PayloadAction<{ taskId: string, title: string }>) {
+      const targetTask = state.todoItems.find(({ id }) => (id === taskId));
+
+      invariant(targetTask, '작업을 찾을 수 없습니다.');
+      targetTask.subSteps.push({
         id: uuid(),
         title,
         isComplete: false,
@@ -427,60 +480,68 @@ const todoSlice = createSlice({
       });
       saveState(state);
     },
-    removeSubStep(state, { payload: { taskId, stepId } }) {
+    removeSubStep(state, { payload: { taskId, stepId } }: PayloadAction<{ taskId: string, stepId: string }>) {
       const targetTask = state.todoItems.find(({ id }) => (id === taskId));
+
+      invariant(targetTask, '작업을 찾을 수 없습니다.');
+
       const targetStepIndex = targetTask.subSteps.findIndex(({ id }) => (id === stepId));
 
       targetTask.subSteps.splice(targetStepIndex, 1);
       saveState(state);
     },
-    updateSubStep(state, { payload: { taskId, stepId, ...others } }) {
+    updateSubStep(state, { payload: { taskId, stepId, ...others } }: PayloadAction<{ taskId: string, stepId: string } & Partial<Omit<TodoItemBase, 'id' | 'createdAt'>>>) {
       const targetTask = state.todoItems.find(({ id }) => (id === taskId));
+
+      invariant(targetTask, '작업을 찾을 수 없습니다.');
+
       const targetStepIndex = targetTask.subSteps.findIndex(({ id }) => (id === stepId));
 
       targetTask.subSteps[targetStepIndex] = Object.assign({}, targetTask.subSteps[targetStepIndex], others);
       saveState(state);
     },
-    setDeadline(state, { payload: { taskId, deadline } }) {
-      state.todoItems.find(({ id }) => (id === taskId)).deadline = deadline;
+    setDeadline(state, { payload: { taskId, deadline } }: PayloadAction<{ taskId: string, deadline: number }>) {
+      const targetTask = state.todoItems.find(({ id }) => (id === taskId));
+
+      invariant(targetTask, '작업을 찾을 수 없습니다.');
+      targetTask.deadline = deadline;
       saveState(state);
     },
-    unsetDeadline(state, { payload }) {
-      state.todoItems.find(({ id }) => (id === payload)).deadline = null;
+    unsetDeadline(state, { payload }: PayloadAction<string>) {
+      const targetTask = state.todoItems.find(({ id }) => (id === payload));
+
+      invariant(targetTask, '작업을 찾을 수 없습니다.');
+      targetTask.deadline = null;
       saveState(state);
     },
   },
   extraReducers: builder => {
-    builder.addCase(launchApp.fulfilled, (state, { payload }) => {
+    builder.addCase(launchApp.fulfilled, (state, { payload }: PayloadAction<TodoAppState & Dict>) => {
+      invariant(isDict(state));
       Object.keys(state).forEach((key) => {
-        state[key] = payload[key];
+        (state as Dict)[key] = payload[key];
       });
       state.isAppReady = true;
       saveState(state);
     });
-    builder.addCase(openListOption.fulfilled, (state, { payload }) => {
+    builder.addCase(openListOption.fulfilled, (state, { payload }: PayloadAction<TodoAppState['listOptionPosition']>) => {
       state.listOptionPosition = payload;
-      state.isActiveListOption = true;
       saveState(state);
     });
-    builder.addCase(openThemePalette.fulfilled, (state, { payload }) => {
+    builder.addCase(openThemePalette.fulfilled, (state, { payload }: PayloadAction<TodoAppState['themePalettePosition']>) => {
       state.themePalettePosition = payload;
-      state.isActiveThemePalette = true;
       saveState(state);
     });
-    builder.addCase(openOrderingCriterion.fulfilled, (state, { payload }) => {
+    builder.addCase(openOrderingCriterion.fulfilled, (state, { payload }: PayloadAction<TodoAppState['orderingCriterionPosition']>) => {
       state.orderingCriterionPosition = payload;
-      state.isActiveOrderingCriterion = true;
       saveState(state);
     });
-    builder.addCase(openDeadlinePicker.fulfilled, (state, { payload }) => {
+    builder.addCase(openDeadlinePicker.fulfilled, (state, { payload }: PayloadAction<TodoAppState['deadlinePickerPosition']>) => {
       state.deadlinePickerPosition = payload;
-      state.isActiveDeadlinePicker = true;
       saveState(state);
     });
-    builder.addCase(openDeadlineCalendar.fulfilled, (state, { payload }) => {
+    builder.addCase(openDeadlineCalendar.fulfilled, (state, { payload }: PayloadAction<TodoAppState['deadlineCalendarPosition']>) => {
       state.deadlineCalendarPosition = payload;
-      state.isActiveDeadlineCalendar = true;
       saveState(state);
     });
   },

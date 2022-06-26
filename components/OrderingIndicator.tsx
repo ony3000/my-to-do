@@ -1,6 +1,9 @@
 import { useRouter } from 'next/router';
+import invariant from 'tiny-invariant';
 import classNames from 'classnames/bind';
-import { useDispatch, useSelector } from 'react-redux';
+import { OrderingCriterion } from '@/types/common';
+import { isOneOf } from '@/types/guard';
+import { useAppDispatch, useAppSelector } from '@/hooks/index';
 import {
   IMPORTANCE,
   DEADLINE,
@@ -18,10 +21,13 @@ const cx = classNames.bind(styles);
 export default function OrderingIndicator() {
   const router = useRouter();
   const pageKey = router.pathname.replace(/^\/tasks\/?/, '') || 'inbox';
-  const dispatch = useDispatch();
-  const settingsPerPage = useSelector(({ todo: state }) => state.pageSettings[pageKey]);
 
-  const readableCriterion = (criterion) => {
+  invariant(isOneOf(pageKey, ['myday', 'inbox']));
+
+  const dispatch = useAppDispatch();
+  const settingsPerPage = useAppSelector(({ todo: state }) => state.pageSettings[pageKey]);
+
+  const readableCriterion = (criterion: OrderingCriterion) => {
     switch (criterion) {
       case IMPORTANCE:
         return '중요도별로';

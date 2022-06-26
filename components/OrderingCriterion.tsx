@@ -1,7 +1,10 @@
 import { useRef, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import invariant from 'tiny-invariant';
 import classNames from 'classnames/bind';
-import { useDispatch, useSelector } from 'react-redux';
+import { OrderingCriterion as OrderingCriterionType, OrderingDirection } from '@/types/common';
+import { isOneOf } from '@/types/guard';
+import { useAppDispatch, useAppSelector } from '@/hooks/index';
 import {
   IMPORTANCE,
   DEADLINE,
@@ -17,24 +20,34 @@ import styles from './ListOption.module.scss'; // shared
 
 const cx = classNames.bind(styles);
 
+type OrderingCriterionProps = {
+  availableCriterions: OrderingCriterionType[];
+};
+
 export default function OrderingCriterion({
   availableCriterions = [],
-}) {
+}: OrderingCriterionProps) {
   const router = useRouter();
   const pageKey = router.pathname.replace(/^\/tasks\/?/, '') || 'inbox';
-  const dispatch = useDispatch();
-  const isActiveOrderingCriterion = useSelector(({ todo: state }) => state.isActiveOrderingCriterion);
-  const {
-    top: topPosition,
-    right: rightPosition,
-    left: leftPosition,
-  } = useSelector(({ todo: state }) => state.orderingCriterionPosition);
-  const settingsPerPage = useSelector(({ todo: state }) => state.pageSettings[pageKey]);
+
+  invariant(isOneOf(pageKey, ['myday', 'inbox']));
+
+  const dispatch = useAppDispatch();
+  const orderingCriterionPosition = useAppSelector(({ todo: state }) => state.orderingCriterionPosition);
+  const settingsPerPage = useAppSelector(({ todo: state }) => state.pageSettings[pageKey]);
   const $refs = {
-    container: useRef(null),
+    container: useRef<HTMLDivElement>(null),
   };
 
-  const setOrderingCriterionToDefault = ({ criterion, direction }) => {
+  const isActiveOrderingCriterion = orderingCriterionPosition !== null;
+  const topPosition = orderingCriterionPosition?.top || 0;
+  const rightPosition = orderingCriterionPosition?.right;
+  const leftPosition = orderingCriterionPosition?.left;
+
+  const setOrderingCriterionToDefault = ({ criterion, direction }: {
+    criterion: OrderingCriterionType;
+    direction: OrderingDirection;
+  }) => {
     if (settingsPerPage.ordering === null || criterion !== settingsPerPage.ordering.criterion || direction !== settingsPerPage.ordering.direction) {
       dispatch(setOrderingCriterion({
         pageKey,
@@ -46,15 +59,15 @@ export default function OrderingCriterion({
   };
 
   useEffect(() => {
-    function clickHandler(event) {
-      if (isActiveOrderingCriterion && $refs.container.current) {
+    const clickHandler: EventListener = (event) => {
+      if (isActiveOrderingCriterion && $refs.container.current && event.target instanceof HTMLElement) {
         const criterionContainer = event.target.closest(`.${$refs.container.current.className}`);
 
         if (criterionContainer === null) {
           dispatch(closeOrderingCriterion());
         }
       }
-    }
+    };
 
     document.addEventListener('click', clickHandler);
 
@@ -71,8 +84,8 @@ export default function OrderingCriterion({
           className={cx('container')}
           style={{
             top: `${topPosition}px`,
-            right: (rightPosition !== undefined) && `${rightPosition}px`,
-            left: (leftPosition !== undefined) && `${leftPosition}px`,
+            right: rightPosition ? `${rightPosition}px` : '',
+            left: leftPosition ? `${leftPosition}px` : '',
           }}
         >
           <div className={cx('title')}>정렬 기준</div>

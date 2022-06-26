@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '@/hooks/index';
 import { openSettingPanel, closeSettingPanel } from '@/store/todoSlice';
 import styles from './AppHeader.module.scss';
 import SearchBox from '@/components/SearchBox';
@@ -7,8 +7,8 @@ import SearchBox from '@/components/SearchBox';
 const cx = classNames.bind(styles);
 
 export default function AppHeader() {
-  const dispatch = useDispatch();
-  const isActiveSettingPanel = useSelector(({ todo: state }) => state.isActiveSettingPanel);
+  const dispatch = useAppDispatch();
+  const isActiveSettingPanel = useAppSelector(({ todo: state }) => state.isActiveSettingPanel);
 
   return (
     <div className="bg-blue-500 h-12 flex items-center justify-between">

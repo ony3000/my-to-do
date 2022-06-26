@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import classNames from 'classnames/bind';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '@/hooks/index';
 import {
   closeDeadlinePicker,
   openDeadlineCalendar,
@@ -13,24 +13,31 @@ import DeadlineCalendar from '@/components/DeadlineCalendar';
 
 const cx = classNames.bind(styles);
 
+type DeadlinePickerProps = {
+  taskId: string;
+};
+
 export default function DeadlinePicker({
   taskId,
-}) {
-  const dispatch = useDispatch();
-  const isActiveDeadlinePicker = useSelector(({ todo: state }) => state.isActiveDeadlinePicker);
-  const { top: topPosition, right: rightPosition } = useSelector(({ todo: state }) => state.deadlinePickerPosition);
-  const isActiveDeadlineCalendar = useSelector(({ todo: state }) => state.isActiveDeadlineCalendar);
+}: DeadlinePickerProps) {
+  const dispatch = useAppDispatch();
+  const deadlinePickerPosition = useAppSelector(({ todo: state }) => state.deadlinePickerPosition);
+  const deadlineCalendarPosition = useAppSelector(({ todo: state }) => state.deadlineCalendarPosition);
   const [ isMounted, setIsMounted ] = useState(false);
   const $refs = {
-    container: useRef(null),
+    container: useRef<HTMLDivElement>(null),
   };
 
   const midnightToday = dayjs().startOf('day');
   const midnightTomorrow = midnightToday.add(1, 'day');
   const midnightAfter2Days = midnightToday.add(2, 'day');
   const midnightNextTuesday = midnightToday.startOf('isoWeek').add(8, 'day');
+  const isActiveDeadlinePicker = deadlinePickerPosition !== null;
+  const topPosition = deadlinePickerPosition?.top || 0;
+  const rightPosition = deadlinePickerPosition?.right || 0;
+  const isActiveDeadlineCalendar = deadlineCalendarPosition !== null;
 
-  const setFixedDeadline = (timestamp) => {
+  const setFixedDeadline = (timestamp: number) => {
     dispatch(setDeadline({
       taskId,
       deadline: timestamp,
@@ -49,8 +56,8 @@ export default function DeadlinePicker({
   });
 
   useEffect(() => {
-    function clickHandler(event) {
-      if (isActiveDeadlinePicker && $refs.container.current) {
+    const clickHandler: EventListener = (event) => {
+      if (isActiveDeadlinePicker && $refs.container.current && event.target instanceof HTMLElement) {
         const pickerContainer = event.target.closest(`.${$refs.container.current.className}`);
 
         if (pickerContainer === null) {
@@ -61,7 +68,7 @@ export default function DeadlinePicker({
           }
         }
       }
-    }
+    };
 
     if (isMounted) {
       document.addEventListener('click', clickHandler);

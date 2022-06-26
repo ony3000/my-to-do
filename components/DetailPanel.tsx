@@ -1,7 +1,12 @@
-import { Fragment, useState, useRef, useEffect } from 'react';
+import { Fragment, useState, useRef, useEffect, MouseEventHandler } from 'react';
 import { useRouter } from 'next/router';
+import invariant from 'tiny-invariant';
 import classNames from 'classnames/bind';
-import { useDispatch, useSelector } from 'react-redux';
+import { ReactFocusEvent } from '@/types/common';
+import { isOneOf } from '@/types/guard';
+import { TodoItem } from '@/types/store/todoSlice';
+import { SettingsPerPage } from '@/types/store/todoSlice';
+import { useAppDispatch, useAppSelector } from '@/hooks/index';
 import {
   openDeadlinePicker,
   closeDeadlinePicker,
@@ -30,24 +35,29 @@ const cx = classNames.bind(styles);
 export default function DetailPanel() {
   const router = useRouter();
   const pageKey = router.pathname.replace(/^\/tasks\/?/, '') || 'inbox';
-  const dispatch = useDispatch();
-  const generalSettings = useSelector(({ todo: state }) => state.settings.general);
-  const settingsPerPage = useSelector(({ todo: state }) => state.pageSettings[pageKey]);
-  const focusedTaskId = useSelector(({ todo: state }) => state.focusedTaskId);
-  const task = useSelector(({ todo: state }) => state.todoItems.find(({ id }) => (id === focusedTaskId)));
-  const isActiveDeadlinePicker = useSelector(({ todo: state }) => state.isActiveDeadlinePicker);
-  const isActiveDeadlineCalendar = useSelector(({ todo: state }) => state.isActiveDeadlineCalendar);
+
+  invariant(isOneOf(pageKey, ['myday', 'important', 'planned', 'all', 'completed', 'inbox', 'search', 'search/[keyword]']));
+
+  const dispatch = useAppDispatch();
+  const generalSettings = useAppSelector(({ todo: state }) => state.settings.general);
+  const settingsPerPage = useAppSelector<SettingsPerPage>(({ todo: state }) => state.pageSettings[pageKey]);
+  const focusedTaskId = useAppSelector(({ todo: state }) => state.focusedTaskId);
+  const task = useAppSelector(({ todo: state }) => state.todoItems.find(({ id }) => (id === focusedTaskId)));
+  const deadlinePickerPosition = useAppSelector(({ todo: state }) => state.deadlinePickerPosition);
+  const deadlineCalendarPosition = useAppSelector(({ todo: state }) => state.deadlineCalendarPosition);
   const [ isActivated, setIsActivated ] = useState(false);
   const $refs = {
-    titleArea: useRef(null),
-    separator: useRef(null),
-    memoArea: useRef(null),
+    titleArea: useRef<HTMLTextAreaElement>(null),
+    separator: useRef<HTMLDivElement>(null),
+    memoArea: useRef<HTMLTextAreaElement>(null),
   };
 
   const midnightThisYear = dayjs().startOf('year');
   const midnightToday = dayjs().startOf('day');
   const midnightTomorrow = midnightToday.add(1, 'day');
   const midnightAfter2Days = midnightToday.add(2, 'day');
+  const isActiveDeadlinePicker = deadlinePickerPosition !== null;
+  const isActiveDeadlineCalendar = deadlineCalendarPosition !== null;
   let deadlineElement = null;
   let isOverdue = false;
 
@@ -67,7 +77,7 @@ export default function DetailPanel() {
     }
   }
 
-  const closeHandler = () => {
+  const closeHandler: MouseEventHandler = () => {
     dispatch(closeDetailPanel());
     dispatch(closeDeadlinePicker());
 
@@ -75,7 +85,7 @@ export default function DetailPanel() {
       dispatch(closeDeadlineCalendar());
     }
   };
-  const titleInputHandler = (element) => {
+  const titleInputHandler = (element: HTMLTextAreaElement) => {
     element.style.setProperty('height', '');
 
     const computedStyle = window.getComputedStyle(element);
@@ -84,10 +94,14 @@ export default function DetailPanel() {
 
     element.style.setProperty('height', `${newHeight}px`);
 
-    $refs.separator.current.style.setProperty('top', `${element.closest(`.${cx('title-section')}`).getBoundingClientRect().height}px`);
+    const closestSection = element.closest(`.${cx('title-section')}`);
+
+    if ($refs.separator.current && closestSection) {
+      $refs.separator.current.style.setProperty('top', `${closestSection.getBoundingClientRect().height}px`);
+    }
   };
-  const titleBlurHandler = (event, taskId) => {
-    const inputElement = event.target;
+  const titleBlurHandler = (event: ReactFocusEvent<HTMLTextAreaElement>, taskId: string) => {
+    const inputElement = event.currentTarget;
     const trimmedMemo = inputElement.value.trim();
 
     if (trimmedMemo) {
@@ -102,8 +116,8 @@ export default function DetailPanel() {
     }
     titleInputHandler(inputElement);
   };
-  const stepTitleBlurHandler = (event, taskId, stepId) => {
-    const inputElement = event.target;
+  const stepTitleBlurHandler = (event: ReactFocusEvent<HTMLInputElement>, taskId: string, stepId: string) => {
+    const inputElement = event.currentTarget;
     const trimmedMemo = inputElement.value.trim();
 
     if (trimmedMemo) {
@@ -118,7 +132,7 @@ export default function DetailPanel() {
       inputElement.value = inputElement.defaultValue;
     }
   };
-  const memoInputHandler = (element) => {
+  const memoInputHandler = (element: HTMLTextAreaElement) => {
     element.style.setProperty('height', '');
 
     const computedStyle = window.getComputedStyle(element);
@@ -127,8 +141,8 @@ export default function DetailPanel() {
 
     element.style.setProperty('height', `${newHeight}px`);
   };
-  const memoBlurHandler = (event, taskId) => {
-    const inputElement = event.target;
+  const memoBlurHandler = (event: ReactFocusEvent<HTMLTextAreaElement>, taskId: string) => {
+    const inputElement = event.currentTarget;
     const trimmedMemo = inputElement.value.trim();
 
     dispatch(updateTodoItem({
@@ -138,12 +152,15 @@ export default function DetailPanel() {
     inputElement.value = trimmedMemo;
     memoInputHandler(inputElement);
   };
-  const removeHandler = ({ title, action }) => {
+  const removeHandler = ({ title, action }: {
+    title: string;
+    action: ReturnType<typeof removeSubStep | typeof removeTodoItem>;
+  }) => {
     if (!generalSettings.confirmBeforeRemoving || confirm(`"${title}"이(가) 영구적으로 삭제됩니다.\n이 작업은 취소할 수 없습니다.`)) {
       dispatch(action);
     }
   };
-  const importantHandler = ({ id, isImportant }) => {
+  const importantHandler = ({ id, isImportant }: TodoItem) => {
     if (isImportant) {
       dispatch(markAsUnimportant(id));
     }
@@ -159,8 +176,12 @@ export default function DetailPanel() {
 
   useEffect(() => {
     if (task && !isActivated) {
-      titleInputHandler($refs.titleArea.current);
-      memoInputHandler($refs.memoArea.current);
+      if ($refs.titleArea.current) {
+        titleInputHandler($refs.titleArea.current);
+      }
+      if ($refs.memoArea.current) {
+        memoInputHandler($refs.memoArea.current);
+      }
       setIsActivated(true);
     }
     else if (!task && isActivated) {
@@ -171,7 +192,7 @@ export default function DetailPanel() {
   useEffect(() => {
     const flexibleSection = document.querySelector(`.${cx('flexible-section')}`);
 
-    function scrollHandler(event) {
+    const scrollHandler: EventListener = (event) => {
       if (isActiveDeadlinePicker && flexibleSection) {
         dispatch(closeDeadlinePicker());
 
@@ -179,7 +200,7 @@ export default function DetailPanel() {
           dispatch(closeDeadlineCalendar());
         }
       }
-    }
+    };
 
     if (flexibleSection) {
       flexibleSection.addEventListener('scroll', scrollHandler);
@@ -196,7 +217,7 @@ export default function DetailPanel() {
     <Fragment key={task.id}>
       <div
         className={cx('overlay')}
-        onClick={() => closeHandler()}
+        onClick={closeHandler}
       />
       <div className={cx('container')}>
         <div className={cx('body')}>
@@ -227,7 +248,7 @@ export default function DetailPanel() {
                   className={cx('title-input')}
                   defaultValue={task.title}
                   maxLength={255}
-                  onInput={e => titleInputHandler(e.target)}
+                  onInput={e => titleInputHandler(e.currentTarget)}
                   onBlur={e => titleBlurHandler(e, task.id)}
                 />
                 <button
@@ -417,7 +438,7 @@ export default function DetailPanel() {
                 className={cx('memo-input')}
                 placeholder="메모 추가"
                 defaultValue={task.memo}
-                onInput={e => memoInputHandler(e.target)}
+                onInput={e => memoInputHandler(e.currentTarget)}
                 onBlur={e => memoBlurHandler(e, task.id)}
               />
             </div>
@@ -427,7 +448,7 @@ export default function DetailPanel() {
             <button
               className={cx('button')}
               title="세부 정보 화면 숨기기"
-              onClick={() => closeHandler()}
+              onClick={closeHandler}
             >
               <span className={cx('icon-wrapper')}>
                 <i className="fas fa-columns"></i>
@@ -435,7 +456,7 @@ export default function DetailPanel() {
               </span>
             </button>
             <span className={cx('date')}>
-              {task.isComplete ? (
+              {task.isComplete && task.completedAt ? (
                 `${dayjs(task.completedAt, 'x').format(task.completedAt < Number(midnightThisYear.format('x')) ? 'YYYY년 M월 D일, ddd' : 'M월 D일, ddd')}에 완료됨`
               ) : (
                 `${dayjs(task.createdAt, 'x').format(task.createdAt < Number(midnightThisYear.format('x')) ? 'YYYY년 M월 D일, ddd' : 'M월 D일, ddd')}에 생성됨`

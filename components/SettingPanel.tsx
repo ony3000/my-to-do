@@ -1,5 +1,7 @@
+import invariant from 'tiny-invariant';
 import classNames from 'classnames/bind';
-import { useDispatch, useSelector } from 'react-redux';
+import { isOneOf } from '@/types/guard';
+import { useAppDispatch, useAppSelector } from '@/hooks/index';
 import {
   closeSettingPanel,
   turnOnGeneral,
@@ -12,10 +14,10 @@ import styles from './SettingPanel.module.scss';
 const cx = classNames.bind(styles);
 
 export default function SettingPanel() {
-  const dispatch = useDispatch();
-  const isActiveSettingPanel = useSelector(({ todo: state }) => state.isActiveSettingPanel);
-  const generalSettings = useSelector(({ todo: state }) => state.settings.general);
-  const smartListSettings = useSelector(({ todo: state }) => state.settings.smartList);
+  const dispatch = useAppDispatch();
+  const isActiveSettingPanel = useAppSelector(({ todo: state }) => state.isActiveSettingPanel);
+  const generalSettings = useAppSelector(({ todo: state }) => state.settings.general);
+  const smartListSettings = useAppSelector(({ todo: state }) => state.settings.smartList);
 
   const generals = [
     {
@@ -66,7 +68,10 @@ export default function SettingPanel() {
 
             <div className="flex flex-col items-start">
               {generals.map((generalItem) => {
+                invariant(isOneOf(generalItem.key, ['confirmBeforeRemoving', 'moveImportantTask']));
+
                 const isActiveGeneral = generalSettings[generalItem.key];
+                const conditionalAction = isActiveGeneral ? turnOffGeneral(generalItem.key) : turnOnGeneral(generalItem.key);
 
                 return (
                   <div
@@ -82,7 +87,7 @@ export default function SettingPanel() {
                         className={cx('switch')}
                         title={isActiveGeneral ? '끄기' : '켜기'}
                         disabled={!isActiveSettingPanel}
-                        onClick={() => dispatch(isActiveGeneral ? turnOffGeneral(generalItem.key) : turnOnGeneral(generalItem.key))}
+                        onClick={() => dispatch(conditionalAction)}
                       >
                         <span className={cx('switch-thumb')}></span>
                         <span className="sr-only">{isActiveGeneral ? '끄기' : '켜기'}</span>
@@ -100,7 +105,10 @@ export default function SettingPanel() {
 
             <div className="flex flex-col items-start">
               {smartLists.map((smartListItem) => {
+                invariant(isOneOf(smartListItem.key, ['important', 'planned', 'all', 'completed', 'autoHideEmptyLists']));
+
                 const isActiveSmartList = smartListSettings[smartListItem.key];
+                const conditionalAction = isActiveSmartList ? turnOffSmartList(smartListItem.key) : turnOnSmartList(smartListItem.key);
 
                 return (
                   <div
@@ -116,7 +124,7 @@ export default function SettingPanel() {
                         className={cx('switch')}
                         title={isActiveSmartList ? '끄기' : '켜기'}
                         disabled={!isActiveSettingPanel}
-                        onClick={() => dispatch(isActiveSmartList ? turnOffSmartList(smartListItem.key) : turnOnSmartList(smartListItem.key))}
+                        onClick={() => dispatch(conditionalAction)}
                       >
                         <span className={cx('switch-thumb')}></span>
                         <span className="sr-only">{isActiveSmartList ? '끄기' : '켜기'}</span>
