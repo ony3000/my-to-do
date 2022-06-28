@@ -4,7 +4,7 @@ Clone coding: [Microsoft To Do](https://todo.microsoft.com/)
 
 ## Requirements
 
-* Node 12+
+* Node 16
 
 ## Build Setup
 
