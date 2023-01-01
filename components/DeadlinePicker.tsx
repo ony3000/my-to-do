@@ -23,7 +23,7 @@ export default function DeadlinePicker({
   const dispatch = useAppDispatch();
   const deadlinePickerPosition = useAppSelector(({ todo: state }) => state.deadlinePickerPosition);
   const deadlineCalendarPosition = useAppSelector(({ todo: state }) => state.deadlineCalendarPosition);
-  const [ isMounted, setIsMounted ] = useState(false);
+  const [ isRendered, setIsRendered ] = useState(false);
   const $refs = {
     container: useRef<HTMLDivElement>(null),
   };
@@ -50,10 +50,10 @@ export default function DeadlinePicker({
   };
 
   useEffect(() => {
-    if (!isMounted) {
-      setIsMounted(true);
+    if (!isRendered) {
+      setIsRendered(true);
     }
-  }, [isMounted]);
+  }, [isRendered]);
 
   useEffect(() => {
     const clickHandler: EventListener = (event) => {
@@ -70,12 +70,12 @@ export default function DeadlinePicker({
       }
     };
 
-    if (isMounted) {
+    if (isRendered) {
       document.addEventListener('click', clickHandler);
     }
 
     return () => {
-      if (isMounted) {
+      if (isRendered) {
         document.removeEventListener('click', clickHandler);
       }
     };

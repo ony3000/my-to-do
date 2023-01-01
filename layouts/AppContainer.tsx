@@ -47,10 +47,10 @@ export default function AppContainer({ children }: AppContainerProps) {
   const dispatch = useAppDispatch();
   const isAppReady = useAppSelector(({ todo: state }) => state.isAppReady);
   const settingsPerPage = useAppSelector<SettingsPerPage>(({ todo: state }) => isExpectedPage ? state.pageSettings[pageKey] : {});
-  const [ isMounted, setIsMounted ] = useState(false);
+  const [ isRendered, setIsRendered ] = useState(false);
 
   useEffect(() => {
-    if (!isMounted) {
+    if (!isRendered) {
       if (router.pathname === '/') {
         router.replace('/tasks');
       }
@@ -59,9 +59,9 @@ export default function AppContainer({ children }: AppContainerProps) {
         dispatch(launchApp());
       }
 
-      setIsMounted(true);
+      setIsRendered(true);
     }
-  }, [router, dispatch, isAppReady, isMounted]);
+  }, [router, dispatch, isAppReady, isRendered]);
 
   return (
     <div

@@ -31,7 +31,7 @@ export default function NavigationDrawer() {
   const smartListSettings = useAppSelector(({ todo: state }) => state.settings.smartList);
   const todoItems = useAppSelector(({ todo: state }) => state.todoItems);
   const pageSettings = useAppSelector(({ todo: state }) => state.pageSettings);
-  const [ isMounted, setIsMounted ] = useState(false);
+  const [ isRendered, setIsRendered ] = useState(false);
 
   const midnightToday = dayjs().startOf('day');
   const { autoHideEmptyLists } = smartListSettings;
@@ -117,14 +117,14 @@ export default function NavigationDrawer() {
   ];
 
   useEffect(() => {
-    if (!isMounted) {
+    if (!isRendered) {
       if (window.innerWidth < 920 && isActiveSidebar) {
         dispatch(closeSidebar());
       }
 
-      setIsMounted(true);
+      setIsRendered(true);
     }
-  }, [dispatch, isActiveSidebar, isMounted]);
+  }, [dispatch, isActiveSidebar, isRendered]);
 
   return (
     <>
