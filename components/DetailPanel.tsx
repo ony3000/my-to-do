@@ -1,4 +1,4 @@
-import { Fragment, useState, useRef, useEffect, MouseEventHandler } from 'react';
+import { Fragment, useState, useRef, useEffect, useCallback, MouseEventHandler } from 'react';
 import { useRouter } from 'next/router';
 import invariant from 'tiny-invariant';
 import classNames from 'classnames/bind';
@@ -85,7 +85,7 @@ export default function DetailPanel() {
       dispatch(closeDeadlineCalendar());
     }
   };
-  const titleInputHandler = (element: HTMLTextAreaElement) => {
+  const titleInputHandler = useCallback((element: HTMLTextAreaElement) => {
     element.style.setProperty('height', '');
 
     const computedStyle = window.getComputedStyle(element);
@@ -99,7 +99,7 @@ export default function DetailPanel() {
     if ($refs.separator.current && closestSection) {
       $refs.separator.current.style.setProperty('top', `${closestSection.getBoundingClientRect().height}px`);
     }
-  };
+  }, [$refs.separator]);
   const titleBlurHandler = (event: ReactFocusEvent<HTMLTextAreaElement>, taskId: string) => {
     const inputElement = event.currentTarget;
     const trimmedMemo = inputElement.value.trim();
@@ -187,7 +187,7 @@ export default function DetailPanel() {
     else if (!task && isActivated) {
       setIsActivated(false);
     }
-  });
+  }, [task, isActivated, $refs.titleArea, $refs.memoArea, titleInputHandler]);
 
   useEffect(() => {
     const flexibleSection = document.querySelector(`.${cx('flexible-section')}`);

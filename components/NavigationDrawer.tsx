@@ -124,7 +124,7 @@ export default function NavigationDrawer() {
 
       setIsMounted(true);
     }
-  });
+  }, [dispatch, isActiveSidebar, isMounted]);
 
   return (
     <>

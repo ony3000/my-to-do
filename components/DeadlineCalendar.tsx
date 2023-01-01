@@ -47,7 +47,7 @@ export default function DeadlineCalendar({
     if (!isMounted) {
       setIsMounted(true);
     }
-  });
+  }, [isMounted]);
 
   useEffect(() => {
     const clickHandler: EventListener = (event) => {

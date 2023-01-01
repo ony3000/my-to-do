@@ -53,7 +53,7 @@ export default function DeadlinePicker({
     if (!isMounted) {
       setIsMounted(true);
     }
-  });
+  }, [isMounted]);
 
   useEffect(() => {
     const clickHandler: EventListener = (event) => {
