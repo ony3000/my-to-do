@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 export default function NoDataPlaceholder() {
   return (
     <div className="flex-1 flex flex-col overflow-hidden justify-center items-center text-center">
@@ -11,10 +13,12 @@ export default function NoDataPlaceholder() {
             width: 400,
           }}
         >
-          <img
+          <Image
             src="/images/no_data.svg"
             title="Illustration by Freepik Storyset"
             alt="&ldquo;No Data&rdquo; Illustration"
+            width={400}
+            height={400}
           />
         </a>
       </div>

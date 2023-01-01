@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import invariant from 'tiny-invariant';
 import classNames from 'classnames/bind';
 import { isOneOf } from '@/types/guard';
@@ -142,7 +143,13 @@ export default function SettingPanel() {
 
             <div className="flex">
               <div>
-                <img className="w-20 h-20" src="/images/todo_check.png" alt="" />
+                <Image
+                  className="w-20 h-20"
+                  src="/images/todo_check.png"
+                  alt=""
+                  width={80}
+                  height={80}
+                />
               </div>
               <div className="ml-4">
                 <p>
