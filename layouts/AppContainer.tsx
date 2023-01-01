@@ -61,7 +61,7 @@ export default function AppContainer({ children }: AppContainerProps) {
 
       setIsMounted(true);
     }
-  });
+  }, [router, dispatch, isAppReady, isMounted]);
 
   return (
     <div
