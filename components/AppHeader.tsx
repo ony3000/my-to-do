@@ -12,6 +12,7 @@ export default function AppHeader() {
 
   return (
     <div className="bg-blue-500 h-12 flex items-center justify-between">
+      {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
       <a className={cx('home-link')} href="/">
         To Do
       </a>
