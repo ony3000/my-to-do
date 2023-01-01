@@ -167,20 +167,18 @@ export default function NavigationDrawer() {
                     { 'is-active': router.pathname === anchorItem.href || anchorItem.hrefAliases?.includes(router.pathname) },
                   )}
                 >
-                  <Link href={anchorItem.href}>
-                    <a className={cx('sidebar-link')}>
-                      <span className={cx('icon-wrapper')}>
-                        <i className={anchorItem.icon.className}></i>
+                  <Link href={anchorItem.href} className={cx('sidebar-link')}>
+                    <span className={cx('icon-wrapper')}>
+                      <i className={anchorItem.icon.className}></i>
+                    </span>
+                    <span className={cx('link-text', 'is-title', anchorItem.textColor)}>
+                      {anchorItem.text}
+                    </span>
+                    {anchorItem.count ? (
+                      <span className={cx('link-text', anchorItem.textColor)}>
+                        {anchorItem.count}
                       </span>
-                      <span className={cx('link-text', 'is-title', anchorItem.textColor)}>
-                        {anchorItem.text}
-                      </span>
-                      {anchorItem.count ? (
-                        <span className={cx('link-text', anchorItem.textColor)}>
-                          {anchorItem.count}
-                        </span>
-                      ) : null}
-                    </a>
+                    ) : null}
                   </Link>
                 </li>
               ) : null);
