@@ -99,7 +99,6 @@ export default function PageToolbar({
             <span
               className={cx(
                 'icon-wrapper',
-                'transform',
                 'rotate-90',
               )}
             >

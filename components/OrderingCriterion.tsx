@@ -160,7 +160,6 @@ export default function OrderingCriterion({
                       <span
                         className={cx(
                           'icon-wrapper',
-                          'transform',
                           'rotate-90',
                         )}
                       >
