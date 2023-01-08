@@ -1,4 +1,4 @@
-import '@/styles/globals.css';
+import '@/lib/styles/globals.css';
 import type { AppProps } from 'next/app';
 import '@fortawesome/fontawesome-free/css/all.css';
 import 'react-datepicker/dist/react-datepicker.css';
