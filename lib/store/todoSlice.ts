@@ -2,9 +2,9 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import invariant from 'tiny-invariant';
 import { v4 as uuid } from 'uuid';
 import merge from 'lodash.merge';
-import { Dict, ReactMouseEvent, OrderingCriterion, OrderingDirection, ThemeColor } from '@/types/common';
-import { isDict } from '@/types/guard';
-import { TodoItemBase, TodoItem, TodoAppState } from '@/types/store/todoSlice';
+import { Dict, ReactMouseEvent, OrderingCriterion, OrderingDirection, ThemeColor } from '@/lib/types/common';
+import { isDict } from '@/lib/types/guard';
+import { TodoItemBase, TodoItem, TodoAppState } from '@/lib/types/store/todoSlice';
 
 export const CHANGE_THEME = 'CHANGE_THEME';
 export const TOGGLE_COMPLETED_ITEMS = 'TOGGLE_COMPLETED_ITEMS';

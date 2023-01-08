@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import invariant from 'tiny-invariant';
 import classNames from 'classnames/bind';
-import { isOneOf } from '@/types/guard';
+import { isOneOf } from '@/lib/types/guard';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
 import {
   closeSettingPanel,

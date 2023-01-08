@@ -2,9 +2,9 @@ import { useRef, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import invariant from 'tiny-invariant';
 import classNames from 'classnames/bind';
-import { ListOption as ListOptionType } from '@/types/common';
-import { isOneOf } from '@/types/guard';
-import { SettingsPerPage } from '@/types/store/todoSlice';
+import { ListOption as ListOptionType } from '@/lib/types/common';
+import { isOneOf } from '@/lib/types/guard';
+import { SettingsPerPage } from '@/lib/types/store/todoSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
 import {
   CHANGE_THEME,

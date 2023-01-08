@@ -1,8 +1,8 @@
 import { useRouter } from 'next/router';
 import invariant from 'tiny-invariant';
 import classNames from 'classnames/bind';
-import { isOneOf } from '@/types/guard';
-import { SettingsPerPage } from '@/types/store/todoSlice';
+import { isOneOf } from '@/lib/types/guard';
+import { SettingsPerPage } from '@/lib/types/store/todoSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
 import { openListOption, openOrderingCriterion } from '@/lib/store/todoSlice';
 import dayjs from '@/lib/plugins/dayjs';
