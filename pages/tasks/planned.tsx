@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import classNames from 'classnames/bind';
-import dayjs from '@/plugins/dayjs';
+import dayjs from '@/lib/plugins/dayjs';
 import styles from './inbox.module.scss'; // shared
 import { useAppSelector } from '@/hooks/index';
 import PageToolbar from '@/components/PageToolbar';

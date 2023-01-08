@@ -6,7 +6,7 @@ import classNames from 'classnames/bind';
 import { isOneOf } from '@/types/guard';
 import { useAppDispatch, useAppSelector } from '@/hooks/index';
 import { openSidebar, closeSidebar } from '@/store/todoSlice';
-import dayjs from '@/plugins/dayjs';
+import dayjs from '@/lib/plugins/dayjs';
 import styles from './NavigationDrawer.module.scss';
 
 const cx = classNames.bind(styles);

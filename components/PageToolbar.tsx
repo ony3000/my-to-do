@@ -5,7 +5,7 @@ import { isOneOf } from '@/types/guard';
 import { SettingsPerPage } from '@/types/store/todoSlice';
 import { useAppDispatch, useAppSelector } from '@/hooks/index';
 import { openListOption, openOrderingCriterion } from '@/store/todoSlice';
-import dayjs from '@/plugins/dayjs';
+import dayjs from '@/lib/plugins/dayjs';
 import styles from './PageToolbar.module.scss';
 import ListOption from '@/components/ListOption';
 import OrderingCriterion from '@/components/OrderingCriterion';

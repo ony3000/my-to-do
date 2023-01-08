@@ -21,7 +21,7 @@ import {
   markAsImportantWithOrderingFlag,
   markAsUnimportant,
 } from '@/store/todoSlice';
-import dayjs from '@/plugins/dayjs';
+import dayjs from '@/lib/plugins/dayjs';
 import styles from './TaskList.module.scss';
 
 const cx = classNames.bind(styles);

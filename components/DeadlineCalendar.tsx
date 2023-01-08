@@ -6,8 +6,8 @@ import {
   closeDeadlineCalendar,
   setDeadline,
 } from '@/store/todoSlice';
-import DatePicker from '@/plugins/react-datepicker';
-import dayjs from '@/plugins/dayjs';
+import DatePicker from '@/lib/plugins/react-datepicker';
+import dayjs from '@/lib/plugins/dayjs';
 import styles from './DeadlineCalendar.module.scss';
 
 const cx = classNames.bind(styles);

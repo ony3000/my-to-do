@@ -25,7 +25,7 @@ import {
   updateSubStep,
   unsetDeadline,
 } from '@/store/todoSlice';
-import dayjs from '@/plugins/dayjs';
+import dayjs from '@/lib/plugins/dayjs';
 import styles from './DetailPanel.module.scss';
 import StepInput from '@/components/StepInput';
 import DeadlinePicker from '@/components/DeadlinePicker';
