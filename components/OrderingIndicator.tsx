@@ -13,7 +13,7 @@ import {
   ASCENDING,
   reverseOrderingCriterion,
   unsetOrderingCriterion,
-} from '@/store/todoSlice';
+} from '@/lib/store/todoSlice';
 import styles from './OrderingIndicator.module.scss';
 
 const cx = classNames.bind(styles);

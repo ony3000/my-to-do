@@ -4,7 +4,7 @@ import classNames from 'classnames/bind';
 import { isOneOf } from '@/types/guard';
 import { SettingsPerPage } from '@/types/store/todoSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
-import { launchApp } from '@/store/todoSlice';
+import { launchApp } from '@/lib/store/todoSlice';
 import styles from './AppContainer.module.scss';
 import AppSplash from '@/components/AppSplash';
 import AppHeader from '@/components/AppHeader';

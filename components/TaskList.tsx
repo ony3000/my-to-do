@@ -20,7 +20,7 @@ import {
   markAsImportant,
   markAsImportantWithOrderingFlag,
   markAsUnimportant,
-} from '@/store/todoSlice';
+} from '@/lib/store/todoSlice';
 import dayjs from '@/lib/plugins/dayjs';
 import styles from './TaskList.module.scss';
 

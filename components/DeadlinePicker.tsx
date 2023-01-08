@@ -6,7 +6,7 @@ import {
   openDeadlineCalendar,
   closeDeadlineCalendar,
   setDeadline,
-} from '@/store/todoSlice';
+} from '@/lib/store/todoSlice';
 import dayjs from '@/lib/plugins/dayjs';
 import styles from './ListOption.module.scss'; // shared
 import DeadlineCalendar from '@/components/DeadlineCalendar';

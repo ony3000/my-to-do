@@ -15,7 +15,7 @@ import {
   DESCENDING,
   closeOrderingCriterion,
   setOrderingCriterion,
-} from '@/store/todoSlice';
+} from '@/lib/store/todoSlice';
 import styles from './ListOption.module.scss'; // shared
 
 const cx = classNames.bind(styles);

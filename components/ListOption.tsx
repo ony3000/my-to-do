@@ -13,7 +13,7 @@ import {
   openThemePalette,
   showCompletedItems,
   hideCompletedItems,
-} from '@/store/todoSlice';
+} from '@/lib/store/todoSlice';
 import styles from './ListOption.module.scss';
 import ThemePalette from '@/components/ThemePalette';
 

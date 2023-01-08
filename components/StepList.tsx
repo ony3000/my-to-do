@@ -5,7 +5,7 @@ import { Dict, Nullable } from '@/types/common';
 import { isRegExp, isOneOf } from '@/types/guard';
 import { TodoItemBase, TodoItem, FilteringCondition } from '@/types/store/todoSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
-import { openDetailPanel, updateSubStep } from '@/store/todoSlice';
+import { openDetailPanel, updateSubStep } from '@/lib/store/todoSlice';
 import styles from './TaskList.module.scss'; // shared
 
 const cx = classNames.bind(styles);

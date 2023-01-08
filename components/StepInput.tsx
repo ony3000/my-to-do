@@ -5,7 +5,7 @@ import classNames from 'classnames/bind';
 import { isOneOf } from '@/types/guard';
 import { SettingsPerPage } from '@/types/store/todoSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
-import { createTodoItem, createSubStep } from '@/store/todoSlice';
+import { createTodoItem, createSubStep } from '@/lib/store/todoSlice';
 import styles from './StepInput.module.scss';
 
 const cx = classNames.bind(styles);

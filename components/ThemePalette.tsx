@@ -5,7 +5,7 @@ import classNames from 'classnames/bind';
 import { ThemeColor } from '@/types/common';
 import { isOneOf } from '@/types/guard';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
-import { closeListOption, closeThemePalette, setThemeColor } from '@/store/todoSlice';
+import { closeListOption, closeThemePalette, setThemeColor } from '@/lib/store/todoSlice';
 import styles from './ThemePalette.module.scss';
 
 const cx = classNames.bind(styles);

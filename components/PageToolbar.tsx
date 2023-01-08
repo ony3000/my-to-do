@@ -4,7 +4,7 @@ import classNames from 'classnames/bind';
 import { isOneOf } from '@/types/guard';
 import { SettingsPerPage } from '@/types/store/todoSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
-import { openListOption, openOrderingCriterion } from '@/store/todoSlice';
+import { openListOption, openOrderingCriterion } from '@/lib/store/todoSlice';
 import dayjs from '@/lib/plugins/dayjs';
 import styles from './PageToolbar.module.scss';
 import ListOption from '@/components/ListOption';

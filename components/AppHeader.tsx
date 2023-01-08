@@ -1,6 +1,6 @@
 import classNames from 'classnames/bind';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
-import { openSettingPanel, closeSettingPanel } from '@/store/todoSlice';
+import { openSettingPanel, closeSettingPanel } from '@/lib/store/todoSlice';
 import styles from './AppHeader.module.scss';
 import SearchBox from '@/components/SearchBox';
 

@@ -9,7 +9,7 @@ import {
   turnOffGeneral,
   turnOnSmartList,
   turnOffSmartList,
-} from '@/store/todoSlice';
+} from '@/lib/store/todoSlice';
 import styles from './SettingPanel.module.scss';
 
 const cx = classNames.bind(styles);
