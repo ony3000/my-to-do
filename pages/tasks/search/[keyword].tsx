@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import invariant from 'tiny-invariant';
 import classNames from 'classnames/bind';
 import styles from '../inbox.module.scss'; // shared
-import { useAppSelector } from '@/hooks/index';
+import { useAppSelector } from '@/lib/hooks/index';
 import PageToolbar from '@/components/PageToolbar';
 import TaskList from '@/components/TaskList';
 import StepList from '@/components/StepList';

@@ -1,7 +1,7 @@
 import { useRef, FormEventHandler, FocusEventHandler } from 'react';
 import { useRouter } from 'next/router';
 import classNames from 'classnames/bind';
-import { useAppDispatch, useAppSelector } from '@/hooks/index';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
 import { openSearchBox, closeSearchBox } from '@/store/todoSlice';
 import styles from './SearchBox.module.scss';
 

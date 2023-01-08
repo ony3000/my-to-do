@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import classNames from 'classnames/bind';
-import { useAppDispatch, useAppSelector } from '@/hooks/index';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
 import {
   closeDeadlinePicker,
   closeDeadlineCalendar,

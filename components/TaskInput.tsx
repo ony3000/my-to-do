@@ -4,7 +4,7 @@ import invariant from 'tiny-invariant';
 import classNames from 'classnames/bind';
 import { isOneOf } from '@/types/guard';
 import { SettingsPerPage } from '@/types/store/todoSlice';
-import { useAppDispatch, useAppSelector } from '@/hooks/index';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
 import { createTodoItem } from '@/store/todoSlice';
 import styles from './TaskInput.module.scss';
 

@@ -2,7 +2,7 @@ import Image from 'next/image';
 import invariant from 'tiny-invariant';
 import classNames from 'classnames/bind';
 import { isOneOf } from '@/types/guard';
-import { useAppDispatch, useAppSelector } from '@/hooks/index';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
 import {
   closeSettingPanel,
   turnOnGeneral,

@@ -6,7 +6,7 @@ import { ReactFocusEvent } from '@/types/common';
 import { isOneOf } from '@/types/guard';
 import { TodoItem } from '@/types/store/todoSlice';
 import { SettingsPerPage } from '@/types/store/todoSlice';
-import { useAppDispatch, useAppSelector } from '@/hooks/index';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
 import {
   openDeadlinePicker,
   closeDeadlinePicker,

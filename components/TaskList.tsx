@@ -5,7 +5,7 @@ import classNames from 'classnames/bind';
 import { Dict, Nullable, OrderingCriterion, OrderingDirection } from '@/types/common';
 import { isRegExp, isOneOf } from '@/types/guard';
 import { TodoItem, SettingsPerPage, FilteringCondition } from '@/types/store/todoSlice';
-import { useAppDispatch, useAppSelector } from '@/hooks/index';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
 import {
   IMPORTANCE,
   DEADLINE,

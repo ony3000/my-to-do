@@ -4,7 +4,7 @@ import invariant from 'tiny-invariant';
 import classNames from 'classnames/bind';
 import { OrderingCriterion as OrderingCriterionType, OrderingDirection } from '@/types/common';
 import { isOneOf } from '@/types/guard';
-import { useAppDispatch, useAppSelector } from '@/hooks/index';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
 import {
   IMPORTANCE,
   DEADLINE,

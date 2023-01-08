@@ -4,7 +4,7 @@ import classNames from 'classnames/bind';
 import { Dict, Nullable } from '@/types/common';
 import { isRegExp, isOneOf } from '@/types/guard';
 import { TodoItemBase, TodoItem, FilteringCondition } from '@/types/store/todoSlice';
-import { useAppDispatch, useAppSelector } from '@/hooks/index';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
 import { openDetailPanel, updateSubStep } from '@/store/todoSlice';
 import styles from './TaskList.module.scss'; // shared
 
