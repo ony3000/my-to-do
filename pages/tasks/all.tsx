@@ -2,8 +2,8 @@ import Head from 'next/head';
 import classNames from 'classnames/bind';
 import styles from './inbox.module.scss'; // shared
 import PageToolbar from '@/components/PageToolbar';
-import TaskInput from '@/components/TaskInput';
-import TaskList from '@/components/TaskList';
+import TaskInput from '@/components/input/TaskInput';
+import TaskList from '@/components/list/TaskList';
 
 const cx = classNames.bind(styles);
 

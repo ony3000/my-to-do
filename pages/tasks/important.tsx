@@ -3,8 +3,8 @@ import classNames from 'classnames/bind';
 import styles from './inbox.module.scss'; // shared
 import { useAppSelector } from '@/lib/hooks/index';
 import PageToolbar from '@/components/PageToolbar';
-import TaskInput from '@/components/TaskInput';
-import TaskList from '@/components/TaskList';
+import TaskInput from '@/components/input/TaskInput';
+import TaskList from '@/components/list/TaskList';
 
 const cx = classNames.bind(styles);
 

@@ -9,7 +9,7 @@ import {
 } from '@/lib/store/todoSlice';
 import dayjs from '@/lib/plugins/dayjs';
 import styles from './ListOption.module.scss'; // shared
-import DeadlineCalendar from '@/components/DeadlineCalendar';
+import DeadlineCalendar from '@/components/datepicker/DeadlineCalendar';
 
 const cx = classNames.bind(styles);
 

@@ -8,7 +8,7 @@ import { openListOption, openOrderingCriterion } from '@/lib/store/todoSlice';
 import dayjs from '@/lib/plugins/dayjs';
 import styles from './PageToolbar.module.scss';
 import ListOption from '@/components/ListOption';
-import OrderingCriterion from '@/components/OrderingCriterion';
+import OrderingCriterion from '@/components/menu/OrderingCriterion';
 
 const cx = classNames.bind(styles);
 
