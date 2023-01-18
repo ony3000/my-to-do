@@ -1,15 +1,15 @@
 import { useState, useRef, useEffect } from 'react';
 import classNames from 'classnames/bind';
-import { useAppDispatch, useAppSelector } from '@/hooks/index';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
 import {
   closeDeadlinePicker,
   openDeadlineCalendar,
   closeDeadlineCalendar,
   setDeadline,
-} from '@/store/todoSlice';
-import dayjs from '@/plugins/dayjs';
+} from '@/lib/store/todoSlice';
+import dayjs from '@/lib/plugins/dayjs';
 import styles from './ListOption.module.scss'; // shared
-import DeadlineCalendar from '@/components/DeadlineCalendar';
+import DeadlineCalendar from '@/components/datepicker/DeadlineCalendar';
 
 const cx = classNames.bind(styles);
 

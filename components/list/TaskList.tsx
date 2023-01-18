@@ -2,10 +2,10 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import invariant from 'tiny-invariant';
 import classNames from 'classnames/bind';
-import { Dict, Nullable, OrderingCriterion, OrderingDirection } from '@/types/common';
-import { isRegExp, isOneOf } from '@/types/guard';
-import { TodoItem, SettingsPerPage, FilteringCondition } from '@/types/store/todoSlice';
-import { useAppDispatch, useAppSelector } from '@/hooks/index';
+import { Dict, Nullable, OrderingCriterion, OrderingDirection } from '@/lib/types/common';
+import { isRegExp, isOneOf } from '@/lib/types/guard';
+import { TodoItem, SettingsPerPage, FilteringCondition } from '@/lib/types/store/todoSlice';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
 import {
   IMPORTANCE,
   DEADLINE,
@@ -20,8 +20,8 @@ import {
   markAsImportant,
   markAsImportantWithOrderingFlag,
   markAsUnimportant,
-} from '@/store/todoSlice';
-import dayjs from '@/plugins/dayjs';
+} from '@/lib/store/todoSlice';
+import dayjs from '@/lib/plugins/dayjs';
 import styles from './TaskList.module.scss';
 
 const cx = classNames.bind(styles);

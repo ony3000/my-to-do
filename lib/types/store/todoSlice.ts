@@ -4,7 +4,7 @@ import {
   OrderingCriterion,
   OrderingDirection,
   ThemeColor,
-} from '@/types/common';
+} from '@/lib/types/common';
 
 export type TodoItemBase = {
   id: string;

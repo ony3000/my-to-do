@@ -1,9 +1,9 @@
 import { useRouter } from 'next/router';
 import invariant from 'tiny-invariant';
 import classNames from 'classnames/bind';
-import { OrderingCriterion } from '@/types/common';
-import { isOneOf } from '@/types/guard';
-import { useAppDispatch, useAppSelector } from '@/hooks/index';
+import { OrderingCriterion } from '@/lib/types/common';
+import { isOneOf } from '@/lib/types/guard';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
 import {
   IMPORTANCE,
   DEADLINE,
@@ -13,7 +13,7 @@ import {
   ASCENDING,
   reverseOrderingCriterion,
   unsetOrderingCriterion,
-} from '@/store/todoSlice';
+} from '@/lib/store/todoSlice';
 import styles from './OrderingIndicator.module.scss';
 
 const cx = classNames.bind(styles);

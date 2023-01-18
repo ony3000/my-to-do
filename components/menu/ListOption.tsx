@@ -2,10 +2,10 @@ import { useRef, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import invariant from 'tiny-invariant';
 import classNames from 'classnames/bind';
-import { ListOption as ListOptionType } from '@/types/common';
-import { isOneOf } from '@/types/guard';
-import { SettingsPerPage } from '@/types/store/todoSlice';
-import { useAppDispatch, useAppSelector } from '@/hooks/index';
+import { ListOption as ListOptionType } from '@/lib/types/common';
+import { isOneOf } from '@/lib/types/guard';
+import { SettingsPerPage } from '@/lib/types/store/todoSlice';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
 import {
   CHANGE_THEME,
   TOGGLE_COMPLETED_ITEMS,
@@ -13,9 +13,9 @@ import {
   openThemePalette,
   showCompletedItems,
   hideCompletedItems,
-} from '@/store/todoSlice';
+} from '@/lib/store/todoSlice';
 import styles from './ListOption.module.scss';
-import ThemePalette from '@/components/ThemePalette';
+import ThemePalette from '@/components/menu/ThemePalette';
 
 const cx = classNames.bind(styles);
 

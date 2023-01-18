@@ -3,11 +3,11 @@ import { useRouter } from 'next/router';
 import invariant from 'tiny-invariant';
 import classNames from 'classnames/bind';
 import styles from '../inbox.module.scss'; // shared
-import { useAppSelector } from '@/hooks/index';
-import PageToolbar from '@/components/PageToolbar';
-import TaskList from '@/components/TaskList';
-import StepList from '@/components/StepList';
-import NoDataPlaceholder from '@/components/NoDataPlaceholder';
+import { useAppSelector } from '@/lib/hooks/index';
+import PageToolbar from '@/components/toolbar/PageToolbar';
+import TaskList from '@/components/list/TaskList';
+import StepList from '@/components/list/StepList';
+import NoDataPlaceholder from '@/components/placeholder/NoDataPlaceholder';
 
 const cx = classNames.bind(styles);
 

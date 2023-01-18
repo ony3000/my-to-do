@@ -1,8 +1,8 @@
 import Head from 'next/head';
 import classNames from 'classnames/bind';
 import styles from '../inbox.module.scss'; // shared
-import PageToolbar from '@/components/PageToolbar';
-import NoDataPlaceholder from '@/components/NoDataPlaceholder';
+import PageToolbar from '@/components/toolbar/PageToolbar';
+import NoDataPlaceholder from '@/components/placeholder/NoDataPlaceholder';
 
 const cx = classNames.bind(styles);
 

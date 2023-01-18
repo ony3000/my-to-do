@@ -2,10 +2,10 @@ import { useRef, KeyboardEventHandler, FormEventHandler, FocusEventHandler } fro
 import { useRouter } from 'next/router';
 import invariant from 'tiny-invariant';
 import classNames from 'classnames/bind';
-import { isOneOf } from '@/types/guard';
-import { SettingsPerPage } from '@/types/store/todoSlice';
-import { useAppDispatch, useAppSelector } from '@/hooks/index';
-import { createTodoItem } from '@/store/todoSlice';
+import { isOneOf } from '@/lib/types/guard';
+import { SettingsPerPage } from '@/lib/types/store/todoSlice';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
+import { createTodoItem } from '@/lib/store/todoSlice';
 import styles from './TaskInput.module.scss';
 
 const cx = classNames.bind(styles);

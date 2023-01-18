@@ -2,11 +2,11 @@ import { Fragment, useState, useRef, useEffect, useCallback, MouseEventHandler }
 import { useRouter } from 'next/router';
 import invariant from 'tiny-invariant';
 import classNames from 'classnames/bind';
-import { ReactFocusEvent } from '@/types/common';
-import { isOneOf } from '@/types/guard';
-import { TodoItem } from '@/types/store/todoSlice';
-import { SettingsPerPage } from '@/types/store/todoSlice';
-import { useAppDispatch, useAppSelector } from '@/hooks/index';
+import { ReactFocusEvent } from '@/lib/types/common';
+import { isOneOf } from '@/lib/types/guard';
+import { TodoItem } from '@/lib/types/store/todoSlice';
+import { SettingsPerPage } from '@/lib/types/store/todoSlice';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
 import {
   openDeadlinePicker,
   closeDeadlinePicker,
@@ -24,11 +24,11 @@ import {
   removeSubStep,
   updateSubStep,
   unsetDeadline,
-} from '@/store/todoSlice';
-import dayjs from '@/plugins/dayjs';
+} from '@/lib/store/todoSlice';
+import dayjs from '@/lib/plugins/dayjs';
 import styles from './DetailPanel.module.scss';
-import StepInput from '@/components/StepInput';
-import DeadlinePicker from '@/components/DeadlinePicker';
+import StepInput from '@/components/input/StepInput';
+import DeadlinePicker from '@/components/menu/DeadlinePicker';
 
 const cx = classNames.bind(styles);
 

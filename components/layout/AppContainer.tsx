@@ -1,16 +1,16 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import classNames from 'classnames/bind';
-import { isOneOf } from '@/types/guard';
-import { SettingsPerPage } from '@/types/store/todoSlice';
-import { useAppDispatch, useAppSelector } from '@/hooks/index';
-import { launchApp } from '@/store/todoSlice';
+import { isOneOf } from '@/lib/types/guard';
+import { SettingsPerPage } from '@/lib/types/store/todoSlice';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
+import { launchApp } from '@/lib/store/todoSlice';
 import styles from './AppContainer.module.scss';
-import AppSplash from '@/components/AppSplash';
-import AppHeader from '@/components/AppHeader';
-import NavigationDrawer from '@/components/NavigationDrawer';
-import DetailPanel from '@/components/DetailPanel';
-import SettingPanel from '@/components/SettingPanel';
+import AppSplash from '@/components/placeholder/AppSplash';
+import AppHeader from '@/components/toolbar/AppHeader';
+import NavigationDrawer from '@/components/panel/NavigationDrawer';
+import DetailPanel from '@/components/panel/DetailPanel';
+import SettingPanel from '@/components/panel/SettingPanel';
 
 const cx = classNames.bind(styles);
 

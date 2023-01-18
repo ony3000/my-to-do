@@ -2,9 +2,9 @@ import { useRef, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import invariant from 'tiny-invariant';
 import classNames from 'classnames/bind';
-import { OrderingCriterion as OrderingCriterionType, OrderingDirection } from '@/types/common';
-import { isOneOf } from '@/types/guard';
-import { useAppDispatch, useAppSelector } from '@/hooks/index';
+import { OrderingCriterion as OrderingCriterionType, OrderingDirection } from '@/lib/types/common';
+import { isOneOf } from '@/lib/types/guard';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
 import {
   IMPORTANCE,
   DEADLINE,
@@ -15,7 +15,7 @@ import {
   DESCENDING,
   closeOrderingCriterion,
   setOrderingCriterion,
-} from '@/store/todoSlice';
+} from '@/lib/store/todoSlice';
 import styles from './ListOption.module.scss'; // shared
 
 const cx = classNames.bind(styles);

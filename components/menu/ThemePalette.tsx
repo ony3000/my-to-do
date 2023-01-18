@@ -2,10 +2,10 @@ import { useRef, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import invariant from 'tiny-invariant';
 import classNames from 'classnames/bind';
-import { ThemeColor } from '@/types/common';
-import { isOneOf } from '@/types/guard';
-import { useAppDispatch, useAppSelector } from '@/hooks/index';
-import { closeListOption, closeThemePalette, setThemeColor } from '@/store/todoSlice';
+import { ThemeColor } from '@/lib/types/common';
+import { isOneOf } from '@/lib/types/guard';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
+import { closeListOption, closeThemePalette, setThemeColor } from '@/lib/store/todoSlice';
 import styles from './ThemePalette.module.scss';
 
 const cx = classNames.bind(styles);
