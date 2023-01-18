@@ -16,7 +16,7 @@ import {
   closeOrderingCriterion,
   setOrderingCriterion,
 } from '@/lib/store/todoSlice';
-import styles from '../ListOption.module.scss'; // shared
+import styles from './ListOption.module.scss'; // shared
 
 const cx = classNames.bind(styles);
 

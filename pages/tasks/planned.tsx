@@ -3,7 +3,7 @@ import classNames from 'classnames/bind';
 import dayjs from '@/lib/plugins/dayjs';
 import styles from './inbox.module.scss'; // shared
 import { useAppSelector } from '@/lib/hooks/index';
-import PageToolbar from '@/components/PageToolbar';
+import PageToolbar from '@/components/toolbar/PageToolbar';
 import TaskInput from '@/components/input/TaskInput';
 import TaskList from '@/components/list/TaskList';
 

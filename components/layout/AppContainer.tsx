@@ -7,9 +7,9 @@ import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
 import { launchApp } from '@/lib/store/todoSlice';
 import styles from './AppContainer.module.scss';
 import AppSplash from '@/components/placeholder/AppSplash';
-import AppHeader from '@/components/AppHeader';
+import AppHeader from '@/components/toolbar/AppHeader';
 import NavigationDrawer from '@/components/panel/NavigationDrawer';
-import DetailPanel from '@/components/DetailPanel';
+import DetailPanel from '@/components/panel/DetailPanel';
 import SettingPanel from '@/components/panel/SettingPanel';
 
 const cx = classNames.bind(styles);

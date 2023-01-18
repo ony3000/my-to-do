@@ -5,7 +5,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { Provider } from 'react-redux';
 import { store } from '@/lib/store/index';
 import './_app.scss';
-import AppContainer from '@/components/layouts/AppContainer';
+import AppContainer from '@/components/layout/AppContainer';
 
 function MyToDoApp({ Component, pageProps }: AppProps) {
   return (

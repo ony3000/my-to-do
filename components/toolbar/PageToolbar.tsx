@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
 import { openListOption, openOrderingCriterion } from '@/lib/store/todoSlice';
 import dayjs from '@/lib/plugins/dayjs';
 import styles from './PageToolbar.module.scss';
-import ListOption from '@/components/ListOption';
+import ListOption from '@/components/menu/ListOption';
 import OrderingCriterion from '@/components/menu/OrderingCriterion';
 
 const cx = classNames.bind(styles);

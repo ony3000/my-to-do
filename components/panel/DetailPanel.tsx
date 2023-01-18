@@ -28,7 +28,7 @@ import {
 import dayjs from '@/lib/plugins/dayjs';
 import styles from './DetailPanel.module.scss';
 import StepInput from '@/components/input/StepInput';
-import DeadlinePicker from '@/components/DeadlinePicker';
+import DeadlinePicker from '@/components/menu/DeadlinePicker';
 
 const cx = classNames.bind(styles);
 
