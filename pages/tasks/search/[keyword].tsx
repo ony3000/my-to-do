@@ -4,10 +4,9 @@ import invariant from 'tiny-invariant';
 import classNames from 'classnames/bind';
 import styles from '../inbox.module.scss'; // shared
 import { useAppSelector } from '@/lib/hooks/index';
-import PageToolbar from '@/components/toolbar/PageToolbar';
-import TaskList from '@/components/list/TaskList';
-import StepList from '@/components/list/StepList';
-import NoDataPlaceholder from '@/components/placeholder/NoDataPlaceholder';
+import { PageToolbar } from '@/components/toolbar';
+import { StepList, TaskList } from '@/components/list';
+import { NoDataPlaceholder } from '@/components/placeholder';
 
 const cx = classNames.bind(styles);
 

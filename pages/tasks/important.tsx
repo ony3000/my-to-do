@@ -2,9 +2,9 @@ import Head from 'next/head';
 import classNames from 'classnames/bind';
 import styles from './inbox.module.scss'; // shared
 import { useAppSelector } from '@/lib/hooks/index';
-import PageToolbar from '@/components/toolbar/PageToolbar';
-import TaskInput from '@/components/input/TaskInput';
-import TaskList from '@/components/list/TaskList';
+import { PageToolbar } from '@/components/toolbar';
+import { TaskInput } from '@/components/input';
+import { TaskList } from '@/components/list';
 
 const cx = classNames.bind(styles);
 

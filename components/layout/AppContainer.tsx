@@ -6,11 +6,9 @@ import { SettingsPerPage } from '@/lib/types/store/todoSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
 import { launchApp } from '@/lib/store/todoSlice';
 import styles from './AppContainer.module.scss';
-import AppSplash from '@/components/placeholder/AppSplash';
-import AppHeader from '@/components/toolbar/AppHeader';
-import NavigationDrawer from '@/components/panel/NavigationDrawer';
-import DetailPanel from '@/components/panel/DetailPanel';
-import SettingPanel from '@/components/panel/SettingPanel';
+import { AppSplash } from '@/components/placeholder';
+import { AppHeader } from '@/components/toolbar';
+import { DetailPanel, NavigationDrawer, SettingPanel } from '@/components/panel';
 
 const cx = classNames.bind(styles);
 
