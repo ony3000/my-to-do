@@ -265,6 +265,7 @@ export const openDeadlineCalendar = createAsyncThunk<
   return Promise.resolve(calendarPosition);
 });
 
+/* eslint-disable no-param-reassign */
 const todoSlice = createSlice({
   name: 'todo',
   initialState,
@@ -620,6 +621,7 @@ const todoSlice = createSlice({
     );
   },
 });
+/* eslint-enable no-param-reassign */
 
 export const {
   openSearchBox,
