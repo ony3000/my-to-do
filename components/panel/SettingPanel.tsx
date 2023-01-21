@@ -76,7 +76,7 @@ export default function SettingPanel() {
                     key={generalItem.key}
                     className={cx('togglable-item', { 'is-active': isActiveGeneral })}
                   >
-                    <label className={cx('top-label')}>{generalItem.text}</label>
+                    <div className={cx('top-label')}>{generalItem.text}</div>
                     <div className="inline-flex">
                       <button
                         type="button"
@@ -88,7 +88,7 @@ export default function SettingPanel() {
                         <span className={cx('switch-thumb')} />
                         <span className="sr-only">{isActiveGeneral ? '끄기' : '켜기'}</span>
                       </button>
-                      <label className={cx('side-label')}>{isActiveGeneral ? '켬' : '끔'}</label>
+                      <div className={cx('side-label')}>{isActiveGeneral ? '켬' : '끔'}</div>
                     </div>
                   </div>
                 );
@@ -121,7 +121,7 @@ export default function SettingPanel() {
                     key={smartListItem.key}
                     className={cx('togglable-item', { 'is-active': isActiveSmartList })}
                   >
-                    <label className={cx('top-label')}>{smartListItem.text}</label>
+                    <div className={cx('top-label')}>{smartListItem.text}</div>
                     <div className="inline-flex">
                       <button
                         type="button"
@@ -133,7 +133,7 @@ export default function SettingPanel() {
                         <span className={cx('switch-thumb')} />
                         <span className="sr-only">{isActiveSmartList ? '끄기' : '켜기'}</span>
                       </button>
-                      <label className={cx('side-label')}>{isActiveSmartList ? '켬' : '끔'}</label>
+                      <div className={cx('side-label')}>{isActiveSmartList ? '켬' : '끔'}</div>
                     </div>
                   </div>
                 );
