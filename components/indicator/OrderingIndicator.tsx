@@ -40,7 +40,7 @@ export default function OrderingIndicator() {
       case CREATION_DATE:
         return '만든 날짜순으로';
       default:
-      // nothing to do
+        return '정해진 기준으로';
     }
   };
 
