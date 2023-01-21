@@ -190,7 +190,7 @@ export default function DetailPanel() {
   }) => {
     if (
       !generalSettings.confirmBeforeRemoving ||
-      confirm(`"${title}"이(가) 영구적으로 삭제됩니다.\n이 작업은 취소할 수 없습니다.`)
+      window.confirm(`"${title}"이(가) 영구적으로 삭제됩니다.\n이 작업은 취소할 수 없습니다.`)
     ) {
       dispatch(action);
     }
