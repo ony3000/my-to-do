@@ -71,7 +71,7 @@ export default function PageToolbar({ title = '', displayToday = false }) {
                 }
               >
                 <span className={cx('icon-wrapper')}>
-                  <i className="fas fa-ellipsis-h"></i>
+                  <i className="fas fa-ellipsis-h" />
                   <span className="sr-only">목록 옵션</span>
                 </span>
               </button>
@@ -109,7 +109,7 @@ export default function PageToolbar({ title = '', displayToday = false }) {
             }}
           >
             <span className={cx('icon-wrapper', 'rotate-90')}>
-              <i className="fas fa-exchange-alt"></i>
+              <i className="fas fa-exchange-alt" />
             </span>
             <span className={cx('button-text')}>
               <span>정렬</span>

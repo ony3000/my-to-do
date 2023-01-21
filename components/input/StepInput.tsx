@@ -100,7 +100,7 @@ export default function StepInput({ placeholder = '다음 단계', taskId }: Ste
           onClick={() => focusInput()}
         >
           <span className={cx('icon-wrapper')}>
-            <i className="fas fa-plus"></i>
+            <i className="fas fa-plus" />
             <span className="sr-only">작업 추가</span>
           </span>
         </button>

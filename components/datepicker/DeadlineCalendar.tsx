@@ -109,7 +109,7 @@ export default function DeadlineCalendar({ taskId }: DeadlineCalendarProps) {
                     disabled={prevMonthButtonDisabled}
                     title="이전 달"
                   >
-                    <i className="fas fa-arrow-up"></i>
+                    <i className="fas fa-arrow-up" />
                   </button>
                   <button
                     className={cx('navigation')}
@@ -117,7 +117,7 @@ export default function DeadlineCalendar({ taskId }: DeadlineCalendarProps) {
                     disabled={nextMonthButtonDisabled}
                     title="다음 달"
                   >
-                    <i className="fas fa-arrow-down"></i>
+                    <i className="fas fa-arrow-down" />
                   </button>
                 </div>
               </div>

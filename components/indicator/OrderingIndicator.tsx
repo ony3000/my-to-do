@@ -59,9 +59,9 @@ export default function OrderingIndicator() {
       >
         <span className={cx('icon-wrapper')}>
           {settingsPerPage.ordering.direction === ASCENDING ? (
-            <i className="fas fa-chevron-up"></i>
+            <i className="fas fa-chevron-up" />
           ) : (
-            <i className="fas fa-chevron-down"></i>
+            <i className="fas fa-chevron-down" />
           )}
           <span className="sr-only">역순 정렬</span>
         </span>
@@ -84,7 +84,7 @@ export default function OrderingIndicator() {
         }
       >
         <span className={cx('icon-wrapper')}>
-          <i className="fas fa-times"></i>
+          <i className="fas fa-times" />
           <span className="sr-only">정렬 순서 옵션 제거</span>
         </span>
       </button>

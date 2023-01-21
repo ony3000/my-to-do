@@ -106,7 +106,7 @@ export default function DeadlinePicker({ taskId }: DeadlinePickerProps) {
                 onClick={() => setFixedDeadline(Number(midnightTomorrow.format('x')) - 1)}
               >
                 <span className={cx('icon-wrapper', 'relative')}>
-                  <i className="far fa-calendar"></i>
+                  <i className="far fa-calendar" />
                   <i
                     className="fas fa-square"
                     style={{
@@ -115,7 +115,7 @@ export default function DeadlinePicker({ taskId }: DeadlinePickerProps) {
                       left: '50%',
                       transform: 'translate(-50%, -50%) scale(0.25)',
                     }}
-                  ></i>
+                  />
                 </span>
                 <span className={cx('option-text')}>오늘</span>
               </button>
@@ -126,7 +126,7 @@ export default function DeadlinePicker({ taskId }: DeadlinePickerProps) {
                 onClick={() => setFixedDeadline(Number(midnightAfter2Days.format('x')) - 1)}
               >
                 <span className={cx('icon-wrapper', 'relative')}>
-                  <i className="far fa-calendar"></i>
+                  <i className="far fa-calendar" />
                   <i
                     className="fas fa-arrow-right"
                     style={{
@@ -135,7 +135,7 @@ export default function DeadlinePicker({ taskId }: DeadlinePickerProps) {
                       left: '50%',
                       transform: 'translate(-50%, -50%) scale(0.55)',
                     }}
-                  ></i>
+                  />
                 </span>
                 <span className={cx('option-text')}>내일</span>
               </button>
@@ -146,7 +146,7 @@ export default function DeadlinePicker({ taskId }: DeadlinePickerProps) {
                 onClick={() => setFixedDeadline(Number(midnightNextTuesday.format('x')) - 1)}
               >
                 <span className={cx('icon-wrapper', 'relative')}>
-                  <i className="far fa-calendar"></i>
+                  <i className="far fa-calendar" />
                   <i
                     className="fas fa-angle-double-right"
                     style={{
@@ -155,7 +155,7 @@ export default function DeadlinePicker({ taskId }: DeadlinePickerProps) {
                       left: '50%',
                       transform: 'translate(-50%, -50%) scale(0.6)',
                     }}
-                  ></i>
+                  />
                 </span>
                 <span className={cx('option-text')}>다음 주</span>
               </button>
@@ -175,7 +175,7 @@ export default function DeadlinePicker({ taskId }: DeadlinePickerProps) {
                 }
               >
                 <span className={cx('icon-wrapper', 'relative')}>
-                  <i className="far fa-calendar-alt"></i>
+                  <i className="far fa-calendar-alt" />
                   <i
                     className="far fa-clock"
                     style={{
@@ -185,11 +185,11 @@ export default function DeadlinePicker({ taskId }: DeadlinePickerProps) {
                       transform: 'translate(-50%, -50%) scale(0.6)',
                       backgroundColor: '#fff',
                     }}
-                  ></i>
+                  />
                 </span>
                 <span className={cx('option-text')}>날짜 선택</span>
                 <span className={cx('icon-wrapper')}>
-                  <i className="fas fa-chevron-right"></i>
+                  <i className="fas fa-chevron-right" />
                 </span>
               </button>
 

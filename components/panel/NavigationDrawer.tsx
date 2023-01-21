@@ -137,9 +137,9 @@ export default function NavigationDrawer() {
           >
             <span className={cx('icon-wrapper')}>
               {isActiveSidebar ? (
-                <i className="fas fa-chevron-left"></i>
+                <i className="fas fa-chevron-left" />
               ) : (
-                <i className="fas fa-chevron-right"></i>
+                <i className="fas fa-chevron-right" />
               )}
               <span className="sr-only">사이드바 표시/숨기기</span>
             </span>
@@ -175,7 +175,7 @@ export default function NavigationDrawer() {
                 >
                   <Link href={anchorItem.href} className={cx('sidebar-link')}>
                     <span className={cx('icon-wrapper')}>
-                      <i className={anchorItem.icon.className}></i>
+                      <i className={anchorItem.icon.className} />
                     </span>
                     <span className={cx('link-text', 'is-title', anchorItem.textColor)}>
                       {anchorItem.text}

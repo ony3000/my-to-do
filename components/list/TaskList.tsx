@@ -220,9 +220,9 @@ export default function TaskList({
         <div className={cx('headline-body')}>
           <span className={cx('icon-wrapper')}>
             {isCollapsed ? (
-              <i className="fas fa-chevron-right"></i>
+              <i className="fas fa-chevron-right" />
             ) : (
-              <i className="fas fa-chevron-down"></i>
+              <i className="fas fa-chevron-down" />
             )}
           </span>
           <span className={cx('headline-title')}>{title ?? '작업'}</span>
@@ -272,9 +272,9 @@ export default function TaskList({
                 >
                   <span className={cx('icon-wrapper')}>
                     {isComplete ? (
-                      <i className="fas fa-check-circle"></i>
+                      <i className="fas fa-check-circle" />
                     ) : (
-                      <i className="far fa-circle"></i>
+                      <i className="far fa-circle" />
                     )}
                     <span className="sr-only">
                       {isComplete ? '완료되지 않음으로 표시' : '완료됨으로 표시'}
@@ -341,11 +341,7 @@ export default function TaskList({
                   }
                 >
                   <span className={cx('icon-wrapper')}>
-                    {isImportant ? (
-                      <i className="fas fa-star"></i>
-                    ) : (
-                      <i className="far fa-star"></i>
-                    )}
+                    {isImportant ? <i className="fas fa-star" /> : <i className="far fa-star" />}
                     <span className="sr-only">
                       {isImportant ? '중요도를 제거합니다.' : '작업을 중요로 표시합니다.'}
                     </span>

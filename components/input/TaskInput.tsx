@@ -84,7 +84,7 @@ export default function TaskInput({ placeholder = '작업 추가', itemProps = {
         onClick={() => focusInput()}
       >
         <span className={cx('icon-wrapper')}>
-          <i className="fas fa-plus"></i>
+          <i className="fas fa-plus" />
           <span className="sr-only">작업 추가</span>
         </span>
       </button>

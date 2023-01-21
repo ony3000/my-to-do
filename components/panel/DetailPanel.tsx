@@ -270,9 +270,9 @@ export default function DetailPanel() {
                 >
                   <span className={cx('icon-wrapper')}>
                     {task.isComplete ? (
-                      <i className="fas fa-check-circle"></i>
+                      <i className="fas fa-check-circle" />
                     ) : (
-                      <i className="far fa-circle"></i>
+                      <i className="far fa-circle" />
                     )}
                   </span>
                   <span className="sr-only">
@@ -301,9 +301,9 @@ export default function DetailPanel() {
                 >
                   <span className={cx('icon-wrapper')}>
                     {task.isImportant ? (
-                      <i className="fas fa-star"></i>
+                      <i className="fas fa-star" />
                     ) : (
-                      <i className="far fa-star"></i>
+                      <i className="far fa-star" />
                     )}
                   </span>
                   <span className="sr-only">
@@ -336,9 +336,9 @@ export default function DetailPanel() {
                     >
                       <span className={cx('icon-wrapper')}>
                         {isComplete ? (
-                          <i className="fas fa-check-circle"></i>
+                          <i className="fas fa-check-circle" />
                         ) : (
-                          <i className="far fa-circle"></i>
+                          <i className="far fa-circle" />
                         )}
                       </span>
                       <span className="sr-only">
@@ -369,7 +369,7 @@ export default function DetailPanel() {
                       }
                     >
                       <span className={cx('icon-wrapper')}>
-                        <i className="fas fa-times"></i>
+                        <i className="fas fa-times" />
                       </span>
                       <span className="sr-only">단계 삭제</span>
                     </button>
@@ -390,7 +390,7 @@ export default function DetailPanel() {
               >
                 <span className={cx('button')}>
                   <span className={cx('icon-wrapper')}>
-                    <i className="far fa-sun"></i>
+                    <i className="far fa-sun" />
                   </span>
                 </span>
                 <span className={cx('section-title')}>
@@ -410,7 +410,7 @@ export default function DetailPanel() {
                     onClick={() => dispatch(markAsNonTodayTask(task.id))}
                   >
                     <span className={cx('icon-wrapper')}>
-                      <i className="fas fa-times"></i>
+                      <i className="fas fa-times" />
                     </span>
                     <span className="sr-only">나의 하루에서 제거</span>
                   </button>
@@ -439,7 +439,7 @@ export default function DetailPanel() {
               >
                 <span className={cx('button')}>
                   <span className={cx('icon-wrapper')}>
-                    <i className="far fa-calendar-alt"></i>
+                    <i className="far fa-calendar-alt" />
                   </span>
                 </span>
                 <span className={cx('section-title')}>
@@ -459,7 +459,7 @@ export default function DetailPanel() {
                     onClick={() => dispatch(unsetDeadline(task.id))}
                   >
                     <span className={cx('icon-wrapper')}>
-                      <i className="fas fa-times"></i>
+                      <i className="fas fa-times" />
                     </span>
                     <span className="sr-only">기한 제거</span>
                   </button>
@@ -484,7 +484,7 @@ export default function DetailPanel() {
           <div className={cx('footer')}>
             <button className={cx('button')} title="세부 정보 화면 숨기기" onClick={closeHandler}>
               <span className={cx('icon-wrapper')}>
-                <i className="fas fa-columns"></i>
+                <i className="fas fa-columns" />
                 <span className="sr-only">세부 정보 화면 숨기기</span>
               </span>
             </button>
@@ -512,7 +512,7 @@ export default function DetailPanel() {
               }
             >
               <span className={cx('icon-wrapper')}>
-                <i className="fas fa-trash-alt"></i>
+                <i className="fas fa-trash-alt" />
                 <span className="sr-only">작업 삭제</span>
               </span>
             </button>

@@ -22,7 +22,7 @@ export default function AppHeader() {
         title="설정"
         onClick={() => dispatch(isActiveSettingPanel ? closeSettingPanel() : openSettingPanel())}
       >
-        <i className="fas fa-cog"></i>
+        <i className="fas fa-cog" />
         <span className="sr-only">설정</span>
       </button>
     </div>

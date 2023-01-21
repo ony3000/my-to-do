@@ -119,7 +119,7 @@ export default function OrderingCriterion({ availableCriterions = [] }: Ordering
                       }
                     >
                       <span className={cx('icon-wrapper')}>
-                        <i className="far fa-star"></i>
+                        <i className="far fa-star" />
                       </span>
                       <span className={cx('option-text')}>중요도</span>
                     </button>
@@ -137,7 +137,7 @@ export default function OrderingCriterion({ availableCriterions = [] }: Ordering
                       }
                     >
                       <span className={cx('icon-wrapper')}>
-                        <i className="far fa-calendar-alt"></i>
+                        <i className="far fa-calendar-alt" />
                       </span>
                       <span className={cx('option-text')}>기한</span>
                     </button>
@@ -155,7 +155,7 @@ export default function OrderingCriterion({ availableCriterions = [] }: Ordering
                       }
                     >
                       <span className={cx('icon-wrapper')}>
-                        <i className="far fa-sun"></i>
+                        <i className="far fa-sun" />
                       </span>
                       <span className={cx('option-text')}>나의 하루에 추가됨</span>
                     </button>
@@ -173,7 +173,7 @@ export default function OrderingCriterion({ availableCriterions = [] }: Ordering
                       }
                     >
                       <span className={cx('icon-wrapper', 'rotate-90')}>
-                        <i className="fas fa-exchange-alt"></i>
+                        <i className="fas fa-exchange-alt" />
                       </span>
                       <span className={cx('option-text')}>제목</span>
                     </button>
@@ -191,7 +191,7 @@ export default function OrderingCriterion({ availableCriterions = [] }: Ordering
                       }
                     >
                       <span className={cx('icon-wrapper')}>
-                        <i className="far fa-calendar-plus"></i>
+                        <i className="far fa-calendar-plus" />
                       </span>
                       <span className={cx('option-text')}>만든 날짜</span>
                     </button>

@@ -83,9 +83,9 @@ export default function StepList({
         <div className={cx('headline-body')}>
           <span className={cx('icon-wrapper')}>
             {isCollapsed ? (
-              <i className="fas fa-chevron-right"></i>
+              <i className="fas fa-chevron-right" />
             ) : (
-              <i className="fas fa-chevron-down"></i>
+              <i className="fas fa-chevron-down" />
             )}
           </span>
           <span className={cx('headline-title')}>{title ?? '작업'}</span>
@@ -110,9 +110,9 @@ export default function StepList({
             >
               <span className={cx('icon-wrapper')}>
                 {isComplete ? (
-                  <i className="fas fa-check-circle"></i>
+                  <i className="fas fa-check-circle" />
                 ) : (
-                  <i className="far fa-circle"></i>
+                  <i className="far fa-circle" />
                 )}
                 <span className="sr-only">
                   {isComplete ? '완료되지 않음으로 표시' : '완료됨으로 표시'}

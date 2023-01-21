@@ -65,7 +65,7 @@ export default function SearchBox() {
         onClick={() => activateSearchBox()}
       >
         <span className={cx('icon-wrapper')}>
-          <i className="fas fa-search"></i>
+          <i className="fas fa-search" />
           <span className="sr-only">검색</span>
         </span>
       </button>
@@ -86,7 +86,7 @@ export default function SearchBox() {
         onClick={() => deactivateSearchBox()}
       >
         <span className={cx('icon-wrapper')}>
-          <i className="fas fa-times"></i>
+          <i className="fas fa-times" />
           <span className="sr-only">검색 종료</span>
         </span>
       </button>
