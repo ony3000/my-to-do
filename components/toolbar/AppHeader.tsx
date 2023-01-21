@@ -18,6 +18,7 @@ export default function AppHeader() {
       </a>
       <SearchBox />
       <button
+        type="button"
         className={cx('button', { 'is-active': isActiveSettingPanel })}
         title="설정"
         onClick={() => dispatch(isActiveSettingPanel ? closeSettingPanel() : openSettingPanel())}

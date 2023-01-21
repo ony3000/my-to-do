@@ -75,6 +75,7 @@ export default function TaskInput({ placeholder = '작업 추가', itemProps = {
   return (
     <div className={cx('container')}>
       <button
+        type="button"
         className={cx(
           'button',
           'is-left',
@@ -105,6 +106,7 @@ export default function TaskInput({ placeholder = '작업 추가', itemProps = {
       />
 
       <button
+        type="button"
         className={cx(
           'button',
           'is-right',

@@ -110,6 +110,7 @@ export default function OrderingCriterion({ availableCriterions = [] }: Ordering
                 case IMPORTANCE:
                   elements = (
                     <button
+                      type="button"
                       className={cx('option-button')}
                       onClick={() =>
                         setOrderingCriterionToDefault({
@@ -128,6 +129,7 @@ export default function OrderingCriterion({ availableCriterions = [] }: Ordering
                 case DEADLINE:
                   elements = (
                     <button
+                      type="button"
                       className={cx('option-button')}
                       onClick={() =>
                         setOrderingCriterionToDefault({
@@ -146,6 +148,7 @@ export default function OrderingCriterion({ availableCriterions = [] }: Ordering
                 case MYDAY:
                   elements = (
                     <button
+                      type="button"
                       className={cx('option-button')}
                       onClick={() =>
                         setOrderingCriterionToDefault({
@@ -164,6 +167,7 @@ export default function OrderingCriterion({ availableCriterions = [] }: Ordering
                 case TITLE:
                   elements = (
                     <button
+                      type="button"
                       className={cx('option-button')}
                       onClick={() =>
                         setOrderingCriterionToDefault({
@@ -182,6 +186,7 @@ export default function OrderingCriterion({ availableCriterions = [] }: Ordering
                 case CREATION_DATE:
                   elements = (
                     <button
+                      type="button"
                       className={cx('option-button')}
                       onClick={() =>
                         setOrderingCriterionToDefault({

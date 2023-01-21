@@ -96,6 +96,7 @@ export default function StepList({
         <div key={id} className={cx('item', { 'is-active': id === focusedTaskId })}>
           <div className={cx('item-body')}>
             <button
+              type="button"
               className={cx('item-button', 'is-left', 'text-blue-500')}
               title={isComplete ? '완료되지 않음으로 표시' : '완료됨으로 표시'}
               onClick={() =>
@@ -121,6 +122,7 @@ export default function StepList({
             </button>
 
             <button
+              type="button"
               className={cx('item-summary')}
               onClick={() => dispatch(openDetailPanel(taskId))}
             >

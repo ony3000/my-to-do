@@ -79,6 +79,7 @@ export default function SettingPanel() {
                     <label className={cx('top-label')}>{generalItem.text}</label>
                     <div className="inline-flex">
                       <button
+                        type="button"
                         className={cx('switch')}
                         title={isActiveGeneral ? '끄기' : '켜기'}
                         disabled={!isActiveSettingPanel}
@@ -123,6 +124,7 @@ export default function SettingPanel() {
                     <label className={cx('top-label')}>{smartListItem.text}</label>
                     <div className="inline-flex">
                       <button
+                        type="button"
                         className={cx('switch')}
                         title={isActiveSmartList ? '끄기' : '켜기'}
                         disabled={!isActiveSettingPanel}
@@ -163,6 +165,7 @@ export default function SettingPanel() {
       </div>
 
       <button
+        type="button"
         className={cx('button')}
         title="창 닫기"
         disabled={!isActiveSettingPanel}

@@ -103,6 +103,7 @@ export default function ListOption({ availableOptions = [] }: ListOptionProps) {
                   elements = (
                     <>
                       <button
+                        type="button"
                         className={cx('option-button')}
                         onClick={(event) =>
                           !isActiveThemePalette &&
@@ -129,7 +130,11 @@ export default function ListOption({ availableOptions = [] }: ListOptionProps) {
                   break;
                 case TOGGLE_COMPLETED_ITEMS:
                   elements = (
-                    <button className={cx('option-button')} onClick={() => toggleCompletedItems()}>
+                    <button
+                      type="button"
+                      className={cx('option-button')}
+                      onClick={() => toggleCompletedItems()}
+                    >
                       <span className={cx('icon-wrapper')}>
                         <i className="far fa-check-circle" />
                       </span>

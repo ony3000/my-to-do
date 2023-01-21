@@ -102,6 +102,7 @@ export default function DeadlinePicker({ taskId }: DeadlinePickerProps) {
           <ul>
             <li className={cx('option-item')}>
               <button
+                type="button"
                 className={cx('option-button')}
                 onClick={() => setFixedDeadline(Number(midnightTomorrow.format('x')) - 1)}
               >
@@ -122,6 +123,7 @@ export default function DeadlinePicker({ taskId }: DeadlinePickerProps) {
             </li>
             <li className={cx('option-item')}>
               <button
+                type="button"
                 className={cx('option-button')}
                 onClick={() => setFixedDeadline(Number(midnightAfter2Days.format('x')) - 1)}
               >
@@ -142,6 +144,7 @@ export default function DeadlinePicker({ taskId }: DeadlinePickerProps) {
             </li>
             <li className={cx('option-item')}>
               <button
+                type="button"
                 className={cx('option-button')}
                 onClick={() => setFixedDeadline(Number(midnightNextTuesday.format('x')) - 1)}
               >
@@ -163,6 +166,7 @@ export default function DeadlinePicker({ taskId }: DeadlinePickerProps) {
             <li className={cx('option-separator')} />
             <li className={cx('option-item')}>
               <button
+                type="button"
                 className={cx('option-button', 'datepicker-activator')}
                 onClick={(event) =>
                   !isActiveDeadlineCalendar &&

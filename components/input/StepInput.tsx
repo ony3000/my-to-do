@@ -92,6 +92,7 @@ export default function StepInput({ placeholder = '다음 단계', taskId }: Ste
     <div className={cx('container')}>
       <div className={cx('body')}>
         <button
+          type="button"
           className={cx(
             'button',
             `text-${settingsPerPage.themeColor ? settingsPerPage.themeColor : 'blue'}-500`,
@@ -121,6 +122,7 @@ export default function StepInput({ placeholder = '다음 단계', taskId }: Ste
         />
 
         <button
+          type="button"
           className={cx(
             'button',
             'is-submit',

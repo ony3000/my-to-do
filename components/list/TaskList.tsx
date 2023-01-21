@@ -260,6 +260,7 @@ export default function TaskList({
             <div key={id} className={cx('item', { 'is-active': id === focusedTaskId })}>
               <div className={cx('item-body')}>
                 <button
+                  type="button"
                   className={cx(
                     'item-button',
                     'is-left',
@@ -283,6 +284,7 @@ export default function TaskList({
                 </button>
 
                 <button
+                  type="button"
                   className={cx('item-summary')}
                   onClick={() => dispatch(openDetailPanel(id))}
                 >
@@ -323,6 +325,7 @@ export default function TaskList({
                 </button>
 
                 <button
+                  type="button"
                   className={cx(
                     'item-button',
                     'is-right',

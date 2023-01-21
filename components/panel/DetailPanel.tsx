@@ -255,6 +255,7 @@ export default function DetailPanel() {
             <div className={cx('title-section')}>
               <div className={cx('title-body')}>
                 <button
+                  type="button"
                   className={cx(
                     'button',
                     `text-${settingsPerPage.themeColor ? settingsPerPage.themeColor : 'blue'}-500`,
@@ -288,6 +289,7 @@ export default function DetailPanel() {
                   onBlur={(e) => titleBlurHandler(e, task.id)}
                 />
                 <button
+                  type="button"
                   className={cx(
                     'button',
                     task.isImportant
@@ -317,6 +319,7 @@ export default function DetailPanel() {
                 <div key={id} className={cx('step-item')}>
                   <div className={cx('step-body')}>
                     <button
+                      type="button"
                       className={cx(
                         'button',
                         `text-${
@@ -356,6 +359,7 @@ export default function DetailPanel() {
                       onBlur={(e) => stepTitleBlurHandler(e, task.id, id)}
                     />
                     <button
+                      type="button"
                       className={cx('button')}
                       title="단계 삭제"
                       onClick={() =>
@@ -382,6 +386,7 @@ export default function DetailPanel() {
 
             <div className={cx('general-section', { 'is-active': task.isMarkedAsTodayTask })}>
               <button
+                type="button"
                 className={cx('section-item')}
                 onClick={() =>
                   !task.isMarkedAsTodayTask && dispatch(markAsTodayTaskWithOrderingFlag(task.id))
@@ -405,6 +410,7 @@ export default function DetailPanel() {
                   }}
                 >
                   <button
+                    type="button"
                     className={cx('button')}
                     title="나의 하루에서 제거"
                     onClick={() => dispatch(markAsNonTodayTask(task.id))}
@@ -426,6 +432,7 @@ export default function DetailPanel() {
               )}
             >
               <button
+                type="button"
                 className={cx('section-item')}
                 onClick={(event) =>
                   !isActiveDeadlinePicker &&
@@ -454,6 +461,7 @@ export default function DetailPanel() {
                   }}
                 >
                   <button
+                    type="button"
                     className={cx('button')}
                     title="기한 제거"
                     onClick={() => dispatch(unsetDeadline(task.id))}
@@ -482,7 +490,12 @@ export default function DetailPanel() {
           </div>
 
           <div className={cx('footer')}>
-            <button className={cx('button')} title="세부 정보 화면 숨기기" onClick={closeHandler}>
+            <button
+              type="button"
+              className={cx('button')}
+              title="세부 정보 화면 숨기기"
+              onClick={closeHandler}
+            >
               <span className={cx('icon-wrapper')}>
                 <i className="fas fa-columns" />
                 <span className="sr-only">세부 정보 화면 숨기기</span>
@@ -502,6 +515,7 @@ export default function DetailPanel() {
                   )}에 생성됨`}
             </span>
             <button
+              type="button"
               className={cx('button')}
               title="작업 삭제"
               onClick={() =>

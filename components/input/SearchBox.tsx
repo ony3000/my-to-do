@@ -60,6 +60,7 @@ export default function SearchBox() {
   return (
     <div className={cx('container', { 'is-active': isActiveSearchBox })}>
       <button
+        type="button"
         className={cx('button', 'is-opener')}
         title="검색"
         onClick={() => activateSearchBox()}
@@ -80,6 +81,7 @@ export default function SearchBox() {
         defaultValue={keyword}
       />
       <button
+        type="button"
         className={cx('button', 'is-closer')}
         title="검색 종료"
         disabled={!isActiveSearchBox}

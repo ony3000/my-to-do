@@ -47,6 +47,7 @@ export default function OrderingIndicator() {
   return settingsPerPage.ordering ? (
     <div className={cx('container')}>
       <button
+        type="button"
         className={cx('button', 'text-gray-500')}
         title="역순 정렬"
         onClick={() =>
@@ -73,6 +74,7 @@ export default function OrderingIndicator() {
         </span>
       </div>
       <button
+        type="button"
         className={cx('button', 'text-gray-500')}
         title="정렬 순서 옵션 제거"
         onClick={() =>

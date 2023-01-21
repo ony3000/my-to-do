@@ -131,6 +131,7 @@ export default function NavigationDrawer() {
       <div className={cx('container', { 'is-active': isActiveSidebar })}>
         <div className={cx('sidebar-header')}>
           <button
+            type="button"
             className={cx('button')}
             title="사이드바 표시/숨기기"
             onClick={() => dispatch(isActiveSidebar ? closeSidebar() : openSidebar())}

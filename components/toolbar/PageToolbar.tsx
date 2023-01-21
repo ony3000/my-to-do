@@ -58,6 +58,7 @@ export default function PageToolbar({ title = '', displayToday = false }) {
           {functionsPerPage.listOption ? (
             <>
               <button
+                type="button"
                 className={cx('button', 'text-gray-500')}
                 title="목록 옵션"
                 onClick={(event) =>
@@ -89,6 +90,7 @@ export default function PageToolbar({ title = '', displayToday = false }) {
       {functionsPerPage.listOrdering ? (
         <div>
           <button
+            type="button"
             className={cx(
               'button',
               `text-${settingsPerPage.themeColor ? settingsPerPage.themeColor : 'blue'}-500`,

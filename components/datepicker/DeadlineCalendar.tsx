@@ -104,6 +104,7 @@ export default function DeadlineCalendar({ taskId }: DeadlineCalendarProps) {
                 </div>
                 <div className={cx('toolbar-section')}>
                   <button
+                    type="button"
                     className={cx('navigation')}
                     onClick={decreaseMonth}
                     disabled={prevMonthButtonDisabled}
@@ -112,6 +113,7 @@ export default function DeadlineCalendar({ taskId }: DeadlineCalendarProps) {
                     <i className="fas fa-arrow-up" />
                   </button>
                   <button
+                    type="button"
                     className={cx('navigation')}
                     onClick={increaseMonth}
                     disabled={nextMonthButtonDisabled}
@@ -126,6 +128,7 @@ export default function DeadlineCalendar({ taskId }: DeadlineCalendarProps) {
           />
           <div className={cx('footer')}>
             <button
+              type="button"
               className={cx('save-button')}
               onClick={() => set__Deadline(Number(dayjs(calendarDate).endOf('day').format('x')))}
             >
