@@ -29,6 +29,10 @@
 .list-background {
   margin: 0 24px;
   flex: 1;
-  background-image: linear-gradient(180deg, theme("colors.gray.200") 0 1px, theme("colors.white") 1px);
+  background-image: linear-gradient(
+    180deg,
+    theme('colors.gray.200') 0 1px,
+    theme('colors.white') 1px
+  );
   background-size: 100% 54px;
 }

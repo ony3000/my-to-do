@@ -15,17 +15,27 @@ type StepInputProps = {
   taskId: string;
 };
 
-export default function StepInput({
-  placeholder = '다음 단계',
-  taskId,
-}: StepInputProps) {
+export default function StepInput({ placeholder = '다음 단계', taskId }: StepInputProps) {
   const router = useRouter();
   const pageKey = router.pathname.replace(/^\/tasks\/?/, '') || 'inbox';
 
-  invariant(isOneOf(pageKey, ['myday', 'important', 'planned', 'all', 'completed', 'inbox', 'search', 'search/[keyword]']));
+  invariant(
+    isOneOf(pageKey, [
+      'myday',
+      'important',
+      'planned',
+      'all',
+      'completed',
+      'inbox',
+      'search',
+      'search/[keyword]',
+    ]),
+  );
 
   const dispatch = useAppDispatch();
-  const settingsPerPage = useAppSelector<SettingsPerPage>(({ todo: state }) => state.pageSettings[pageKey]);
+  const settingsPerPage = useAppSelector<SettingsPerPage>(
+    ({ todo: state }) => state.pageSettings[pageKey],
+  );
   const $refs = {
     input: useRef<HTMLInputElement>(null),
   };
@@ -37,10 +47,12 @@ export default function StepInput({
       const trimmedTitle = inputElement.value.trim();
 
       if (trimmedTitle) {
-        dispatch(createSubStep({
-          taskId,
-          title: trimmedTitle,
-        }));
+        dispatch(
+          createSubStep({
+            taskId,
+            title: trimmedTitle,
+          }),
+        );
 
         inputElement.value = '';
         inputElement.dataset.isEmpty = String(true);
@@ -61,7 +73,7 @@ export default function StepInput({
   };
   const inputHandler: FormEventHandler<HTMLInputElement> = (event) => {
     const inputElement = event.currentTarget;
-    const isInputEmpty = (inputElement.value === '');
+    const isInputEmpty = inputElement.value === '';
 
     if (inputElement.dataset.isEmpty !== String(isInputEmpty)) {
       inputElement.dataset.isEmpty = String(isInputEmpty);
@@ -103,9 +115,9 @@ export default function StepInput({
           placeholder={placeholder}
           maxLength={255}
           data-is-empty={true}
-          onKeyUp={e => keyUpHandler(e)}
-          onInput={e => inputHandler(e)}
-          onBlur={e => blurHandler(e)}
+          onKeyUp={(e) => keyUpHandler(e)}
+          onInput={(e) => inputHandler(e)}
+          onBlur={(e) => blurHandler(e)}
         />
 
         <button

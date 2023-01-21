@@ -14,9 +14,7 @@ export default function Search() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <PageToolbar
-        title="&ldquo;&rdquo; 검색 중"
-      />
+      <PageToolbar title="&ldquo;&rdquo; 검색 중" />
 
       <NoDataPlaceholder />
     </main>

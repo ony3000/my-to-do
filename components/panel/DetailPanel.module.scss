@@ -11,7 +11,7 @@
     opacity: 0.4;
     width: 100%;
     height: 100%;
-    background-color: theme("colors.gray.700");
+    background-color: theme('colors.gray.700');
     transition: opacity 0.2s ease-in-out;
     pointer-events: auto;
   }
@@ -22,8 +22,8 @@
   width: calc(100% - 50px);
   height: calc(100vh - 48px);
   max-width: 360px;
-  border-left: 1px solid theme("colors.gray.200");
-  background-color: theme("colors.gray.100");
+  border-left: 1px solid theme('colors.gray.200');
+  background-color: theme('colors.gray.100');
   transition: width 0.2s ease-in-out;
 
   @media (max-width: 770px) {
@@ -39,7 +39,7 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  background-color: theme("colors.gray.100");
+  background-color: theme('colors.gray.100');
 }
 
 .flexible-section {
@@ -55,8 +55,8 @@
   top: 0;
   z-index: 10;
   margin: 0;
-  background-color: theme("colors.white");
-  border: 1px solid theme("colors.gray.200");
+  background-color: theme('colors.white');
+  border: 1px solid theme('colors.gray.200');
   border-bottom: none;
   padding: 0 10px 2px;
   border-radius: 2px 2px 0 0;
@@ -76,7 +76,7 @@
   padding: 0.25rem;
 
   &:focus {
-    outline: 2px solid theme("colors.blue.500");
+    outline: 2px solid theme('colors.blue.500');
     outline-offset: -2px;
     border-radius: 2px;
   }
@@ -96,18 +96,18 @@
   padding: 4px 6px;
   border: none;
   height: 32px;
-  color: theme("colors.gray.700");
+  color: theme('colors.gray.700');
   font-weight: 600;
   margin: 10px 0;
 
   &:hover {
-    background-color: theme("colors.gray.100");
+    background-color: theme('colors.gray.100');
   }
 }
 
 .step-section {
-  background-color: theme("colors.white");
-  border: 1px solid theme("colors.gray.200");
+  background-color: theme('colors.white');
+  border: 1px solid theme('colors.gray.200');
   border-top: none;
   border-bottom: none;
   padding: 0 6px 2px;
@@ -117,8 +117,8 @@
   padding: 0 4px;
 
   &:hover {
-    background-color: theme("colors.gray.100");
-    box-shadow: 0 -1px 0 0 theme("colors.gray.100");
+    background-color: theme('colors.gray.100');
+    box-shadow: 0 -1px 0 0 theme('colors.gray.100');
 
     & .step-body {
       box-shadow: none;
@@ -130,10 +130,10 @@
   display: flex;
   align-items: center;
   font-size: 14px;
-  box-shadow: inset 0 -1px 0 0 theme("colors.gray.200");
+  box-shadow: inset 0 -1px 0 0 theme('colors.gray.200');
   margin-left: 32px;
   min-height: 42px;
-  color: theme("colors.gray.500");
+  color: theme('colors.gray.500');
 
   .button:first-child {
     margin-left: -32px;
@@ -149,37 +149,37 @@
 .separator {
   position: sticky;
   z-index: 10;
-  border: 1px solid theme("colors.gray.200");
+  border: 1px solid theme('colors.gray.200');
   border-top: none;
   height: 2px;
-  background-color: theme("colors.white");
+  background-color: theme('colors.white');
   border-radius: 0 0 2px 2px;
 }
 
 .general-section {
-  border: 1px solid theme("colors.gray.200");
+  border: 1px solid theme('colors.gray.200');
   margin: 10px 0;
-  background-color: theme("colors.white");
+  background-color: theme('colors.white');
   display: flex;
   font-size: 14px;
-  color: theme("colors.gray.500");
+  color: theme('colors.gray.500');
   border-radius: 2px;
 
   &:hover {
-    background-color: theme("colors.gray.100");
+    background-color: theme('colors.gray.100');
   }
 
   &.is-active {
     .section-item .button,
     .section-title {
-      color: theme("colors.blue.500");
+      color: theme('colors.blue.500');
     }
   }
 
   &.has-error {
     .section-item .button,
     .section-title {
-      color: theme("colors.red.600");
+      color: theme('colors.red.600');
     }
   }
 
@@ -201,7 +201,7 @@
 
 .memo-input {
   width: 100%;
-  border: 1px solid theme("colors.gray.200");
+  border: 1px solid theme('colors.gray.200');
   resize: none;
   padding: 16px;
   line-height: normal;
@@ -212,11 +212,11 @@
   min-height: 86px;
 
   &:hover {
-    border-color: theme("colors.gray.300");
+    border-color: theme('colors.gray.300');
   }
 
   &:focus {
-    border-color: theme("colors.blue.500");
+    border-color: theme('colors.blue.500');
   }
 }
 
@@ -226,14 +226,14 @@
   align-items: center;
   min-height: 38px;
   padding: 0 10px;
-  background-color: theme("colors.gray.100");
-  border-top: 1px solid theme("colors.gray.200");
+  background-color: theme('colors.gray.100');
+  border-top: 1px solid theme('colors.gray.200');
 
   .button {
-    color: theme("colors.gray.500");
+    color: theme('colors.gray.500');
 
     &:hover {
-      background-color: theme("colors.white");
+      background-color: theme('colors.white');
     }
   }
 
@@ -247,6 +247,6 @@
 
   .date {
     font-size: 12px;
-    color: theme("colors.gray.500");
+    color: theme('colors.gray.500');
   }
 }

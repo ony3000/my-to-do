@@ -4,11 +4,11 @@ Clone coding: [Microsoft To Do](https://todo.microsoft.com/)
 
 ## Requirements
 
-* Node 16
+- Node 16
 
 ## Build Setup
 
-``` bash
+```bash
 # install dependencies
 $ yarn install
 
@@ -26,7 +26,7 @@ $ yarn start
 
 1. Launch server with systemd
 
-``` bash
+```bash
 # First, you need to fill in the empty WorkingDirectory value in the service file.
 
 # Then do the following:
@@ -37,7 +37,7 @@ $ sudo systemctl start my-to-do.service
 
 2. Deploy
 
-``` bash
+```bash
 $ git fetch
 $ git checkout (RELEASE_VERSION)
 $ yarn install

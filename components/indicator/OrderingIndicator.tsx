@@ -40,7 +40,7 @@ export default function OrderingIndicator() {
       case CREATION_DATE:
         return '만든 날짜순으로';
       default:
-        // nothing to do
+      // nothing to do
     }
   };
 
@@ -49,9 +49,13 @@ export default function OrderingIndicator() {
       <button
         className={cx('button', 'text-gray-500')}
         title="역순 정렬"
-        onClick={() => dispatch(reverseOrderingCriterion({
-          pageKey,
-        }))}
+        onClick={() =>
+          dispatch(
+            reverseOrderingCriterion({
+              pageKey,
+            }),
+          )
+        }
       >
         <span className={cx('icon-wrapper')}>
           {settingsPerPage.ordering.direction === ASCENDING ? (
@@ -64,14 +68,20 @@ export default function OrderingIndicator() {
       </button>
       <div className={cx('description')}>
         <span>{readableCriterion(settingsPerPage.ordering.criterion)} 정렬됨</span>
-        <span className="sr-only">, {settingsPerPage.ordering.direction === ASCENDING ? '오름차순' : '내림차순'}으로 정렬됨</span>
+        <span className="sr-only">
+          , {settingsPerPage.ordering.direction === ASCENDING ? '오름차순' : '내림차순'}으로 정렬됨
+        </span>
       </div>
       <button
         className={cx('button', 'text-gray-500')}
         title="정렬 순서 옵션 제거"
-        onClick={() => dispatch(unsetOrderingCriterion({
-          pageKey,
-        }))}
+        onClick={() =>
+          dispatch(
+            unsetOrderingCriterion({
+              pageKey,
+            }),
+          )
+        }
       >
         <span className={cx('icon-wrapper')}>
           <i className="fas fa-times"></i>

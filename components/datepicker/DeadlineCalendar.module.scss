@@ -19,7 +19,7 @@
   max-width: 290px;
   border-radius: 2px;
   box-shadow: rgb(0 0 0 / 13%) 0px 3.2px 7.2px 0px, rgb(0 0 0 / 11%) 0px 0.6px 1.8px 0px;
-  background-color: theme("colors.white");
+  background-color: theme('colors.white');
   padding: 6px 0;
 }
 
@@ -28,8 +28,8 @@
   text-align: center;
   padding: 8px;
   padding-bottom: 12px;
-  border-bottom: 1px solid theme("colors.gray.200");
-  color: theme("colors.gray.700");
+  border-bottom: 1px solid theme('colors.gray.200');
+  color: theme('colors.gray.700');
   font-weight: 600;
   font-size: 14px;
 }
@@ -46,13 +46,13 @@
   height: 32px;
   font-size: 14px;
   padding: 0 12px;
-  background-color: theme("colors.blue.500");
-  color: theme("colors.white");
+  background-color: theme('colors.blue.500');
+  color: theme('colors.white');
   border-radius: 2px;
   font-weight: bold;
 
   &:hover {
-    background-color: theme("colors.blue.600");
+    background-color: theme('colors.blue.600');
   }
 }
 
@@ -82,7 +82,7 @@
       font-size: 12px;
       width: 28px;
       height: 28px;
-      color: theme("colors.gray.700");
+      color: theme('colors.gray.700');
       background-color: transparent;
       border-radius: 2px;
 
@@ -98,23 +98,23 @@
 
     .react-datepicker__day {
       &:hover {
-        background-color: theme("colors.gray.100");
+        background-color: theme('colors.gray.100');
       }
 
       &:active {
-        background-color: theme("colors.gray.200");
+        background-color: theme('colors.gray.200');
       }
     }
 
     .react-datepicker__day--selected {
       .day-wrapper {
-        background-color: theme("colors.blue.500");
-        color: theme("colors.white");
+        background-color: theme('colors.blue.500');
+        color: theme('colors.white');
       }
     }
 
     .react-datepicker__day--outside-month {
-      color: theme("colors.gray.500");
+      color: theme('colors.gray.500');
       pointer-events: none;
     }
   }
@@ -132,7 +132,7 @@
   .current-month {
     font-size: 14px;
     font-weight: 600;
-    color: theme("colors.gray.700");
+    color: theme('colors.gray.700');
     padding: 0 10px;
   }
 
@@ -142,14 +142,14 @@
     height: 28px;
     justify-content: center;
     align-items: center;
-    color: theme("colors.gray.500");
+    color: theme('colors.gray.500');
 
     &:hover {
-      background-color: theme("colors.gray.100");
+      background-color: theme('colors.gray.100');
     }
 
     &:active {
-      background-color: theme("colors.gray.200");
+      background-color: theme('colors.gray.200');
     }
   }
 }

@@ -6,5 +6,5 @@ export default function Home() {
       <title>My To Do</title>
       <link rel="icon" href="/favicon.ico" />
     </Head>
-  )
+  );
 }

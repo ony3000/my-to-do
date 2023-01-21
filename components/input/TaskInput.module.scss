@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   height: 100%;
-  box-shadow: 0 1px 0 0 theme("colors.gray.200");
+  box-shadow: 0 1px 0 0 theme('colors.gray.200');
 }
 
 @mixin button-base {
@@ -15,7 +15,7 @@
 
   &:focus {
     outline: none;
-    box-shadow: 0 0 0 1px theme("colors.white"), 0 0 0 3px theme("colors.blue.500");
+    box-shadow: 0 0 0 1px theme('colors.white'), 0 0 0 3px theme('colors.blue.500');
   }
 }
 
@@ -49,15 +49,15 @@
   margin: 0 4px;
   padding: 8px;
   font-size: 14px;
-  color: theme("colors.gray.700");
+  color: theme('colors.gray.700');
 
   &:focus {
     &::placeholder {
-      color: theme("colors.gray.500");
+      color: theme('colors.gray.500');
     }
   }
 
-  &[data-is-empty="true"] + .button.is-submit {
+  &[data-is-empty='true'] + .button.is-submit {
     display: none;
   }
 }

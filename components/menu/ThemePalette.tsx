@@ -23,13 +23,7 @@ export default function ThemePalette() {
     container: useRef<HTMLDivElement>(null),
   };
 
-  const colors: ThemeColor[] = [
-    'blue',
-    'red',
-    'violet',
-    'lime',
-    'amber',
-  ];
+  const colors: ThemeColor[] = ['blue', 'red', 'violet', 'lime', 'amber'];
   const isActiveThemePalette = themePalettePosition !== null;
   const topPosition = themePalettePosition?.top || 0;
   const leftPosition = themePalettePosition?.left || 0;

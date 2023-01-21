@@ -10,17 +10,16 @@ import styles from './TaskInput.module.scss';
 
 const cx = classNames.bind(styles);
 
-export default function TaskInput({
-  placeholder = '작업 추가',
-  itemProps = {},
-}) {
+export default function TaskInput({ placeholder = '작업 추가', itemProps = {} }) {
   const router = useRouter();
   const pageKey = router.pathname.replace(/^\/tasks\/?/, '') || 'inbox';
 
   invariant(isOneOf(pageKey, ['myday', 'important', 'planned', 'all', 'inbox']));
 
   const dispatch = useAppDispatch();
-  const settingsPerPage = useAppSelector<SettingsPerPage>(({ todo: state }) => state.pageSettings[pageKey]);
+  const settingsPerPage = useAppSelector<SettingsPerPage>(
+    ({ todo: state }) => state.pageSettings[pageKey],
+  );
   const $refs = {
     input: useRef<HTMLInputElement>(null),
   };
@@ -32,10 +31,12 @@ export default function TaskInput({
       const trimmedTitle = inputElement.value.trim();
 
       if (trimmedTitle) {
-        dispatch(createTodoItem({
-          title: trimmedTitle,
-          ...itemProps,
-        }));
+        dispatch(
+          createTodoItem({
+            title: trimmedTitle,
+            ...itemProps,
+          }),
+        );
 
         inputElement.value = '';
         inputElement.dataset.isEmpty = String(true);
@@ -56,7 +57,7 @@ export default function TaskInput({
   };
   const inputHandler: FormEventHandler<HTMLInputElement> = (event) => {
     const inputElement = event.currentTarget;
-    const isInputEmpty = (inputElement.value === '');
+    const isInputEmpty = inputElement.value === '';
 
     if (inputElement.dataset.isEmpty !== String(isInputEmpty)) {
       inputElement.dataset.isEmpty = String(isInputEmpty);
@@ -98,9 +99,9 @@ export default function TaskInput({
         placeholder={placeholder}
         maxLength={255}
         data-is-empty={true}
-        onKeyUp={e => keyUpHandler(e)}
-        onInput={e => inputHandler(e)}
-        onBlur={e => blurHandler(e)}
+        onKeyUp={(e) => keyUpHandler(e)}
+        onInput={(e) => inputHandler(e)}
+        onBlur={(e) => blurHandler(e)}
       />
 
       <button

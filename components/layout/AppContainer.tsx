@@ -41,11 +41,22 @@ type AppContainerProps = {
 export default function AppContainer({ children }: AppContainerProps) {
   const router = useRouter();
   const pageKey = router.pathname.replace(/^\/tasks\/?/, '') || 'inbox';
-  const isExpectedPage = isOneOf(pageKey, ['myday', 'important', 'planned', 'all', 'completed', 'inbox', 'search', 'search/[keyword]']);
+  const isExpectedPage = isOneOf(pageKey, [
+    'myday',
+    'important',
+    'planned',
+    'all',
+    'completed',
+    'inbox',
+    'search',
+    'search/[keyword]',
+  ]);
   const dispatch = useAppDispatch();
   const isAppReady = useAppSelector(({ todo: state }) => state.isAppReady);
-  const settingsPerPage = useAppSelector<SettingsPerPage>(({ todo: state }) => isExpectedPage ? state.pageSettings[pageKey] : {});
-  const [ isRendered, setIsRendered ] = useState(false);
+  const settingsPerPage = useAppSelector<SettingsPerPage>(({ todo: state }) =>
+    isExpectedPage ? state.pageSettings[pageKey] : {},
+  );
+  const [isRendered, setIsRendered] = useState(false);
 
   useEffect(() => {
     if (!isRendered) {
@@ -63,14 +74,13 @@ export default function AppContainer({ children }: AppContainerProps) {
 
   return (
     <div
-      className={cx(
-        'min-h-screen flex flex-col',
-        { [`is-${settingsPerPage?.themeColor}-theme`]: settingsPerPage?.themeColor },
-      )}
+      className={cx('flex min-h-screen flex-col', {
+        [`is-${settingsPerPage?.themeColor}-theme`]: settingsPerPage?.themeColor,
+      })}
     >
       {!isAppReady && <AppSplash />}
-      {(isAppReady && !isExpectedPage) && <>{children}</>}
-      {(isAppReady && isExpectedPage) && (
+      {isAppReady && !isExpectedPage && <>{children}</>}
+      {isAppReady && isExpectedPage && (
         <>
           <AppHeader />
 
@@ -79,9 +89,7 @@ export default function AppContainer({ children }: AppContainerProps) {
           <div className={cx('body')}>
             <NavigationDrawer />
 
-            <div className="flex-1 overflow-hidden">
-              {children}
-            </div>
+            <div className="flex-1 overflow-hidden">{children}</div>
 
             <DetailPanel />
           </div>

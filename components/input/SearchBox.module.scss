@@ -5,15 +5,15 @@
   max-width: 400px;
   margin: 0 10px;
   border-radius: 2px;
-  background-color: theme("colors.blue.200");
+  background-color: theme('colors.blue.200');
 
   &.is-active {
-    background-color: theme("colors.white");
+    background-color: theme('colors.white');
   }
 
   &:hover {
-    box-shadow: 0 0 0 1px theme("colors.white");
-    background-color: theme("colors.white");
+    box-shadow: 0 0 0 1px theme('colors.white');
+    background-color: theme('colors.white');
   }
 }
 
@@ -29,10 +29,10 @@
   align-items: center;
   width: 2rem;
   height: 2rem;
-  color: theme("colors.blue.500");
+  color: theme('colors.blue.500');
 
   &:focus {
-    outline: 2px solid theme("colors.blue.900");
+    outline: 2px solid theme('colors.blue.900');
     outline-offset: -2px;
   }
 }

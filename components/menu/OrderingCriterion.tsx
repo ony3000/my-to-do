@@ -24,16 +24,16 @@ type OrderingCriterionProps = {
   availableCriterions: OrderingCriterionType[];
 };
 
-export default function OrderingCriterion({
-  availableCriterions = [],
-}: OrderingCriterionProps) {
+export default function OrderingCriterion({ availableCriterions = [] }: OrderingCriterionProps) {
   const router = useRouter();
   const pageKey = router.pathname.replace(/^\/tasks\/?/, '') || 'inbox';
 
   invariant(isOneOf(pageKey, ['myday', 'inbox']));
 
   const dispatch = useAppDispatch();
-  const orderingCriterionPosition = useAppSelector(({ todo: state }) => state.orderingCriterionPosition);
+  const orderingCriterionPosition = useAppSelector(
+    ({ todo: state }) => state.orderingCriterionPosition,
+  );
   const settingsPerPage = useAppSelector(({ todo: state }) => state.pageSettings[pageKey]);
   const $refs = {
     container: useRef<HTMLDivElement>(null),
@@ -44,23 +44,36 @@ export default function OrderingCriterion({
   const rightPosition = orderingCriterionPosition?.right;
   const leftPosition = orderingCriterionPosition?.left;
 
-  const setOrderingCriterionToDefault = ({ criterion, direction }: {
+  const setOrderingCriterionToDefault = ({
+    criterion,
+    direction,
+  }: {
     criterion: OrderingCriterionType;
     direction: OrderingDirection;
   }) => {
-    if (settingsPerPage.ordering === null || criterion !== settingsPerPage.ordering.criterion || direction !== settingsPerPage.ordering.direction) {
-      dispatch(setOrderingCriterion({
-        pageKey,
-        criterion,
-        direction,
-      }));
+    if (
+      settingsPerPage.ordering === null ||
+      criterion !== settingsPerPage.ordering.criterion ||
+      direction !== settingsPerPage.ordering.direction
+    ) {
+      dispatch(
+        setOrderingCriterion({
+          pageKey,
+          criterion,
+          direction,
+        }),
+      );
     }
     dispatch(closeOrderingCriterion());
   };
 
   useEffect(() => {
     const clickHandler: EventListener = (event) => {
-      if (isActiveOrderingCriterion && $refs.container.current && event.target instanceof HTMLElement) {
+      if (
+        isActiveOrderingCriterion &&
+        $refs.container.current &&
+        event.target instanceof HTMLElement
+      ) {
         const criterionContainer = event.target.closest(`.${$refs.container.current.className}`);
 
         if (criterionContainer === null) {
@@ -98,17 +111,17 @@ export default function OrderingCriterion({
                   elements = (
                     <button
                       className={cx('option-button')}
-                      onClick={() => setOrderingCriterionToDefault({
-                        criterion: option,
-                        direction: DESCENDING,
-                      })}
+                      onClick={() =>
+                        setOrderingCriterionToDefault({
+                          criterion: option,
+                          direction: DESCENDING,
+                        })
+                      }
                     >
                       <span className={cx('icon-wrapper')}>
                         <i className="far fa-star"></i>
                       </span>
-                      <span className={cx('option-text')}>
-                        중요도
-                      </span>
+                      <span className={cx('option-text')}>중요도</span>
                     </button>
                   );
                   break;
@@ -116,17 +129,17 @@ export default function OrderingCriterion({
                   elements = (
                     <button
                       className={cx('option-button')}
-                      onClick={() => setOrderingCriterionToDefault({
-                        criterion: option,
-                        direction: ASCENDING,
-                      })}
+                      onClick={() =>
+                        setOrderingCriterionToDefault({
+                          criterion: option,
+                          direction: ASCENDING,
+                        })
+                      }
                     >
                       <span className={cx('icon-wrapper')}>
                         <i className="far fa-calendar-alt"></i>
                       </span>
-                      <span className={cx('option-text')}>
-                        기한
-                      </span>
+                      <span className={cx('option-text')}>기한</span>
                     </button>
                   );
                   break;
@@ -134,17 +147,17 @@ export default function OrderingCriterion({
                   elements = (
                     <button
                       className={cx('option-button')}
-                      onClick={() => setOrderingCriterionToDefault({
-                        criterion: option,
-                        direction: DESCENDING,
-                      })}
+                      onClick={() =>
+                        setOrderingCriterionToDefault({
+                          criterion: option,
+                          direction: DESCENDING,
+                        })
+                      }
                     >
                       <span className={cx('icon-wrapper')}>
                         <i className="far fa-sun"></i>
                       </span>
-                      <span className={cx('option-text')}>
-                        나의 하루에 추가됨
-                      </span>
+                      <span className={cx('option-text')}>나의 하루에 추가됨</span>
                     </button>
                   );
                   break;
@@ -152,22 +165,17 @@ export default function OrderingCriterion({
                   elements = (
                     <button
                       className={cx('option-button')}
-                      onClick={() => setOrderingCriterionToDefault({
-                        criterion: option,
-                        direction: ASCENDING,
-                      })}
+                      onClick={() =>
+                        setOrderingCriterionToDefault({
+                          criterion: option,
+                          direction: ASCENDING,
+                        })
+                      }
                     >
-                      <span
-                        className={cx(
-                          'icon-wrapper',
-                          'rotate-90',
-                        )}
-                      >
+                      <span className={cx('icon-wrapper', 'rotate-90')}>
                         <i className="fas fa-exchange-alt"></i>
                       </span>
-                      <span className={cx('option-text')}>
-                        제목
-                      </span>
+                      <span className={cx('option-text')}>제목</span>
                     </button>
                   );
                   break;
@@ -175,22 +183,22 @@ export default function OrderingCriterion({
                   elements = (
                     <button
                       className={cx('option-button')}
-                      onClick={() => setOrderingCriterionToDefault({
-                        criterion: option,
-                        direction: DESCENDING,
-                      })}
+                      onClick={() =>
+                        setOrderingCriterionToDefault({
+                          criterion: option,
+                          direction: DESCENDING,
+                        })
+                      }
                     >
                       <span className={cx('icon-wrapper')}>
                         <i className="far fa-calendar-plus"></i>
                       </span>
-                      <span className={cx('option-text')}>
-                        만든 날짜
-                      </span>
+                      <span className={cx('option-text')}>만든 날짜</span>
                     </button>
                   );
                   break;
                 default:
-                  // nothing to do
+                // nothing to do
               }
 
               return (

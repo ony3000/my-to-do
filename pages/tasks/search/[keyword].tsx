@@ -23,7 +23,10 @@ export default function Search() {
   const trimmedKeyword = keyword.trim();
   const pattern = new RegExp(trimmedKeyword, 'i');
   const visibleTodoItems = todoItems.filter((item) => {
-    const isKeywordMatched = item.title.match(pattern) || item.memo.match(pattern) || item.subSteps.some(({ title }) => title.match(pattern));
+    const isKeywordMatched =
+      item.title.match(pattern) ||
+      item.memo.match(pattern) ||
+      item.subSteps.some(({ title }) => title.match(pattern));
 
     return (settingsPerPage.isHideCompletedItems === false || !item.isComplete) && isKeywordMatched;
   });

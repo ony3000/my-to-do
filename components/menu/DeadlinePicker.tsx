@@ -17,13 +17,13 @@ type DeadlinePickerProps = {
   taskId: string;
 };
 
-export default function DeadlinePicker({
-  taskId,
-}: DeadlinePickerProps) {
+export default function DeadlinePicker({ taskId }: DeadlinePickerProps) {
   const dispatch = useAppDispatch();
   const deadlinePickerPosition = useAppSelector(({ todo: state }) => state.deadlinePickerPosition);
-  const deadlineCalendarPosition = useAppSelector(({ todo: state }) => state.deadlineCalendarPosition);
-  const [ isRendered, setIsRendered ] = useState(false);
+  const deadlineCalendarPosition = useAppSelector(
+    ({ todo: state }) => state.deadlineCalendarPosition,
+  );
+  const [isRendered, setIsRendered] = useState(false);
   const $refs = {
     container: useRef<HTMLDivElement>(null),
   };
@@ -38,10 +38,12 @@ export default function DeadlinePicker({
   const isActiveDeadlineCalendar = deadlineCalendarPosition !== null;
 
   const setFixedDeadline = (timestamp: number) => {
-    dispatch(setDeadline({
-      taskId,
-      deadline: timestamp,
-    }));
+    dispatch(
+      setDeadline({
+        taskId,
+        deadline: timestamp,
+      }),
+    );
     dispatch(closeDeadlinePicker());
 
     if (isActiveDeadlineCalendar) {
@@ -57,7 +59,11 @@ export default function DeadlinePicker({
 
   useEffect(() => {
     const clickHandler: EventListener = (event) => {
-      if (isActiveDeadlinePicker && $refs.container.current && event.target instanceof HTMLElement) {
+      if (
+        isActiveDeadlinePicker &&
+        $refs.container.current &&
+        event.target instanceof HTMLElement
+      ) {
         const pickerContainer = event.target.closest(`.${$refs.container.current.className}`);
 
         if (pickerContainer === null) {
@@ -101,16 +107,17 @@ export default function DeadlinePicker({
               >
                 <span className={cx('icon-wrapper', 'relative')}>
                   <i className="far fa-calendar"></i>
-                  <i className="fas fa-square" style={{
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%) scale(0.25)',
-                  }}></i>
+                  <i
+                    className="fas fa-square"
+                    style={{
+                      position: 'absolute',
+                      top: '50%',
+                      left: '50%',
+                      transform: 'translate(-50%, -50%) scale(0.25)',
+                    }}
+                  ></i>
                 </span>
-                <span className={cx('option-text')}>
-                  오늘
-                </span>
+                <span className={cx('option-text')}>오늘</span>
               </button>
             </li>
             <li className={cx('option-item')}>
@@ -120,16 +127,17 @@ export default function DeadlinePicker({
               >
                 <span className={cx('icon-wrapper', 'relative')}>
                   <i className="far fa-calendar"></i>
-                  <i className="fas fa-arrow-right" style={{
-                    position: 'absolute',
-                    top: 'calc(50% + 2px)',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%) scale(0.55)',
-                  }}></i>
+                  <i
+                    className="fas fa-arrow-right"
+                    style={{
+                      position: 'absolute',
+                      top: 'calc(50% + 2px)',
+                      left: '50%',
+                      transform: 'translate(-50%, -50%) scale(0.55)',
+                    }}
+                  ></i>
                 </span>
-                <span className={cx('option-text')}>
-                  내일
-                </span>
+                <span className={cx('option-text')}>내일</span>
               </button>
             </li>
             <li className={cx('option-item')}>
@@ -139,50 +147,53 @@ export default function DeadlinePicker({
               >
                 <span className={cx('icon-wrapper', 'relative')}>
                   <i className="far fa-calendar"></i>
-                  <i className="fas fa-angle-double-right" style={{
-                    position: 'absolute',
-                    top: 'calc(50% + 1px)',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%) scale(0.6)',
-                  }}></i>
+                  <i
+                    className="fas fa-angle-double-right"
+                    style={{
+                      position: 'absolute',
+                      top: 'calc(50% + 1px)',
+                      left: '50%',
+                      transform: 'translate(-50%, -50%) scale(0.6)',
+                    }}
+                  ></i>
                 </span>
-                <span className={cx('option-text')}>
-                  다음 주
-                </span>
+                <span className={cx('option-text')}>다음 주</span>
               </button>
             </li>
             <li className={cx('option-separator')} />
             <li className={cx('option-item')}>
               <button
                 className={cx('option-button', 'datepicker-activator')}
-                onClick={(event) => !isActiveDeadlineCalendar && dispatch(openDeadlineCalendar({
-                  event,
-                  selector: `.${cx('datepicker-activator')}`,
-                }))}
+                onClick={(event) =>
+                  !isActiveDeadlineCalendar &&
+                  dispatch(
+                    openDeadlineCalendar({
+                      event,
+                      selector: `.${cx('datepicker-activator')}`,
+                    }),
+                  )
+                }
               >
                 <span className={cx('icon-wrapper', 'relative')}>
                   <i className="far fa-calendar-alt"></i>
-                  <i className="far fa-clock" style={{
-                    position: 'absolute',
-                    top: 'calc(50% + 6px)',
-                    left: 'calc(50% + 6px)',
-                    transform: 'translate(-50%, -50%) scale(0.6)',
-                    backgroundColor: '#fff',
-                  }}></i>
+                  <i
+                    className="far fa-clock"
+                    style={{
+                      position: 'absolute',
+                      top: 'calc(50% + 6px)',
+                      left: 'calc(50% + 6px)',
+                      transform: 'translate(-50%, -50%) scale(0.6)',
+                      backgroundColor: '#fff',
+                    }}
+                  ></i>
                 </span>
-                <span className={cx('option-text')}>
-                  날짜 선택
-                </span>
+                <span className={cx('option-text')}>날짜 선택</span>
                 <span className={cx('icon-wrapper')}>
                   <i className="fas fa-chevron-right"></i>
                 </span>
               </button>
 
-              {isActiveDeadlineCalendar && (
-                <DeadlineCalendar
-                  taskId={taskId}
-                />
-              )}
+              {isActiveDeadlineCalendar && <DeadlineCalendar taskId={taskId} />}
             </li>
           </ul>
         </div>

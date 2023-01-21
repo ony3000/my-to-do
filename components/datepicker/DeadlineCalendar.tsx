@@ -1,11 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
-import {
-  closeDeadlinePicker,
-  closeDeadlineCalendar,
-  setDeadline,
-} from '@/lib/store/todoSlice';
+import { closeDeadlinePicker, closeDeadlineCalendar, setDeadline } from '@/lib/store/todoSlice';
 import DatePicker from '@/lib/plugins/react-datepicker';
 import dayjs from '@/lib/plugins/dayjs';
 import styles from './DeadlineCalendar.module.scss';
@@ -16,13 +12,13 @@ type DeadlineCalendarProps = {
   taskId: string;
 };
 
-export default function DeadlineCalendar({
-  taskId,
-}: DeadlineCalendarProps) {
+export default function DeadlineCalendar({ taskId }: DeadlineCalendarProps) {
   const dispatch = useAppDispatch();
-  const deadlineCalendarPosition = useAppSelector(({ todo: state }) => state.deadlineCalendarPosition);
-  const [ isRendered, setIsRendered ] = useState(false);
-  const [ calendarDate, setCalendarDate ] = useState(new Date());
+  const deadlineCalendarPosition = useAppSelector(
+    ({ todo: state }) => state.deadlineCalendarPosition,
+  );
+  const [isRendered, setIsRendered] = useState(false);
+  const [calendarDate, setCalendarDate] = useState(new Date());
   const $refs = {
     container: useRef<HTMLDivElement>(null),
   };
@@ -32,10 +28,12 @@ export default function DeadlineCalendar({
   const rightPosition = deadlineCalendarPosition?.right || 0;
 
   const set__Deadline = (timestamp: number) => {
-    dispatch(setDeadline({
-      taskId,
-      deadline: timestamp,
-    }));
+    dispatch(
+      setDeadline({
+        taskId,
+        deadline: timestamp,
+      }),
+    );
     dispatch(closeDeadlinePicker());
 
     if (isActiveDeadlineCalendar) {
@@ -51,7 +49,11 @@ export default function DeadlineCalendar({
 
   useEffect(() => {
     const clickHandler: EventListener = (event) => {
-      if (isActiveDeadlineCalendar && $refs.container.current && event.target instanceof HTMLElement) {
+      if (
+        isActiveDeadlineCalendar &&
+        $refs.container.current &&
+        event.target instanceof HTMLElement
+      ) {
         const pickerContainer = event.target.closest(`.${$refs.container.current.className}`);
 
         if (pickerContainer === null) {
@@ -85,7 +87,7 @@ export default function DeadlineCalendar({
           <div className={cx('title')}>날짜 선택</div>
           <DatePicker
             selected={calendarDate}
-            onChange={date => setCalendarDate(date as Date)}
+            onChange={(date) => setCalendarDate(date as Date)}
             inline
             locale="ko"
             calendarClassName={cx('body')}
@@ -120,9 +122,7 @@ export default function DeadlineCalendar({
                 </div>
               </div>
             )}
-            renderDayContents={(day) => (
-              <span className={cx('day-wrapper')}>{day}</span>
-            )}
+            renderDayContents={(day) => <span className={cx('day-wrapper')}>{day}</span>}
           />
           <div className={cx('footer')}>
             <button

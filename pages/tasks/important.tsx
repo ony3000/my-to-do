@@ -18,9 +18,7 @@ export default function Important() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <PageToolbar
-        title="중요"
-      />
+      <PageToolbar title="중요" />
 
       <div className={cx('body')}>
         <div className={cx('input-section')}>

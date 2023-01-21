@@ -19,7 +19,7 @@ type AnchorItem = {
   hrefAliases?: string[];
   icon: {
     className: string;
-  },
+  };
   count?: number;
   textColor?: string;
 };
@@ -31,11 +31,11 @@ export default function NavigationDrawer() {
   const smartListSettings = useAppSelector(({ todo: state }) => state.settings.smartList);
   const todoItems = useAppSelector(({ todo: state }) => state.todoItems);
   const pageSettings = useAppSelector(({ todo: state }) => state.pageSettings);
-  const [ isRendered, setIsRendered ] = useState(false);
+  const [isRendered, setIsRendered] = useState(false);
 
   const midnightToday = dayjs().startOf('day');
   const { autoHideEmptyLists } = smartListSettings;
-  const incompleteTodoItems = todoItems.filter(item => !item.isComplete);
+  const incompleteTodoItems = todoItems.filter((item) => !item.isComplete);
   const anchors: AnchorItem[] = [
     {
       isHideAutomatically: false,
@@ -45,42 +45,44 @@ export default function NavigationDrawer() {
       icon: {
         className: 'far fa-sun',
       },
-      count: incompleteTodoItems.filter(item => item.isMarkedAsTodayTask).length,
+      count: incompleteTodoItems.filter((item) => item.isMarkedAsTodayTask).length,
     },
     {
-      isHideAutomatically: (
+      isHideAutomatically:
         todoItems
-          .filter(item => item.isImportant)
-          .filter(item => !(item.isComplete && pageSettings['important'].isHideCompletedItems))
-          .length === 0
-      ),
+          .filter((item) => item.isImportant)
+          .filter((item) => !(item.isComplete && pageSettings['important'].isHideCompletedItems))
+          .length === 0,
       key: 'important',
       text: '중요',
       href: '/tasks/important',
       icon: {
         className: 'far fa-star',
       },
-      count: incompleteTodoItems.filter(item => item.isImportant).length,
+      count: incompleteTodoItems.filter((item) => item.isImportant).length,
       textColor: 'text-blue-700',
     },
     {
-      isHideAutomatically: (
+      isHideAutomatically:
         todoItems
-          .filter(item => item.deadline && (item.deadline >= Number(midnightToday.format('x')) || !item.isComplete))
-          .filter(item => !(item.isComplete && pageSettings['planned'].isHideCompletedItems))
-          .length === 0
-      ),
+          .filter(
+            (item) =>
+              item.deadline &&
+              (item.deadline >= Number(midnightToday.format('x')) || !item.isComplete),
+          )
+          .filter((item) => !(item.isComplete && pageSettings['planned'].isHideCompletedItems))
+          .length === 0,
       key: 'planned',
       text: '계획된 일정',
       href: '/tasks/planned',
       icon: {
         className: 'far fa-calendar-alt',
       },
-      count: incompleteTodoItems.filter(item => item.deadline).length,
+      count: incompleteTodoItems.filter((item) => item.deadline).length,
       textColor: 'text-blue-700',
     },
     {
-      isHideAutomatically: todoItems.filter(item => !item.isComplete).length === 0,
+      isHideAutomatically: todoItems.filter((item) => !item.isComplete).length === 0,
       key: 'all',
       text: '모두',
       href: '/tasks/all',
@@ -91,7 +93,7 @@ export default function NavigationDrawer() {
       textColor: `text-${pageSettings['all'].themeColor}-700`,
     },
     {
-      isHideAutomatically: todoItems.filter(item => item.isComplete).length === 0,
+      isHideAutomatically: todoItems.filter((item) => item.isComplete).length === 0,
       key: 'completed',
       text: '완료됨',
       href: '/tasks/completed',
@@ -105,9 +107,7 @@ export default function NavigationDrawer() {
       key: 'inbox',
       text: 'Tasks',
       href: '/tasks/inbox',
-      hrefAliases: [
-        '/tasks',
-      ],
+      hrefAliases: ['/tasks'],
       icon: {
         className: `fas fa-home text-${pageSettings['inbox'].themeColor}-500`,
       },
@@ -128,12 +128,7 @@ export default function NavigationDrawer() {
 
   return (
     <>
-      <div
-        className={cx(
-          'container',
-          { 'is-active': isActiveSidebar },
-        )}
-      >
+      <div className={cx('container', { 'is-active': isActiveSidebar })}>
         <div className={cx('sidebar-header')}>
           <button
             className={cx('button')}
@@ -153,19 +148,30 @@ export default function NavigationDrawer() {
         <div className={cx('sidebar-body')}>
           <ul>
             {anchors.map((anchorItem) => {
-              invariant(isOneOf(anchorItem.key, ['myday', 'important', 'planned', 'all', 'completed', 'inbox']));
-
-              const isActiveSmartList = isOneOf(anchorItem.key, ['myday', 'inbox']) || (
-                (smartListSettings[anchorItem.key] !== false) && !(autoHideEmptyLists && anchorItem.isHideAutomatically)
+              invariant(
+                isOneOf(anchorItem.key, [
+                  'myday',
+                  'important',
+                  'planned',
+                  'all',
+                  'completed',
+                  'inbox',
+                ]),
               );
 
-              return (isActiveSmartList ? (
+              const isActiveSmartList =
+                isOneOf(anchorItem.key, ['myday', 'inbox']) ||
+                (smartListSettings[anchorItem.key] !== false &&
+                  !(autoHideEmptyLists && anchorItem.isHideAutomatically));
+
+              return isActiveSmartList ? (
                 <li
                   key={anchorItem.key}
-                  className={cx(
-                    'sidebar-item',
-                    { 'is-active': router.pathname === anchorItem.href || anchorItem.hrefAliases?.includes(router.pathname) },
-                  )}
+                  className={cx('sidebar-item', {
+                    'is-active':
+                      router.pathname === anchorItem.href ||
+                      anchorItem.hrefAliases?.includes(router.pathname),
+                  })}
                 >
                   <Link href={anchorItem.href} className={cx('sidebar-link')}>
                     <span className={cx('icon-wrapper')}>
@@ -181,16 +187,13 @@ export default function NavigationDrawer() {
                     ) : null}
                   </Link>
                 </li>
-              ) : null);
+              ) : null;
             })}
           </ul>
         </div>
       </div>
       <div
-        className={cx(
-          'overlay',
-          { 'is-active': isActiveSidebar },
-        )}
+        className={cx('overlay', { 'is-active': isActiveSidebar })}
         onClick={() => dispatch(closeSidebar())}
       />
     </>

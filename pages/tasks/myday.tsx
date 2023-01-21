@@ -16,10 +16,7 @@ export default function Myday() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <PageToolbar
-        title="오늘 할 일"
-        displayToday={true}
-      />
+      <PageToolbar title="오늘 할 일" displayToday={true} />
 
       <div className={cx('body')}>
         <OrderingIndicator />

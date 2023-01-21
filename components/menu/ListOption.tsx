@@ -23,18 +23,28 @@ type ListOptionProps = {
   availableOptions: ListOptionType[];
 };
 
-export default function ListOption({
-  availableOptions = [],
-}: ListOptionProps) {
+export default function ListOption({ availableOptions = [] }: ListOptionProps) {
   const router = useRouter();
   const pageKey = router.pathname.replace(/^\/tasks\/?/, '') || 'inbox';
 
-  invariant(isOneOf(pageKey, ['important', 'planned', 'all', 'completed', 'inbox', 'search', 'search/[keyword]']));
+  invariant(
+    isOneOf(pageKey, [
+      'important',
+      'planned',
+      'all',
+      'completed',
+      'inbox',
+      'search',
+      'search/[keyword]',
+    ]),
+  );
 
   const dispatch = useAppDispatch();
   const listOptionPosition = useAppSelector(({ todo: state }) => state.listOptionPosition);
   const themePalettePosition = useAppSelector(({ todo: state }) => state.themePalettePosition);
-  const settingsPerPage = useAppSelector<SettingsPerPage>(({ todo: state }) => state.pageSettings[pageKey]);
+  const settingsPerPage = useAppSelector<SettingsPerPage>(
+    ({ todo: state }) => state.pageSettings[pageKey],
+  );
   const $refs = {
     container: useRef<HTMLDivElement>(null),
   };
@@ -46,7 +56,11 @@ export default function ListOption({
 
   const toggleCompletedItems = () => {
     invariant(isOneOf(pageKey, ['important', 'planned', 'search', 'search/[keyword]']));
-    dispatch(settingsPerPage.isHideCompletedItems ? showCompletedItems(pageKey) : hideCompletedItems(pageKey));
+    dispatch(
+      settingsPerPage.isHideCompletedItems
+        ? showCompletedItems(pageKey)
+        : hideCompletedItems(pageKey),
+    );
     dispatch(closeListOption());
   };
 
@@ -90,10 +104,15 @@ export default function ListOption({
                     <>
                       <button
                         className={cx('option-button')}
-                        onClick={(event) => !isActiveThemePalette && dispatch(openThemePalette({
-                          event,
-                          selector: `.${cx('option-button')}`,
-                        }))}
+                        onClick={(event) =>
+                          !isActiveThemePalette &&
+                          dispatch(
+                            openThemePalette({
+                              event,
+                              selector: `.${cx('option-button')}`,
+                            }),
+                          )
+                        }
                       >
                         <span className={cx('icon-wrapper')}>
                           <i className="fas fa-palette"></i>
@@ -110,21 +129,20 @@ export default function ListOption({
                   break;
                 case TOGGLE_COMPLETED_ITEMS:
                   elements = (
-                    <button
-                      className={cx('option-button')}
-                      onClick={() => toggleCompletedItems()}
-                    >
+                    <button className={cx('option-button')} onClick={() => toggleCompletedItems()}>
                       <span className={cx('icon-wrapper')}>
                         <i className="far fa-check-circle"></i>
                       </span>
                       <span className={cx('option-text')}>
-                        {settingsPerPage.isHideCompletedItems ? '완료된 작업 표시' : '완료된 작업 숨기기'}
+                        {settingsPerPage.isHideCompletedItems
+                          ? '완료된 작업 표시'
+                          : '완료된 작업 숨기기'}
                       </span>
                     </button>
                   );
                   break;
                 default:
-                  // nothing to do
+                // nothing to do
               }
 
               return (

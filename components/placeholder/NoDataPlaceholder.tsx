@@ -2,10 +2,10 @@ import Image from 'next/image';
 
 export default function NoDataPlaceholder() {
   return (
-    <div className="flex-1 flex flex-col overflow-hidden justify-center items-center text-center">
-      <div className="flex flex-col items-center -mb-6">
+    <div className="flex flex-1 flex-col items-center justify-center overflow-hidden text-center">
+      <div className="-mb-6 flex flex-col items-center">
         <a
-          className="inline-flex aspect-w-1 aspect-h-1"
+          className="aspect-w-1 aspect-h-1 inline-flex"
           href="https://storyset.com/data"
           target="_blank"
           rel="noreferrer"
@@ -22,7 +22,7 @@ export default function NoDataPlaceholder() {
           />
         </a>
       </div>
-      <div className="relative px-12 mb-16">모두 검색해 보았지만 작업을 찾을 수 없습니다.</div>
+      <div className="relative mb-16 px-12">모두 검색해 보았지만 작업을 찾을 수 없습니다.</div>
     </div>
   );
 }

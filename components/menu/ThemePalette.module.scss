@@ -17,12 +17,12 @@
   position: absolute;
   border-radius: 2px;
   box-shadow: rgb(0 0 0 / 13%) 0px 3.2px 7.2px 0px, rgb(0 0 0 / 11%) 0px 0.6px 1.8px 0px;
-  background-color: theme("colors.white");
+  background-color: theme('colors.white');
   padding: 16px;
   display: flex;
 }
 
-$colors: "blue", "red", "violet", "lime", "amber";
+$colors: 'blue', 'red', 'violet', 'lime', 'amber';
 
 .color {
   width: 40px;
@@ -35,15 +35,15 @@ $colors: "blue", "red", "violet", "lime", "amber";
 
   @each $color in $colors {
     &.is-#{$color} {
-      background-color: theme("colors.#{$color}.500");
+      background-color: theme('colors.#{$color}.500');
 
       &:hover {
-        box-shadow: 0 0 0 1px theme("colors.white"), 0 0 0 2px theme("colors.#{$color}.500");
+        box-shadow: 0 0 0 1px theme('colors.white'), 0 0 0 2px theme('colors.#{$color}.500');
       }
 
       &:focus {
         outline: none;
-        box-shadow: 0 0 0 1px theme("colors.white"), 0 0 0 3px theme("colors.black");
+        box-shadow: 0 0 0 1px theme('colors.white'), 0 0 0 3px theme('colors.black');
       }
     }
   }

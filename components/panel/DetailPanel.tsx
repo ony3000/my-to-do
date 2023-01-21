@@ -36,16 +36,33 @@ export default function DetailPanel() {
   const router = useRouter();
   const pageKey = router.pathname.replace(/^\/tasks\/?/, '') || 'inbox';
 
-  invariant(isOneOf(pageKey, ['myday', 'important', 'planned', 'all', 'completed', 'inbox', 'search', 'search/[keyword]']));
+  invariant(
+    isOneOf(pageKey, [
+      'myday',
+      'important',
+      'planned',
+      'all',
+      'completed',
+      'inbox',
+      'search',
+      'search/[keyword]',
+    ]),
+  );
 
   const dispatch = useAppDispatch();
   const generalSettings = useAppSelector(({ todo: state }) => state.settings.general);
-  const settingsPerPage = useAppSelector<SettingsPerPage>(({ todo: state }) => state.pageSettings[pageKey]);
+  const settingsPerPage = useAppSelector<SettingsPerPage>(
+    ({ todo: state }) => state.pageSettings[pageKey],
+  );
   const focusedTaskId = useAppSelector(({ todo: state }) => state.focusedTaskId);
-  const task = useAppSelector(({ todo: state }) => state.todoItems.find(({ id }) => (id === focusedTaskId)));
+  const task = useAppSelector(({ todo: state }) =>
+    state.todoItems.find(({ id }) => id === focusedTaskId),
+  );
   const deadlinePickerPosition = useAppSelector(({ todo: state }) => state.deadlinePickerPosition);
-  const deadlineCalendarPosition = useAppSelector(({ todo: state }) => state.deadlineCalendarPosition);
-  const [ isActivated, setIsActivated ] = useState(false);
+  const deadlineCalendarPosition = useAppSelector(
+    ({ todo: state }) => state.deadlineCalendarPosition,
+  );
+  const [isActivated, setIsActivated] = useState(false);
   const $refs = {
     titleArea: useRef<HTMLTextAreaElement>(null),
     separator: useRef<HTMLDivElement>(null),
@@ -65,14 +82,11 @@ export default function DetailPanel() {
     if (task.deadline < Number(midnightToday.format('x'))) {
       deadlineElement = <span>지연, {dayjs(task.deadline, 'x').format('M월 D일, ddd')}</span>;
       isOverdue = true;
-    }
-    else if (task.deadline < Number(midnightTomorrow.format('x'))) {
+    } else if (task.deadline < Number(midnightTomorrow.format('x'))) {
       deadlineElement = <span>오늘까지</span>;
-    }
-    else if (task.deadline < Number(midnightAfter2Days.format('x'))) {
+    } else if (task.deadline < Number(midnightAfter2Days.format('x'))) {
       deadlineElement = <span>내일까지</span>;
-    }
-    else {
+    } else {
       deadlineElement = <span>{dayjs(task.deadline, 'x').format('M월 D일, ddd')}까지</span>;
     }
   }
@@ -85,50 +99,63 @@ export default function DetailPanel() {
       dispatch(closeDeadlineCalendar());
     }
   };
-  const titleInputHandler = useCallback((element: HTMLTextAreaElement) => {
-    element.style.setProperty('height', '');
+  const titleInputHandler = useCallback(
+    (element: HTMLTextAreaElement) => {
+      element.style.setProperty('height', '');
 
-    const computedStyle = window.getComputedStyle(element);
-    const borderWidth = parseInt(computedStyle.borderTopWidth) + parseInt(computedStyle.borderBottomWidth);
-    const newHeight = element.scrollHeight + borderWidth;
+      const computedStyle = window.getComputedStyle(element);
+      const borderWidth =
+        parseInt(computedStyle.borderTopWidth) + parseInt(computedStyle.borderBottomWidth);
+      const newHeight = element.scrollHeight + borderWidth;
 
-    element.style.setProperty('height', `${newHeight}px`);
+      element.style.setProperty('height', `${newHeight}px`);
 
-    const closestSection = element.closest(`.${cx('title-section')}`);
+      const closestSection = element.closest(`.${cx('title-section')}`);
 
-    if ($refs.separator.current && closestSection) {
-      $refs.separator.current.style.setProperty('top', `${closestSection.getBoundingClientRect().height}px`);
-    }
-  }, [$refs.separator]);
+      if ($refs.separator.current && closestSection) {
+        $refs.separator.current.style.setProperty(
+          'top',
+          `${closestSection.getBoundingClientRect().height}px`,
+        );
+      }
+    },
+    [$refs.separator],
+  );
   const titleBlurHandler = (event: ReactFocusEvent<HTMLTextAreaElement>, taskId: string) => {
     const inputElement = event.currentTarget;
     const trimmedMemo = inputElement.value.trim();
 
     if (trimmedMemo) {
-      dispatch(updateTodoItem({
-        id: taskId,
-        title: trimmedMemo,
-      }));
+      dispatch(
+        updateTodoItem({
+          id: taskId,
+          title: trimmedMemo,
+        }),
+      );
       inputElement.value = trimmedMemo;
-    }
-    else {
+    } else {
       inputElement.value = inputElement.defaultValue;
     }
     titleInputHandler(inputElement);
   };
-  const stepTitleBlurHandler = (event: ReactFocusEvent<HTMLInputElement>, taskId: string, stepId: string) => {
+  const stepTitleBlurHandler = (
+    event: ReactFocusEvent<HTMLInputElement>,
+    taskId: string,
+    stepId: string,
+  ) => {
     const inputElement = event.currentTarget;
     const trimmedMemo = inputElement.value.trim();
 
     if (trimmedMemo) {
-      dispatch(updateSubStep({
-        taskId,
-        stepId,
-        title: trimmedMemo,
-      }))
+      dispatch(
+        updateSubStep({
+          taskId,
+          stepId,
+          title: trimmedMemo,
+        }),
+      );
       inputElement.value = trimmedMemo;
-    }
-    else {
+    } else {
       inputElement.value = inputElement.defaultValue;
     }
   };
@@ -136,7 +163,8 @@ export default function DetailPanel() {
     element.style.setProperty('height', '');
 
     const computedStyle = window.getComputedStyle(element);
-    const borderWidth = parseInt(computedStyle.borderTopWidth) + parseInt(computedStyle.borderBottomWidth);
+    const borderWidth =
+      parseInt(computedStyle.borderTopWidth) + parseInt(computedStyle.borderBottomWidth);
     const newHeight = element.scrollHeight + borderWidth;
 
     element.style.setProperty('height', `${newHeight}px`);
@@ -145,30 +173,36 @@ export default function DetailPanel() {
     const inputElement = event.currentTarget;
     const trimmedMemo = inputElement.value.trim();
 
-    dispatch(updateTodoItem({
-      id: taskId,
-      memo: trimmedMemo,
-    }));
+    dispatch(
+      updateTodoItem({
+        id: taskId,
+        memo: trimmedMemo,
+      }),
+    );
     inputElement.value = trimmedMemo;
     memoInputHandler(inputElement);
   };
-  const removeHandler = ({ title, action }: {
+  const removeHandler = ({
+    title,
+    action,
+  }: {
     title: string;
     action: ReturnType<typeof removeSubStep | typeof removeTodoItem>;
   }) => {
-    if (!generalSettings.confirmBeforeRemoving || confirm(`"${title}"이(가) 영구적으로 삭제됩니다.\n이 작업은 취소할 수 없습니다.`)) {
+    if (
+      !generalSettings.confirmBeforeRemoving ||
+      confirm(`"${title}"이(가) 영구적으로 삭제됩니다.\n이 작업은 취소할 수 없습니다.`)
+    ) {
       dispatch(action);
     }
   };
   const importantHandler = ({ id, isImportant }: TodoItem) => {
     if (isImportant) {
       dispatch(markAsUnimportant(id));
-    }
-    else {
+    } else {
       if (generalSettings.moveImportantTask) {
         dispatch(markAsImportantWithOrderingFlag(id));
-      }
-      else {
+      } else {
         dispatch(markAsImportant(id));
       }
     }
@@ -183,8 +217,7 @@ export default function DetailPanel() {
         memoInputHandler($refs.memoArea.current);
       }
       setIsActivated(true);
-    }
-    else if (!task && isActivated) {
+    } else if (!task && isActivated) {
       setIsActivated(false);
     }
   }, [task, isActivated, $refs.titleArea, $refs.memoArea, titleInputHandler]);
@@ -215,10 +248,7 @@ export default function DetailPanel() {
 
   return task ? (
     <Fragment key={task.id}>
-      <div
-        className={cx('overlay')}
-        onClick={closeHandler}
-      />
+      <div className={cx('overlay')} onClick={closeHandler} />
       <div className={cx('container')}>
         <div className={cx('body')}>
           <div className={cx('flexible-section')}>
@@ -230,9 +260,13 @@ export default function DetailPanel() {
                     `text-${settingsPerPage.themeColor ? settingsPerPage.themeColor : 'blue'}-500`,
                   )}
                   title={task.isComplete ? '완료되지 않음으로 표시' : '완료됨으로 표시'}
-                  onClick={() => dispatch(
-                    task.isComplete ? markAsIncomplete(task.id) : markAsCompleteWithOrderingFlag(task.id)
-                  )}
+                  onClick={() =>
+                    dispatch(
+                      task.isComplete
+                        ? markAsIncomplete(task.id)
+                        : markAsCompleteWithOrderingFlag(task.id),
+                    )
+                  }
                 >
                   <span className={cx('icon-wrapper')}>
                     {task.isComplete ? (
@@ -241,24 +275,26 @@ export default function DetailPanel() {
                       <i className="far fa-circle"></i>
                     )}
                   </span>
-                  <span className="sr-only">{task.isComplete ? '완료되지 않음으로 표시' : '완료됨으로 표시'}</span>
+                  <span className="sr-only">
+                    {task.isComplete ? '완료되지 않음으로 표시' : '완료됨으로 표시'}
+                  </span>
                 </button>
                 <textarea
                   ref={$refs.titleArea}
                   className={cx('title-input')}
                   defaultValue={task.title}
                   maxLength={255}
-                  onInput={e => titleInputHandler(e.currentTarget)}
-                  onBlur={e => titleBlurHandler(e, task.id)}
+                  onInput={(e) => titleInputHandler(e.currentTarget)}
+                  onBlur={(e) => titleBlurHandler(e, task.id)}
                 />
                 <button
                   className={cx(
                     'button',
-                    (
-                      task.isImportant
-                        ? `text-${settingsPerPage.themeColor ? settingsPerPage.themeColor : 'blue'}-500`
-                        : 'text-gray-500'
-                    ),
+                    task.isImportant
+                      ? `text-${
+                          settingsPerPage.themeColor ? settingsPerPage.themeColor : 'blue'
+                        }-500`
+                      : 'text-gray-500',
                   )}
                   title={task.isImportant ? '중요도를 제거합니다.' : '작업을 중요로 표시합니다.'}
                   onClick={() => importantHandler(task)}
@@ -270,29 +306,33 @@ export default function DetailPanel() {
                       <i className="far fa-star"></i>
                     )}
                   </span>
-                  <span className="sr-only">{task.isImportant ? '중요도를 제거합니다.' : '작업을 중요로 표시합니다.'}</span>
+                  <span className="sr-only">
+                    {task.isImportant ? '중요도를 제거합니다.' : '작업을 중요로 표시합니다.'}
+                  </span>
                 </button>
               </div>
             </div>
             <div className={cx('step-section')}>
-              {task.subSteps.map(({
-                id,
-                title,
-                isComplete,
-              }) => (
+              {task.subSteps.map(({ id, title, isComplete }) => (
                 <div key={id} className={cx('step-item')}>
                   <div className={cx('step-body')}>
                     <button
                       className={cx(
                         'button',
-                        `text-${settingsPerPage.themeColor ? settingsPerPage.themeColor : 'blue'}-500`,
+                        `text-${
+                          settingsPerPage.themeColor ? settingsPerPage.themeColor : 'blue'
+                        }-500`,
                       )}
                       title={isComplete ? '완료되지 않음으로 표시' : '완료됨으로 표시'}
-                      onClick={() => dispatch(updateSubStep({
-                        taskId: task.id,
-                        stepId: id,
-                        isComplete: !isComplete,
-                      }))}
+                      onClick={() =>
+                        dispatch(
+                          updateSubStep({
+                            taskId: task.id,
+                            stepId: id,
+                            isComplete: !isComplete,
+                          }),
+                        )
+                      }
                     >
                       <span className={cx('icon-wrapper')}>
                         {isComplete ? (
@@ -301,7 +341,9 @@ export default function DetailPanel() {
                           <i className="far fa-circle"></i>
                         )}
                       </span>
-                      <span className="sr-only">{isComplete ? '완료되지 않음으로 표시' : '완료됨으로 표시'}</span>
+                      <span className="sr-only">
+                        {isComplete ? '완료되지 않음으로 표시' : '완료됨으로 표시'}
+                      </span>
                     </button>
                     <input
                       className={cx(
@@ -311,18 +353,20 @@ export default function DetailPanel() {
                       )}
                       defaultValue={title}
                       maxLength={255}
-                      onBlur={e => stepTitleBlurHandler(e, task.id, id)}
+                      onBlur={(e) => stepTitleBlurHandler(e, task.id, id)}
                     />
                     <button
                       className={cx('button')}
                       title="단계 삭제"
-                      onClick={() => removeHandler({
-                        title,
-                        action: removeSubStep({
-                          taskId: task.id,
-                          stepId: id,
-                        }),
-                      })}
+                      onClick={() =>
+                        removeHandler({
+                          title,
+                          action: removeSubStep({
+                            taskId: task.id,
+                            stepId: id,
+                          }),
+                        })
+                      }
                     >
                       <span className={cx('icon-wrapper')}>
                         <i className="fas fa-times"></i>
@@ -332,24 +376,16 @@ export default function DetailPanel() {
                   </div>
                 </div>
               ))}
-              <StepInput
-                taskId={task.id}
-              />
+              <StepInput taskId={task.id} />
             </div>
-            <div
-              ref={$refs.separator}
-              className={cx('separator')}
-            />
+            <div ref={$refs.separator} className={cx('separator')} />
 
-            <div
-              className={cx(
-                'general-section',
-                { 'is-active': task.isMarkedAsTodayTask },
-              )}
-            >
+            <div className={cx('general-section', { 'is-active': task.isMarkedAsTodayTask })}>
               <button
                 className={cx('section-item')}
-                onClick={() => !task.isMarkedAsTodayTask && dispatch(markAsTodayTaskWithOrderingFlag(task.id))}
+                onClick={() =>
+                  !task.isMarkedAsTodayTask && dispatch(markAsTodayTaskWithOrderingFlag(task.id))
+                }
                 disabled={task.isMarkedAsTodayTask}
               >
                 <span className={cx('button')}>
@@ -391,10 +427,15 @@ export default function DetailPanel() {
             >
               <button
                 className={cx('section-item')}
-                onClick={(event) => !isActiveDeadlinePicker && dispatch(openDeadlinePicker({
-                  event,
-                  selector: `.${cx('section-item')}`,
-                }))}
+                onClick={(event) =>
+                  !isActiveDeadlinePicker &&
+                  dispatch(
+                    openDeadlinePicker({
+                      event,
+                      selector: `.${cx('section-item')}`,
+                    }),
+                  )
+                }
               >
                 <span className={cx('button')}>
                   <span className={cx('icon-wrapper')}>
@@ -425,11 +466,7 @@ export default function DetailPanel() {
                 </div>
               ) : null}
 
-              {isActiveDeadlinePicker && (
-                <DeadlinePicker
-                  taskId={task.id}
-                />
-              )}
+              {isActiveDeadlinePicker && <DeadlinePicker taskId={task.id} />}
             </div>
 
             <div className={cx('general-section', 'has-no-border')}>
@@ -438,37 +475,41 @@ export default function DetailPanel() {
                 className={cx('memo-input')}
                 placeholder="메모 추가"
                 defaultValue={task.memo}
-                onInput={e => memoInputHandler(e.currentTarget)}
-                onBlur={e => memoBlurHandler(e, task.id)}
+                onInput={(e) => memoInputHandler(e.currentTarget)}
+                onBlur={(e) => memoBlurHandler(e, task.id)}
               />
             </div>
           </div>
 
           <div className={cx('footer')}>
-            <button
-              className={cx('button')}
-              title="세부 정보 화면 숨기기"
-              onClick={closeHandler}
-            >
+            <button className={cx('button')} title="세부 정보 화면 숨기기" onClick={closeHandler}>
               <span className={cx('icon-wrapper')}>
                 <i className="fas fa-columns"></i>
                 <span className="sr-only">세부 정보 화면 숨기기</span>
               </span>
             </button>
             <span className={cx('date')}>
-              {task.isComplete && task.completedAt ? (
-                `${dayjs(task.completedAt, 'x').format(task.completedAt < Number(midnightThisYear.format('x')) ? 'YYYY년 M월 D일, ddd' : 'M월 D일, ddd')}에 완료됨`
-              ) : (
-                `${dayjs(task.createdAt, 'x').format(task.createdAt < Number(midnightThisYear.format('x')) ? 'YYYY년 M월 D일, ddd' : 'M월 D일, ddd')}에 생성됨`
-              )}
+              {task.isComplete && task.completedAt
+                ? `${dayjs(task.completedAt, 'x').format(
+                    task.completedAt < Number(midnightThisYear.format('x'))
+                      ? 'YYYY년 M월 D일, ddd'
+                      : 'M월 D일, ddd',
+                  )}에 완료됨`
+                : `${dayjs(task.createdAt, 'x').format(
+                    task.createdAt < Number(midnightThisYear.format('x'))
+                      ? 'YYYY년 M월 D일, ddd'
+                      : 'M월 D일, ddd',
+                  )}에 생성됨`}
             </span>
             <button
               className={cx('button')}
               title="작업 삭제"
-              onClick={() => removeHandler({
-                title: task.title,
-                action: removeTodoItem(task.id),
-              })}
+              onClick={() =>
+                removeHandler({
+                  title: task.title,
+                  action: removeTodoItem(task.id),
+                })
+              }
             >
               <span className={cx('icon-wrapper')}>
                 <i className="fas fa-trash-alt"></i>

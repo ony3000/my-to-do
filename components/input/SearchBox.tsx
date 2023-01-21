@@ -45,8 +45,7 @@ export default function SearchBox() {
 
     if (router.pathname.startsWith('/tasks/search')) {
       router.replace(`/tasks/search/${encodedKeyword}`);
-    }
-    else {
+    } else {
       router.push(`/tasks/search/${encodedKeyword}`);
     }
   };
@@ -59,12 +58,7 @@ export default function SearchBox() {
   };
 
   return (
-    <div
-      className={cx(
-        'container',
-        { 'is-active': isActiveSearchBox },
-      )}
-    >
+    <div className={cx('container', { 'is-active': isActiveSearchBox })}>
       <button
         className={cx('button', 'is-opener')}
         title="검색"
@@ -81,8 +75,8 @@ export default function SearchBox() {
         type="text"
         placeholder="검색"
         disabled={!isActiveSearchBox}
-        onInput={e => inputHandler(e)}
-        onBlur={e => blurHandler(e)}
+        onInput={(e) => inputHandler(e)}
+        onBlur={(e) => blurHandler(e)}
         defaultValue={keyword}
       />
       <button

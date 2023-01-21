@@ -30,38 +30,44 @@ export default function StepList({
   filter = {},
 }: StepListProps) {
   const dispatch = useAppDispatch();
-  const filteredTodoItems = useAppSelector(
-    ({ todo: state }) => state.todoItems
+  const filteredTodoItems = useAppSelector(({ todo: state }) =>
+    state.todoItems
       .map<TodoItem>((item) => {
         return {
           ...item,
-          subSteps: item.subSteps.filter((step) => Object.entries(filter).every(([ key, value ]) => {
-            invariant(isOneOf(key, ['id', 'title', 'isComplete', 'createdAt']));
-            if (isRegExp(value)) {
-              invariant(isOneOf(key, ['id', 'title']));
-              return step[key].match(value);
-            }
-            else {
-              return step[key] === value;
-            }
-          })),
+          subSteps: item.subSteps.filter((step) =>
+            Object.entries(filter).every(([key, value]) => {
+              invariant(isOneOf(key, ['id', 'title', 'isComplete', 'createdAt']));
+              if (isRegExp(value)) {
+                invariant(isOneOf(key, ['id', 'title']));
+                return step[key].match(value);
+              } else {
+                return step[key] === value;
+              }
+            }),
+          ),
         };
       })
-      .filter((item) => (item.subSteps.length > 0))
-      .filter((item) => !(item.isComplete && isHideCompletedItems))
+      .filter((item) => item.subSteps.length > 0)
+      .filter((item) => !(item.isComplete && isHideCompletedItems)),
   );
-  const filteredTodoSteps = filteredTodoItems.reduce<Array<TodoItemBase & { taskId: string; taskTitle: string; }>>((accumulator, currentItem) => [
-    ...accumulator,
-    ...currentItem.subSteps.map<TodoItemBase & { taskId: string; taskTitle: string; }>((step) => ({
-      ...step,
-      taskId: currentItem.id,
-      taskTitle: currentItem.title,
-    })),
-  ], []);
+  const filteredTodoSteps = filteredTodoItems.reduce<
+    Array<TodoItemBase & { taskId: string; taskTitle: string }>
+  >(
+    (accumulator, currentItem) => [
+      ...accumulator,
+      ...currentItem.subSteps.map<TodoItemBase & { taskId: string; taskTitle: string }>((step) => ({
+        ...step,
+        taskId: currentItem.id,
+        taskTitle: currentItem.title,
+      })),
+    ],
+    [],
+  );
   const focusedTaskId = useAppSelector(({ todo: state }) => state.focusedTaskId);
-  const [ isCollapsed, setIsCollapsed ] = useState(isCollapsedInitially || false);
+  const [isCollapsed, setIsCollapsed] = useState(isCollapsedInitially || false);
 
-  filteredTodoSteps.sort((former, latter) => (latter.createdAt - former.createdAt));
+  filteredTodoSteps.sort((former, latter) => latter.createdAt - former.createdAt);
 
   return isHideForEmptyList && filteredTodoSteps.length === 0 ? null : (
     <div className={cx('container')}>
@@ -86,33 +92,21 @@ export default function StepList({
         </div>
       </div>
 
-      {filteredTodoSteps.map(({
-        id,
-        title,
-        isComplete,
-        taskId,
-        taskTitle,
-      }) => (
-        <div
-          key={id}
-          className={cx(
-            'item',
-            { 'is-active': id === focusedTaskId },
-          )}
-        >
+      {filteredTodoSteps.map(({ id, title, isComplete, taskId, taskTitle }) => (
+        <div key={id} className={cx('item', { 'is-active': id === focusedTaskId })}>
           <div className={cx('item-body')}>
             <button
-              className={cx(
-                'item-button',
-                'is-left',
-                'text-blue-500',
-              )}
+              className={cx('item-button', 'is-left', 'text-blue-500')}
               title={isComplete ? '완료되지 않음으로 표시' : '완료됨으로 표시'}
-              onClick={() => dispatch(updateSubStep({
-                taskId,
-                stepId: id,
-                isComplete: !isComplete,
-              }))}
+              onClick={() =>
+                dispatch(
+                  updateSubStep({
+                    taskId,
+                    stepId: id,
+                    isComplete: !isComplete,
+                  }),
+                )
+              }
             >
               <span className={cx('icon-wrapper')}>
                 {isComplete ? (
@@ -120,7 +114,9 @@ export default function StepList({
                 ) : (
                   <i className="far fa-circle"></i>
                 )}
-                <span className="sr-only">{isComplete ? '완료되지 않음으로 표시' : '완료됨으로 표시'}</span>
+                <span className="sr-only">
+                  {isComplete ? '완료되지 않음으로 표시' : '완료됨으로 표시'}
+                </span>
               </span>
             </button>
 

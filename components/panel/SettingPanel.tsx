@@ -54,12 +54,7 @@ export default function SettingPanel() {
   ];
 
   return (
-    <div
-      className={cx(
-        'container',
-        { 'is-active': isActiveSettingPanel },
-      )}
-    >
+    <div className={cx('container', { 'is-active': isActiveSettingPanel })}>
       <div className={cx('body')}>
         <h1 className="inline-flex px-4 py-5 text-xl font-semibold">설정</h1>
 
@@ -72,15 +67,14 @@ export default function SettingPanel() {
                 invariant(isOneOf(generalItem.key, ['confirmBeforeRemoving', 'moveImportantTask']));
 
                 const isActiveGeneral = generalSettings[generalItem.key];
-                const conditionalAction = isActiveGeneral ? turnOffGeneral(generalItem.key) : turnOnGeneral(generalItem.key);
+                const conditionalAction = isActiveGeneral
+                  ? turnOffGeneral(generalItem.key)
+                  : turnOnGeneral(generalItem.key);
 
                 return (
                   <div
                     key={generalItem.key}
-                    className={cx(
-                      'togglable-item',
-                      { 'is-active': isActiveGeneral },
-                    )}
+                    className={cx('togglable-item', { 'is-active': isActiveGeneral })}
                   >
                     <label className={cx('top-label')}>{generalItem.text}</label>
                     <div className="inline-flex">
@@ -106,18 +100,25 @@ export default function SettingPanel() {
 
             <div className="flex flex-col items-start">
               {smartLists.map((smartListItem) => {
-                invariant(isOneOf(smartListItem.key, ['important', 'planned', 'all', 'completed', 'autoHideEmptyLists']));
+                invariant(
+                  isOneOf(smartListItem.key, [
+                    'important',
+                    'planned',
+                    'all',
+                    'completed',
+                    'autoHideEmptyLists',
+                  ]),
+                );
 
                 const isActiveSmartList = smartListSettings[smartListItem.key];
-                const conditionalAction = isActiveSmartList ? turnOffSmartList(smartListItem.key) : turnOnSmartList(smartListItem.key);
+                const conditionalAction = isActiveSmartList
+                  ? turnOffSmartList(smartListItem.key)
+                  : turnOnSmartList(smartListItem.key);
 
                 return (
                   <div
                     key={smartListItem.key}
-                    className={cx(
-                      'togglable-item',
-                      { 'is-active': isActiveSmartList },
-                    )}
+                    className={cx('togglable-item', { 'is-active': isActiveSmartList })}
                   >
                     <label className={cx('top-label')}>{smartListItem.text}</label>
                     <div className="inline-flex">
@@ -144,7 +145,7 @@ export default function SettingPanel() {
             <div className="flex">
               <div>
                 <Image
-                  className="w-20 h-20"
+                  className="h-20 w-20"
                   src="/images/todo_check.png"
                   alt=""
                   width={80}

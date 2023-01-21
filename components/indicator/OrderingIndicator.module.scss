@@ -15,7 +15,7 @@
 
   &:focus {
     outline: none;
-    box-shadow: 0 0 0 1px theme("colors.white"), 0 0 0 3px theme("colors.blue.500");
+    box-shadow: 0 0 0 1px theme('colors.white'), 0 0 0 3px theme('colors.blue.500');
   }
 }
 
@@ -23,7 +23,7 @@
   @include button-base;
 
   &:hover {
-    background-color: theme("colors.gray.200");
+    background-color: theme('colors.gray.200');
   }
 }
 

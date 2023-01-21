@@ -7,8 +7,8 @@
   height: calc(100vh - 48px);
   opacity: 0;
   box-sizing: content-box;
-  border-left: 1px solid theme("colors.gray.200");
-  background-color: theme("colors.gray.50");
+  border-left: 1px solid theme('colors.gray.200');
+  background-color: theme('colors.gray.50');
   box-shadow: 0 2px 4px rgba(#000, 0.2);
   overflow-x: hidden;
   overflow-y: auto;
@@ -64,11 +64,11 @@
     display: flex;
     width: 40px;
     height: 20px;
-    outline-color: theme("colors.blue.500");
-    border: 1px solid theme("colors.gray.500");
+    outline-color: theme('colors.blue.500');
+    border: 1px solid theme('colors.gray.500');
     border-radius: 10px;
     padding: 0 3px;
-    background-color: theme("colors.white");
+    background-color: theme('colors.white');
     align-items: center;
 
     .switch-thumb {
@@ -76,14 +76,14 @@
       width: 12px;
       height: 12px;
       border-radius: 50%;
-      background-color: theme("colors.gray.500");
+      background-color: theme('colors.gray.500');
     }
 
     &:hover {
-      border-color: theme("colors.gray.700");
+      border-color: theme('colors.gray.700');
 
       .switch-thumb {
-        background-color: theme("colors.gray.800");
+        background-color: theme('colors.gray.800');
       }
     }
   }
@@ -103,20 +103,20 @@
 
   &.is-active {
     .switch {
-      border-color: theme("colors.blue.500");
-      background-color: theme("colors.blue.500");
+      border-color: theme('colors.blue.500');
+      background-color: theme('colors.blue.500');
       justify-content: flex-end;
 
       .switch-thumb {
-        background-color: theme("colors.white");
+        background-color: theme('colors.white');
       }
 
       &:hover {
-        border-color: theme("colors.blue.600");
-        background-color: theme("colors.blue.600");
+        border-color: theme('colors.blue.600');
+        background-color: theme('colors.blue.600');
 
         .switch-thumb {
-          background-color: theme("colors.white");
+          background-color: theme('colors.white');
         }
       }
     }
@@ -128,14 +128,14 @@
   align-items: center;
   width: 2.5rem;
   height: 2.5rem;
-  color: theme("colors.gray.600");
+  color: theme('colors.gray.600');
   padding: 0.25rem;
   position: absolute;
   top: 12px;
   right: 4px;
 
   &:hover {
-    background-color: theme("colors.gray.200");
+    background-color: theme('colors.gray.200');
   }
 }
 

@@ -16,9 +16,7 @@ export default function Inbox() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <PageToolbar
-        title="Tasks"
-      />
+      <PageToolbar title="Tasks" />
 
       <div className={cx('body')}>
         <OrderingIndicator />

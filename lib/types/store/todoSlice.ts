@@ -60,15 +60,18 @@ export type TodoAppState = {
     top: number;
     left: number;
   }>;
-  orderingCriterionPosition: Nullable<{
-    top: number;
-    right?: undefined;
-    left: number;
-  } | {
-    top: number;
-    right: number;
-    left?: undefined;
-  }>;
+  orderingCriterionPosition: Nullable<
+    | {
+        top: number;
+        right?: undefined;
+        left: number;
+      }
+    | {
+        top: number;
+        right: number;
+        left?: undefined;
+      }
+  >;
   deadlinePickerPosition: Nullable<{
     top: number;
     right: number;
@@ -124,13 +127,11 @@ export type TodoAppState = {
   focusedTaskId: Nullable<string>;
 };
 
-export type FilteringCondition<T> = (
-  T extends number
-    ? {
+export type FilteringCondition<T> = T extends number
+  ? {
       $gt?: number;
       $gte?: number;
       $lt?: number;
       $lte?: number;
     }
-    : T | (T extends string ? RegExp : never)
-);
+  : T | (T extends string ? RegExp : never);

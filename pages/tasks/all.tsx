@@ -15,9 +15,7 @@ export default function All() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <PageToolbar
-        title="모두"
-      />
+      <PageToolbar title="모두" />
 
       <div className={cx('body')}>
         <div className={cx('input-section')}>

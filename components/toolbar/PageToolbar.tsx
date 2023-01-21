@@ -11,32 +11,39 @@ import { ListOption, OrderingCriterion } from '@/components/menu';
 
 const cx = classNames.bind(styles);
 
-export default function PageToolbar({
-  title = '',
-  displayToday = false,
-}) {
+export default function PageToolbar({ title = '', displayToday = false }) {
   const router = useRouter();
   const pageKey = router.pathname.replace(/^\/tasks\/?/, '') || 'inbox';
 
-  invariant(isOneOf(pageKey, ['myday', 'important', 'planned', 'all', 'completed', 'inbox', 'search', 'search/[keyword]']));
+  invariant(
+    isOneOf(pageKey, [
+      'myday',
+      'important',
+      'planned',
+      'all',
+      'completed',
+      'inbox',
+      'search',
+      'search/[keyword]',
+    ]),
+  );
 
   const dispatch = useAppDispatch();
   const listOptionPosition = useAppSelector(({ todo: state }) => state.listOptionPosition);
-  const orderingCriterionPosition = useAppSelector(({ todo: state }) => state.orderingCriterionPosition);
+  const orderingCriterionPosition = useAppSelector(
+    ({ todo: state }) => state.orderingCriterionPosition,
+  );
   const functionsPerPage = useAppSelector(({ todo: state }) => state.toolbarFunctions[pageKey]);
-  const settingsPerPage = useAppSelector<SettingsPerPage>(({ todo: state }) => state.pageSettings[pageKey]);
+  const settingsPerPage = useAppSelector<SettingsPerPage>(
+    ({ todo: state }) => state.pageSettings[pageKey],
+  );
   const midnightToday = dayjs().startOf('day');
 
   const isActiveListOption = listOptionPosition !== null;
   const isActiveOrderingCriterion = orderingCriterionPosition !== null;
 
   return (
-    <div
-      className={cx(
-        'container',
-        { 'is-displaying-today': displayToday },
-      )}
-    >
+    <div className={cx('container', { 'is-displaying-today': displayToday })}>
       <div className={cx('flexible-section')}>
         <div className={cx('headline')}>
           <h1
@@ -53,10 +60,15 @@ export default function PageToolbar({
               <button
                 className={cx('button', 'text-gray-500')}
                 title="목록 옵션"
-                onClick={(event) => !isActiveListOption && dispatch(openListOption({
-                  event,
-                  selector: `.${cx('button')}`,
-                }))}
+                onClick={(event) =>
+                  !isActiveListOption &&
+                  dispatch(
+                    openListOption({
+                      event,
+                      selector: `.${cx('button')}`,
+                    }),
+                  )
+                }
               >
                 <span className={cx('icon-wrapper')}>
                   <i className="fas fa-ellipsis-h"></i>
@@ -64,17 +76,13 @@ export default function PageToolbar({
                 </span>
               </button>
 
-              <ListOption
-                availableOptions={functionsPerPage.listOption}
-              />
+              <ListOption availableOptions={functionsPerPage.listOption} />
             </>
           ) : null}
         </div>
 
         {displayToday ? (
-          <div className={cx('today')}>
-            {midnightToday.format('M월 D일, dddd')}
-          </div>
+          <div className={cx('today')}>{midnightToday.format('M월 D일, dddd')}</div>
         ) : null}
       </div>
 
@@ -86,21 +94,21 @@ export default function PageToolbar({
               `text-${settingsPerPage.themeColor ? settingsPerPage.themeColor : 'blue'}-500`,
             )}
             title="정렬 기준"
-            onClick={(event) => !isActiveOrderingCriterion && dispatch(openOrderingCriterion({
-              event,
-              selector: `.${cx('button')}`,
-            }))}
+            onClick={(event) =>
+              !isActiveOrderingCriterion &&
+              dispatch(
+                openOrderingCriterion({
+                  event,
+                  selector: `.${cx('button')}`,
+                }),
+              )
+            }
             style={{
               minWidth: '2rem',
               width: 'auto',
             }}
           >
-            <span
-              className={cx(
-                'icon-wrapper',
-                'rotate-90',
-              )}
-            >
+            <span className={cx('icon-wrapper', 'rotate-90')}>
               <i className="fas fa-exchange-alt"></i>
             </span>
             <span className={cx('button-text')}>
@@ -109,9 +117,7 @@ export default function PageToolbar({
             </span>
           </button>
 
-          <OrderingCriterion
-            availableCriterions={functionsPerPage.listOrdering}
-          />
+          <OrderingCriterion availableCriterions={functionsPerPage.listOrdering} />
         </div>
       ) : null}
     </div>

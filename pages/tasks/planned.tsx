@@ -25,9 +25,7 @@ export default function Planned() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <PageToolbar
-        title="계획된 일정"
-      />
+      <PageToolbar title="계획된 일정" />
 
       <div className={cx('body')}>
         <div className={cx('input-section')}>
@@ -78,7 +76,9 @@ export default function Planned() {
           />
 
           <TaskList
-            title={`${midnightAfter2Days.format('M월 D일, ddd')} ~ ${midnightAfter6Days.format('M월 D일, ddd')}`}
+            title={`${midnightAfter2Days.format('M월 D일, ddd')} ~ ${midnightAfter6Days.format(
+              'M월 D일, ddd',
+            )}`}
             isHideForEmptyList={true}
             isHideCompletedItems={settingsPerPage.isHideCompletedItems}
             filter={{

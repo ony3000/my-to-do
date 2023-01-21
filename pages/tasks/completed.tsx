@@ -14,9 +14,7 @@ export default function Completed() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <PageToolbar
-        title="완료됨"
-      />
+      <PageToolbar title="완료됨" />
 
       <div className={cx('body')}>
         <div className={cx('list-section')}>

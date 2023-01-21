@@ -11,17 +11,14 @@ export default function AppHeader() {
   const isActiveSettingPanel = useAppSelector(({ todo: state }) => state.isActiveSettingPanel);
 
   return (
-    <div className="bg-blue-500 h-12 flex items-center justify-between">
+    <div className="flex h-12 items-center justify-between bg-blue-500">
       {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
       <a className={cx('home-link')} href="/">
         To Do
       </a>
       <SearchBox />
       <button
-        className={cx(
-          'button',
-          { 'is-active': isActiveSettingPanel },
-        )}
+        className={cx('button', { 'is-active': isActiveSettingPanel })}
         title="설정"
         onClick={() => dispatch(isActiveSettingPanel ? closeSettingPanel() : openSettingPanel())}
       >
