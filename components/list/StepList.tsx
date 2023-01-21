@@ -41,9 +41,8 @@ export default function StepList({
               if (isRegExp(value)) {
                 invariant(isOneOf(key, ['id', 'title']));
                 return step[key].match(value);
-              } else {
-                return step[key] === value;
               }
+              return step[key] === value;
             }),
           ),
         };

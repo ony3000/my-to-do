@@ -93,12 +93,12 @@ export default function TaskList({
               item.deadline < ($lt ?? Infinity) &&
               item.deadline <= ($lte ?? Infinity)
             );
-          } else if (isRegExp(value)) {
+          }
+          if (isRegExp(value)) {
             invariant(isOneOf(key, ['id', 'title', 'memo']));
             return item[key].match(value);
-          } else {
-            return item[key] === value;
           }
+          return item[key] === value;
         }),
       )
       .filter((item) => !(item.isComplete && isHideCompletedItems)),
