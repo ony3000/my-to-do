@@ -3,14 +3,19 @@ import { useRouter } from 'next/router';
 import invariant from 'tiny-invariant';
 import classNames from 'classnames/bind';
 import { isOneOf } from '@/lib/types/guard';
-import { SettingsPerPage } from '@/lib/types/store/todoSlice';
+import { TodoItem, SettingsPerPage } from '@/lib/types/store/todoSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
 import { createTodoItem } from '@/lib/store/todoSlice';
 import styles from './TaskInput.module.scss';
 
 const cx = classNames.bind(styles);
 
-export default function TaskInput({ placeholder = '작업 추가', itemProps = {} }) {
+type TaskInputProps = {
+  placeholder?: string;
+  itemProps?: Partial<TodoItem>;
+};
+
+export default function TaskInput({ placeholder = '작업 추가', itemProps = {} }: TaskInputProps) {
   const router = useRouter();
   const pageKey = router.pathname.replace(/^\/tasks\/?/, '') || 'inbox';
 

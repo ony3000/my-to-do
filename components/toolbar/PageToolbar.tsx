@@ -11,7 +11,12 @@ import styles from './PageToolbar.module.scss';
 
 const cx = classNames.bind(styles);
 
-export default function PageToolbar({ title = '', displayToday = false }) {
+type PageToolbarProps = {
+  title?: string;
+  displayToday?: boolean;
+};
+
+export default function PageToolbar({ title = '', displayToday = false }: PageToolbarProps) {
   const router = useRouter();
   const pageKey = router.pathname.replace(/^\/tasks\/?/, '') || 'inbox';
 
