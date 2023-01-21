@@ -1,11 +1,11 @@
 import Head from 'next/head';
 import classNames from 'classnames/bind';
 import dayjs from '@/lib/plugins/dayjs';
-import styles from './inbox.module.scss'; // shared
 import { useAppSelector } from '@/lib/hooks/index';
 import { PageToolbar } from '@/components/toolbar';
 import { TaskInput } from '@/components/input';
 import { TaskList } from '@/components/list';
+import styles from './inbox.module.scss'; // shared
 
 const cx = classNames.bind(styles);
 

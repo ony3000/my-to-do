@@ -8,8 +8,8 @@ import {
   setDeadline,
 } from '@/lib/store/todoSlice';
 import dayjs from '@/lib/plugins/dayjs';
-import styles from './ListOption.module.scss'; // shared
 import { DeadlineCalendar } from '@/components/datepicker';
+import styles from './ListOption.module.scss'; // shared
 
 const cx = classNames.bind(styles);
 

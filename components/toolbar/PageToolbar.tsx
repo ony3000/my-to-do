@@ -6,8 +6,8 @@ import { SettingsPerPage } from '@/lib/types/store/todoSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
 import { openListOption, openOrderingCriterion } from '@/lib/store/todoSlice';
 import dayjs from '@/lib/plugins/dayjs';
-import styles from './PageToolbar.module.scss';
 import { ListOption, OrderingCriterion } from '@/components/menu';
+import styles from './PageToolbar.module.scss';
 
 const cx = classNames.bind(styles);
 

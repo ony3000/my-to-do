@@ -1,10 +1,10 @@
 import Head from 'next/head';
 import classNames from 'classnames/bind';
-import styles from './inbox.module.scss'; // shared
 import { PageToolbar } from '@/components/toolbar';
 import { OrderingIndicator } from '@/components/indicator';
 import { TaskInput } from '@/components/input';
 import { TaskList } from '@/components/list';
+import styles from './inbox.module.scss'; // shared
 
 const cx = classNames.bind(styles);
 

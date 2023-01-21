@@ -26,9 +26,9 @@ import {
   unsetDeadline,
 } from '@/lib/store/todoSlice';
 import dayjs from '@/lib/plugins/dayjs';
-import styles from './DetailPanel.module.scss';
 import { StepInput } from '@/components/input';
 import { DeadlinePicker } from '@/components/menu';
+import styles from './DetailPanel.module.scss';
 
 const cx = classNames.bind(styles);
 
