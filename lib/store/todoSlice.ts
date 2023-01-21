@@ -346,24 +346,21 @@ const todoSlice = createSlice({
     },
     createTodoItem(state, { payload }: PayloadAction<Partial<TodoItem>>) {
       const now = new Date();
-      const newTask: TodoItem = Object.assign(
-        {},
-        {
-          id: uuid(),
-          title: '',
-          isComplete: false,
-          subSteps: [],
-          isImportant: false,
-          isMarkedAsTodayTask: false,
-          deadline: null,
-          memo: '',
-          createdAt: now.getTime(),
-          completedAt: null,
-          markedAsImportantAt: null,
-          markedAsTodayTaskAt: null,
-        },
-        payload,
-      );
+      const newTask: TodoItem = {
+        id: uuid(),
+        title: '',
+        isComplete: false,
+        subSteps: [],
+        isImportant: false,
+        isMarkedAsTodayTask: false,
+        deadline: null,
+        memo: '',
+        createdAt: now.getTime(),
+        completedAt: null,
+        markedAsImportantAt: null,
+        markedAsTodayTaskAt: null,
+        ...payload,
+      };
 
       if (newTask.isImportant) {
         newTask.markedAsImportantAt = now.getTime();
@@ -387,11 +384,10 @@ const todoSlice = createSlice({
     ) {
       const targetTaskIndex = state.todoItems.findIndex(({ id }) => id === payload.id);
 
-      state.todoItems[targetTaskIndex] = Object.assign(
-        {},
-        state.todoItems[targetTaskIndex],
-        payload,
-      );
+      state.todoItems[targetTaskIndex] = {
+        ...state.todoItems[targetTaskIndex],
+        ...payload,
+      };
       saveState(state);
     },
     markAsCompleteWithOrderingFlag(state, { payload }: PayloadAction<string>) {
@@ -547,11 +543,10 @@ const todoSlice = createSlice({
 
       const targetStepIndex = targetTask.subSteps.findIndex(({ id }) => id === stepId);
 
-      targetTask.subSteps[targetStepIndex] = Object.assign(
-        {},
-        targetTask.subSteps[targetStepIndex],
-        others,
-      );
+      targetTask.subSteps[targetStepIndex] = {
+        ...targetTask.subSteps[targetStepIndex],
+        ...others,
+      };
       saveState(state);
     },
     setDeadline(
