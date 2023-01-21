@@ -485,7 +485,7 @@ const todoSlice = createSlice({
       state,
       { payload: { pageKey } }: PayloadAction<{ pageKey: 'myday' | 'inbox' }>,
     ) {
-      const ordering = state.pageSettings[pageKey].ordering;
+      const { ordering } = state.pageSettings[pageKey];
 
       invariant(ordering, '정렬 기준이 없습니다.');
 
