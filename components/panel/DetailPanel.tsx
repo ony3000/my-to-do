@@ -4,8 +4,7 @@ import invariant from 'tiny-invariant';
 import classNames from 'classnames/bind';
 import { ReactFocusEvent } from '@/lib/types/common';
 import { isOneOf } from '@/lib/types/guard';
-import { TodoItem } from '@/lib/types/store/todoSlice';
-import { SettingsPerPage } from '@/lib/types/store/todoSlice';
+import { TodoItem, SettingsPerPage } from '@/lib/types/store/todoSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
 import {
   openDeadlinePicker,
