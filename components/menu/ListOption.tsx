@@ -14,8 +14,8 @@ import {
   showCompletedItems,
   hideCompletedItems,
 } from '@/lib/store/todoSlice';
+import ThemePalette from './ThemePalette';
 import styles from './ListOption.module.scss';
-import { ThemePalette } from '@/components/menu';
 
 const cx = classNames.bind(styles);
 
@@ -103,6 +103,7 @@ export default function ListOption({ availableOptions = [] }: ListOptionProps) {
                   elements = (
                     <>
                       <button
+                        type="button"
                         className={cx('option-button')}
                         onClick={(event) =>
                           !isActiveThemePalette &&
@@ -115,11 +116,11 @@ export default function ListOption({ availableOptions = [] }: ListOptionProps) {
                         }
                       >
                         <span className={cx('icon-wrapper')}>
-                          <i className="fas fa-palette"></i>
+                          <i className="fas fa-palette" />
                         </span>
                         <span className={cx('option-text')}>테마 변경</span>
                         <span className={cx('icon-wrapper')}>
-                          <i className="fas fa-chevron-right"></i>
+                          <i className="fas fa-chevron-right" />
                         </span>
                       </button>
 
@@ -129,9 +130,13 @@ export default function ListOption({ availableOptions = [] }: ListOptionProps) {
                   break;
                 case TOGGLE_COMPLETED_ITEMS:
                   elements = (
-                    <button className={cx('option-button')} onClick={() => toggleCompletedItems()}>
+                    <button
+                      type="button"
+                      className={cx('option-button')}
+                      onClick={() => toggleCompletedItems()}
+                    >
                       <span className={cx('icon-wrapper')}>
-                        <i className="far fa-check-circle"></i>
+                        <i className="far fa-check-circle" />
                       </span>
                       <span className={cx('option-text')}>
                         {settingsPerPage.isHideCompletedItems

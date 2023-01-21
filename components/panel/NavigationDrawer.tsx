@@ -51,7 +51,7 @@ export default function NavigationDrawer() {
       isHideAutomatically:
         todoItems
           .filter((item) => item.isImportant)
-          .filter((item) => !(item.isComplete && pageSettings['important'].isHideCompletedItems))
+          .filter((item) => !(item.isComplete && pageSettings.important.isHideCompletedItems))
           .length === 0,
       key: 'important',
       text: '중요',
@@ -70,7 +70,7 @@ export default function NavigationDrawer() {
               item.deadline &&
               (item.deadline >= Number(midnightToday.format('x')) || !item.isComplete),
           )
-          .filter((item) => !(item.isComplete && pageSettings['planned'].isHideCompletedItems))
+          .filter((item) => !(item.isComplete && pageSettings.planned.isHideCompletedItems))
           .length === 0,
       key: 'planned',
       text: '계획된 일정',
@@ -90,7 +90,7 @@ export default function NavigationDrawer() {
         className: 'fas fa-infinity',
       },
       count: incompleteTodoItems.length,
-      textColor: `text-${pageSettings['all'].themeColor}-700`,
+      textColor: `text-${pageSettings.all.themeColor}-700`,
     },
     {
       isHideAutomatically: todoItems.filter((item) => item.isComplete).length === 0,
@@ -100,7 +100,7 @@ export default function NavigationDrawer() {
       icon: {
         className: 'far fa-check-circle',
       },
-      textColor: `text-${pageSettings['completed'].themeColor}-700`,
+      textColor: `text-${pageSettings.completed.themeColor}-700`,
     },
     {
       isHideAutomatically: false,
@@ -109,10 +109,10 @@ export default function NavigationDrawer() {
       href: '/tasks/inbox',
       hrefAliases: ['/tasks'],
       icon: {
-        className: `fas fa-home text-${pageSettings['inbox'].themeColor}-500`,
+        className: `fas fa-home text-${pageSettings.inbox.themeColor}-500`,
       },
       count: incompleteTodoItems.length,
-      textColor: `text-${pageSettings['inbox'].themeColor}-700`,
+      textColor: `text-${pageSettings.inbox.themeColor}-700`,
     },
   ];
 
@@ -131,15 +131,16 @@ export default function NavigationDrawer() {
       <div className={cx('container', { 'is-active': isActiveSidebar })}>
         <div className={cx('sidebar-header')}>
           <button
+            type="button"
             className={cx('button')}
             title="사이드바 표시/숨기기"
             onClick={() => dispatch(isActiveSidebar ? closeSidebar() : openSidebar())}
           >
             <span className={cx('icon-wrapper')}>
               {isActiveSidebar ? (
-                <i className="fas fa-chevron-left"></i>
+                <i className="fas fa-chevron-left" />
               ) : (
-                <i className="fas fa-chevron-right"></i>
+                <i className="fas fa-chevron-right" />
               )}
               <span className="sr-only">사이드바 표시/숨기기</span>
             </span>
@@ -175,7 +176,7 @@ export default function NavigationDrawer() {
                 >
                   <Link href={anchorItem.href} className={cx('sidebar-link')}>
                     <span className={cx('icon-wrapper')}>
-                      <i className={anchorItem.icon.className}></i>
+                      <i className={anchorItem.icon.className} />
                     </span>
                     <span className={cx('link-text', 'is-title', anchorItem.textColor)}>
                       {anchorItem.text}
@@ -195,6 +196,7 @@ export default function NavigationDrawer() {
       <div
         className={cx('overlay', { 'is-active': isActiveSidebar })}
         onClick={() => dispatch(closeSidebar())}
+        aria-hidden="true"
       />
     </>
   );

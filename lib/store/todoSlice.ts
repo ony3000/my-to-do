@@ -124,7 +124,7 @@ const loadState = (): Dict => {
 };
 
 export const launchApp = createAsyncThunk('todo/launchApp', async () => {
-  const promise = new Promise<{ data: TodoAppState & Dict }>(async (resolve) => {
+  const promise = new Promise<{ data: TodoAppState & Dict }>((resolve) => {
     // API 호출로 데이터를 가져온다고 가정했을 때, 요청 완료되는 시간이 고정되어있지 않음을 나타냄
     const delay = 350 + Math.floor(Math.random() * 150);
 
@@ -265,6 +265,7 @@ export const openDeadlineCalendar = createAsyncThunk<
   return Promise.resolve(calendarPosition);
 });
 
+/* eslint-disable no-param-reassign */
 const todoSlice = createSlice({
   name: 'todo',
   initialState,
@@ -345,24 +346,21 @@ const todoSlice = createSlice({
     },
     createTodoItem(state, { payload }: PayloadAction<Partial<TodoItem>>) {
       const now = new Date();
-      const newTask: TodoItem = Object.assign(
-        {},
-        {
-          id: uuid(),
-          title: '',
-          isComplete: false,
-          subSteps: [],
-          isImportant: false,
-          isMarkedAsTodayTask: false,
-          deadline: null,
-          memo: '',
-          createdAt: now.getTime(),
-          completedAt: null,
-          markedAsImportantAt: null,
-          markedAsTodayTaskAt: null,
-        },
-        payload,
-      );
+      const newTask: TodoItem = {
+        id: uuid(),
+        title: '',
+        isComplete: false,
+        subSteps: [],
+        isImportant: false,
+        isMarkedAsTodayTask: false,
+        deadline: null,
+        memo: '',
+        createdAt: now.getTime(),
+        completedAt: null,
+        markedAsImportantAt: null,
+        markedAsTodayTaskAt: null,
+        ...payload,
+      };
 
       if (newTask.isImportant) {
         newTask.markedAsImportantAt = now.getTime();
@@ -386,11 +384,10 @@ const todoSlice = createSlice({
     ) {
       const targetTaskIndex = state.todoItems.findIndex(({ id }) => id === payload.id);
 
-      state.todoItems[targetTaskIndex] = Object.assign(
-        {},
-        state.todoItems[targetTaskIndex],
-        payload,
-      );
+      state.todoItems[targetTaskIndex] = {
+        ...state.todoItems[targetTaskIndex],
+        ...payload,
+      };
       saveState(state);
     },
     markAsCompleteWithOrderingFlag(state, { payload }: PayloadAction<string>) {
@@ -488,7 +485,7 @@ const todoSlice = createSlice({
       state,
       { payload: { pageKey } }: PayloadAction<{ pageKey: 'myday' | 'inbox' }>,
     ) {
-      const ordering = state.pageSettings[pageKey].ordering;
+      const { ordering } = state.pageSettings[pageKey];
 
       invariant(ordering, '정렬 기준이 없습니다.');
 
@@ -546,11 +543,10 @@ const todoSlice = createSlice({
 
       const targetStepIndex = targetTask.subSteps.findIndex(({ id }) => id === stepId);
 
-      targetTask.subSteps[targetStepIndex] = Object.assign(
-        {},
-        targetTask.subSteps[targetStepIndex],
-        others,
-      );
+      targetTask.subSteps[targetStepIndex] = {
+        ...targetTask.subSteps[targetStepIndex],
+        ...others,
+      };
       saveState(state);
     },
     setDeadline(
@@ -620,6 +616,7 @@ const todoSlice = createSlice({
     );
   },
 });
+/* eslint-enable no-param-reassign */
 
 export const {
   openSearchBox,

@@ -66,6 +66,7 @@ export default function ThemePalette() {
           {colors.map((color) => (
             <button
               key={color}
+              type="button"
               className={cx('color', `is-${color}`)}
               onClick={() => changeTheme(color)}
             >

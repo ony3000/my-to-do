@@ -12,5 +12,14 @@
     "project": "./tsconfig.json"
   },
   "plugins": ["react", "@typescript-eslint"],
-  "rules": {}
+  "rules": {
+    "import/prefer-default-export": 0,
+    "react/jsx-props-no-spreading": 0,
+    "react/require-default-props": [
+      2,
+      {
+        "functions": "defaultArguments"
+      }
+    ]
+  }
 }

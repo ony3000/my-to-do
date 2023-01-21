@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import invariant from 'tiny-invariant';
 import classNames from 'classnames/bind';
-import { Dict, Nullable, OrderingCriterion, OrderingDirection } from '@/lib/types/common';
+import { Nullable, OrderingCriterion, OrderingDirection } from '@/lib/types/common';
 import { isRegExp, isOneOf } from '@/lib/types/guard';
 import { TodoItem, SettingsPerPage, FilteringCondition } from '@/lib/types/store/todoSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
@@ -93,12 +93,12 @@ export default function TaskList({
               item.deadline < ($lt ?? Infinity) &&
               item.deadline <= ($lte ?? Infinity)
             );
-          } else if (isRegExp(value)) {
+          }
+          if (isRegExp(value)) {
             invariant(isOneOf(key, ['id', 'title', 'memo']));
             return item[key].match(value);
-          } else {
-            return item[key] === value;
           }
+          return item[key] === value;
         }),
       )
       .filter((item) => !(item.isComplete && isHideCompletedItems)),
@@ -154,12 +154,10 @@ export default function TaskList({
   const importantHandler = ({ id, isImportant }: { id: string; isImportant: boolean }) => {
     if (isImportant) {
       dispatch(markAsUnimportant(id));
+    } else if (generalSettings.moveImportantTask) {
+      dispatch(markAsImportantWithOrderingFlag(id));
     } else {
-      if (generalSettings.moveImportantTask) {
-        dispatch(markAsImportantWithOrderingFlag(id));
-      } else {
-        dispatch(markAsImportant(id));
-      }
+      dispatch(markAsImportant(id));
     }
   };
 
@@ -216,13 +214,14 @@ export default function TaskList({
           { 'is-collapsed': isCollapsed },
         )}
         onClick={() => isCollapsible && setIsCollapsed(!isCollapsed)}
+        aria-hidden="true"
       >
         <div className={cx('headline-body')}>
           <span className={cx('icon-wrapper')}>
             {isCollapsed ? (
-              <i className="fas fa-chevron-right"></i>
+              <i className="fas fa-chevron-right" />
             ) : (
-              <i className="fas fa-chevron-down"></i>
+              <i className="fas fa-chevron-down" />
             )}
           </span>
           <span className={cx('headline-title')}>{title ?? '작업'}</span>
@@ -230,7 +229,16 @@ export default function TaskList({
       </div>
 
       {filteredTodoItems.map(
-        ({ id, title, isComplete, subSteps, isImportant, isMarkedAsTodayTask, deadline, memo }) => {
+        ({
+          id,
+          title: taskTitle,
+          isComplete,
+          subSteps,
+          isImportant,
+          isMarkedAsTodayTask,
+          deadline,
+          memo,
+        }) => {
           const completedSubSteps = subSteps.filter((step) => step.isComplete);
 
           let deadlineTextColor = 'text-gray-500';
@@ -260,6 +268,7 @@ export default function TaskList({
             <div key={id} className={cx('item', { 'is-active': id === focusedTaskId })}>
               <div className={cx('item-body')}>
                 <button
+                  type="button"
                   className={cx(
                     'item-button',
                     'is-left',
@@ -272,9 +281,9 @@ export default function TaskList({
                 >
                   <span className={cx('icon-wrapper')}>
                     {isComplete ? (
-                      <i className="fas fa-check-circle"></i>
+                      <i className="fas fa-check-circle" />
                     ) : (
-                      <i className="far fa-circle"></i>
+                      <i className="far fa-circle" />
                     )}
                     <span className="sr-only">
                       {isComplete ? '완료되지 않음으로 표시' : '완료됨으로 표시'}
@@ -283,10 +292,11 @@ export default function TaskList({
                 </button>
 
                 <button
+                  type="button"
                   className={cx('item-summary')}
                   onClick={() => dispatch(openDetailPanel(id))}
                 >
-                  <div className={cx('item-title')}>{title}</div>
+                  <div className={cx('item-title')}>{taskTitle}</div>
                   <div className={cx('item-metadata')}>
                     {isMarkedAsTodayTask && !isHideTodayIndicator ? (
                       <span className={cx('meta-indicator')}>
@@ -323,6 +333,7 @@ export default function TaskList({
                 </button>
 
                 <button
+                  type="button"
                   className={cx(
                     'item-button',
                     'is-right',
@@ -341,11 +352,7 @@ export default function TaskList({
                   }
                 >
                   <span className={cx('icon-wrapper')}>
-                    {isImportant ? (
-                      <i className="fas fa-star"></i>
-                    ) : (
-                      <i className="far fa-star"></i>
-                    )}
+                    {isImportant ? <i className="fas fa-star" /> : <i className="far fa-star" />}
                     <span className="sr-only">
                       {isImportant ? '중요도를 제거합니다.' : '작업을 중요로 표시합니다.'}
                     </span>

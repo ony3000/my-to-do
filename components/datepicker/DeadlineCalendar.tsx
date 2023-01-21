@@ -27,7 +27,7 @@ export default function DeadlineCalendar({ taskId }: DeadlineCalendarProps) {
   const topPosition = deadlineCalendarPosition?.top || 0;
   const rightPosition = deadlineCalendarPosition?.right || 0;
 
-  const set__Deadline = (timestamp: number) => {
+  const setDeadlineHandler = (timestamp: number) => {
     dispatch(
       setDeadline({
         taskId,
@@ -104,20 +104,22 @@ export default function DeadlineCalendar({ taskId }: DeadlineCalendarProps) {
                 </div>
                 <div className={cx('toolbar-section')}>
                   <button
+                    type="button"
                     className={cx('navigation')}
                     onClick={decreaseMonth}
                     disabled={prevMonthButtonDisabled}
                     title="이전 달"
                   >
-                    <i className="fas fa-arrow-up"></i>
+                    <i className="fas fa-arrow-up" />
                   </button>
                   <button
+                    type="button"
                     className={cx('navigation')}
                     onClick={increaseMonth}
                     disabled={nextMonthButtonDisabled}
                     title="다음 달"
                   >
-                    <i className="fas fa-arrow-down"></i>
+                    <i className="fas fa-arrow-down" />
                   </button>
                 </div>
               </div>
@@ -126,8 +128,11 @@ export default function DeadlineCalendar({ taskId }: DeadlineCalendarProps) {
           />
           <div className={cx('footer')}>
             <button
+              type="button"
               className={cx('save-button')}
-              onClick={() => set__Deadline(Number(dayjs(calendarDate).endOf('day').format('x')))}
+              onClick={() =>
+                setDeadlineHandler(Number(dayjs(calendarDate).endOf('day').format('x')))
+              }
             >
               저장
             </button>

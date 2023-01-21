@@ -5,7 +5,7 @@ import classNames from 'classnames/bind';
 import { isOneOf } from '@/lib/types/guard';
 import { SettingsPerPage } from '@/lib/types/store/todoSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
-import { createTodoItem, createSubStep } from '@/lib/store/todoSlice';
+import { createSubStep } from '@/lib/store/todoSlice';
 import styles from './StepInput.module.scss';
 
 const cx = classNames.bind(styles);
@@ -92,6 +92,7 @@ export default function StepInput({ placeholder = '다음 단계', taskId }: Ste
     <div className={cx('container')}>
       <div className={cx('body')}>
         <button
+          type="button"
           className={cx(
             'button',
             `text-${settingsPerPage.themeColor ? settingsPerPage.themeColor : 'blue'}-500`,
@@ -100,7 +101,7 @@ export default function StepInput({ placeholder = '다음 단계', taskId }: Ste
           onClick={() => focusInput()}
         >
           <span className={cx('icon-wrapper')}>
-            <i className="fas fa-plus"></i>
+            <i className="fas fa-plus" />
             <span className="sr-only">작업 추가</span>
           </span>
         </button>
@@ -114,13 +115,14 @@ export default function StepInput({ placeholder = '다음 단계', taskId }: Ste
           type="text"
           placeholder={placeholder}
           maxLength={255}
-          data-is-empty={true}
+          data-is-empty
           onKeyUp={(e) => keyUpHandler(e)}
           onInput={(e) => inputHandler(e)}
           onBlur={(e) => blurHandler(e)}
         />
 
         <button
+          type="button"
           className={cx(
             'button',
             'is-submit',

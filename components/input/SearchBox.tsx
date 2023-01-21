@@ -60,12 +60,13 @@ export default function SearchBox() {
   return (
     <div className={cx('container', { 'is-active': isActiveSearchBox })}>
       <button
+        type="button"
         className={cx('button', 'is-opener')}
         title="검색"
         onClick={() => activateSearchBox()}
       >
         <span className={cx('icon-wrapper')}>
-          <i className="fas fa-search"></i>
+          <i className="fas fa-search" />
           <span className="sr-only">검색</span>
         </span>
       </button>
@@ -80,13 +81,14 @@ export default function SearchBox() {
         defaultValue={keyword}
       />
       <button
+        type="button"
         className={cx('button', 'is-closer')}
         title="검색 종료"
         disabled={!isActiveSearchBox}
         onClick={() => deactivateSearchBox()}
       >
         <span className={cx('icon-wrapper')}>
-          <i className="fas fa-times"></i>
+          <i className="fas fa-times" />
           <span className="sr-only">검색 종료</span>
         </span>
       </button>

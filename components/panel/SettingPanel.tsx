@@ -76,18 +76,19 @@ export default function SettingPanel() {
                     key={generalItem.key}
                     className={cx('togglable-item', { 'is-active': isActiveGeneral })}
                   >
-                    <label className={cx('top-label')}>{generalItem.text}</label>
+                    <div className={cx('top-label')}>{generalItem.text}</div>
                     <div className="inline-flex">
                       <button
+                        type="button"
                         className={cx('switch')}
                         title={isActiveGeneral ? '끄기' : '켜기'}
                         disabled={!isActiveSettingPanel}
                         onClick={() => dispatch(conditionalAction)}
                       >
-                        <span className={cx('switch-thumb')}></span>
+                        <span className={cx('switch-thumb')} />
                         <span className="sr-only">{isActiveGeneral ? '끄기' : '켜기'}</span>
                       </button>
-                      <label className={cx('side-label')}>{isActiveGeneral ? '켬' : '끔'}</label>
+                      <div className={cx('side-label')}>{isActiveGeneral ? '켬' : '끔'}</div>
                     </div>
                   </div>
                 );
@@ -120,18 +121,19 @@ export default function SettingPanel() {
                     key={smartListItem.key}
                     className={cx('togglable-item', { 'is-active': isActiveSmartList })}
                   >
-                    <label className={cx('top-label')}>{smartListItem.text}</label>
+                    <div className={cx('top-label')}>{smartListItem.text}</div>
                     <div className="inline-flex">
                       <button
+                        type="button"
                         className={cx('switch')}
                         title={isActiveSmartList ? '끄기' : '켜기'}
                         disabled={!isActiveSettingPanel}
                         onClick={() => dispatch(conditionalAction)}
                       >
-                        <span className={cx('switch-thumb')}></span>
+                        <span className={cx('switch-thumb')} />
                         <span className="sr-only">{isActiveSmartList ? '끄기' : '켜기'}</span>
                       </button>
-                      <label className={cx('side-label')}>{isActiveSmartList ? '켬' : '끔'}</label>
+                      <div className={cx('side-label')}>{isActiveSmartList ? '켬' : '끔'}</div>
                     </div>
                   </div>
                 );
@@ -163,13 +165,14 @@ export default function SettingPanel() {
       </div>
 
       <button
+        type="button"
         className={cx('button')}
         title="창 닫기"
         disabled={!isActiveSettingPanel}
         onClick={() => dispatch(closeSettingPanel())}
       >
         <span className={cx('icon-wrapper')}>
-          <i className="fas fa-times"></i>
+          <i className="fas fa-times" />
           <span className="sr-only">창 닫기</span>
         </span>
       </button>

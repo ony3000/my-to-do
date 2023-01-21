@@ -2,11 +2,11 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import invariant from 'tiny-invariant';
 import classNames from 'classnames/bind';
-import styles from '../inbox.module.scss'; // shared
 import { useAppSelector } from '@/lib/hooks/index';
 import { PageToolbar } from '@/components/toolbar';
 import { StepList, TaskList } from '@/components/list';
 import { NoDataPlaceholder } from '@/components/placeholder';
+import styles from '../inbox.module.scss'; // shared
 
 const cx = classNames.bind(styles);
 
@@ -50,7 +50,7 @@ export default function Search() {
             <TaskList
               title="작업"
               isCollapsible={false}
-              isHideForEmptyList={true}
+              isHideForEmptyList
               isHideCompletedItems={settingsPerPage.isHideCompletedItems}
               filter={{
                 title: pattern,
@@ -60,7 +60,7 @@ export default function Search() {
             <TaskList
               title="메모"
               isCollapsible={false}
-              isHideForEmptyList={true}
+              isHideForEmptyList
               isHideCompletedItems={settingsPerPage.isHideCompletedItems}
               filter={{
                 memo: pattern,
@@ -69,7 +69,7 @@ export default function Search() {
 
             <StepList
               isCollapsible={false}
-              isHideForEmptyList={true}
+              isHideForEmptyList
               isHideCompletedItems={settingsPerPage.isHideCompletedItems}
               filter={{
                 title: pattern,

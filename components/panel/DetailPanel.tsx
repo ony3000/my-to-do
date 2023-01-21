@@ -4,8 +4,7 @@ import invariant from 'tiny-invariant';
 import classNames from 'classnames/bind';
 import { ReactFocusEvent } from '@/lib/types/common';
 import { isOneOf } from '@/lib/types/guard';
-import { TodoItem } from '@/lib/types/store/todoSlice';
-import { SettingsPerPage } from '@/lib/types/store/todoSlice';
+import { TodoItem, SettingsPerPage } from '@/lib/types/store/todoSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
 import {
   openDeadlinePicker,
@@ -26,9 +25,9 @@ import {
   unsetDeadline,
 } from '@/lib/store/todoSlice';
 import dayjs from '@/lib/plugins/dayjs';
-import styles from './DetailPanel.module.scss';
 import { StepInput } from '@/components/input';
 import { DeadlinePicker } from '@/components/menu';
+import styles from './DetailPanel.module.scss';
 
 const cx = classNames.bind(styles);
 
@@ -105,7 +104,7 @@ export default function DetailPanel() {
 
       const computedStyle = window.getComputedStyle(element);
       const borderWidth =
-        parseInt(computedStyle.borderTopWidth) + parseInt(computedStyle.borderBottomWidth);
+        parseInt(computedStyle.borderTopWidth, 10) + parseInt(computedStyle.borderBottomWidth, 10);
       const newHeight = element.scrollHeight + borderWidth;
 
       element.style.setProperty('height', `${newHeight}px`);
@@ -164,7 +163,7 @@ export default function DetailPanel() {
 
     const computedStyle = window.getComputedStyle(element);
     const borderWidth =
-      parseInt(computedStyle.borderTopWidth) + parseInt(computedStyle.borderBottomWidth);
+      parseInt(computedStyle.borderTopWidth, 10) + parseInt(computedStyle.borderBottomWidth, 10);
     const newHeight = element.scrollHeight + borderWidth;
 
     element.style.setProperty('height', `${newHeight}px`);
@@ -191,7 +190,8 @@ export default function DetailPanel() {
   }) => {
     if (
       !generalSettings.confirmBeforeRemoving ||
-      confirm(`"${title}"이(가) 영구적으로 삭제됩니다.\n이 작업은 취소할 수 없습니다.`)
+      // eslint-disable-next-line no-alert
+      window.confirm(`"${title}"이(가) 영구적으로 삭제됩니다.\n이 작업은 취소할 수 없습니다.`)
     ) {
       dispatch(action);
     }
@@ -199,12 +199,10 @@ export default function DetailPanel() {
   const importantHandler = ({ id, isImportant }: TodoItem) => {
     if (isImportant) {
       dispatch(markAsUnimportant(id));
+    } else if (generalSettings.moveImportantTask) {
+      dispatch(markAsImportantWithOrderingFlag(id));
     } else {
-      if (generalSettings.moveImportantTask) {
-        dispatch(markAsImportantWithOrderingFlag(id));
-      } else {
-        dispatch(markAsImportant(id));
-      }
+      dispatch(markAsImportant(id));
     }
   };
 
@@ -225,7 +223,7 @@ export default function DetailPanel() {
   useEffect(() => {
     const flexibleSection = document.querySelector(`.${cx('flexible-section')}`);
 
-    const scrollHandler: EventListener = (event) => {
+    const scrollHandler: EventListener = () => {
       if (isActiveDeadlinePicker && flexibleSection) {
         dispatch(closeDeadlinePicker());
 
@@ -248,13 +246,14 @@ export default function DetailPanel() {
 
   return task ? (
     <Fragment key={task.id}>
-      <div className={cx('overlay')} onClick={closeHandler} />
+      <div className={cx('overlay')} onClick={closeHandler} aria-hidden="true" />
       <div className={cx('container')}>
         <div className={cx('body')}>
           <div className={cx('flexible-section')}>
             <div className={cx('title-section')}>
               <div className={cx('title-body')}>
                 <button
+                  type="button"
                   className={cx(
                     'button',
                     `text-${settingsPerPage.themeColor ? settingsPerPage.themeColor : 'blue'}-500`,
@@ -270,9 +269,9 @@ export default function DetailPanel() {
                 >
                   <span className={cx('icon-wrapper')}>
                     {task.isComplete ? (
-                      <i className="fas fa-check-circle"></i>
+                      <i className="fas fa-check-circle" />
                     ) : (
-                      <i className="far fa-circle"></i>
+                      <i className="far fa-circle" />
                     )}
                   </span>
                   <span className="sr-only">
@@ -288,6 +287,7 @@ export default function DetailPanel() {
                   onBlur={(e) => titleBlurHandler(e, task.id)}
                 />
                 <button
+                  type="button"
                   className={cx(
                     'button',
                     task.isImportant
@@ -301,9 +301,9 @@ export default function DetailPanel() {
                 >
                   <span className={cx('icon-wrapper')}>
                     {task.isImportant ? (
-                      <i className="fas fa-star"></i>
+                      <i className="fas fa-star" />
                     ) : (
-                      <i className="far fa-star"></i>
+                      <i className="far fa-star" />
                     )}
                   </span>
                   <span className="sr-only">
@@ -317,6 +317,7 @@ export default function DetailPanel() {
                 <div key={id} className={cx('step-item')}>
                   <div className={cx('step-body')}>
                     <button
+                      type="button"
                       className={cx(
                         'button',
                         `text-${
@@ -336,9 +337,9 @@ export default function DetailPanel() {
                     >
                       <span className={cx('icon-wrapper')}>
                         {isComplete ? (
-                          <i className="fas fa-check-circle"></i>
+                          <i className="fas fa-check-circle" />
                         ) : (
-                          <i className="far fa-circle"></i>
+                          <i className="far fa-circle" />
                         )}
                       </span>
                       <span className="sr-only">
@@ -356,6 +357,7 @@ export default function DetailPanel() {
                       onBlur={(e) => stepTitleBlurHandler(e, task.id, id)}
                     />
                     <button
+                      type="button"
                       className={cx('button')}
                       title="단계 삭제"
                       onClick={() =>
@@ -369,7 +371,7 @@ export default function DetailPanel() {
                       }
                     >
                       <span className={cx('icon-wrapper')}>
-                        <i className="fas fa-times"></i>
+                        <i className="fas fa-times" />
                       </span>
                       <span className="sr-only">단계 삭제</span>
                     </button>
@@ -382,6 +384,7 @@ export default function DetailPanel() {
 
             <div className={cx('general-section', { 'is-active': task.isMarkedAsTodayTask })}>
               <button
+                type="button"
                 className={cx('section-item')}
                 onClick={() =>
                   !task.isMarkedAsTodayTask && dispatch(markAsTodayTaskWithOrderingFlag(task.id))
@@ -390,7 +393,7 @@ export default function DetailPanel() {
               >
                 <span className={cx('button')}>
                   <span className={cx('icon-wrapper')}>
-                    <i className="far fa-sun"></i>
+                    <i className="far fa-sun" />
                   </span>
                 </span>
                 <span className={cx('section-title')}>
@@ -405,12 +408,13 @@ export default function DetailPanel() {
                   }}
                 >
                   <button
+                    type="button"
                     className={cx('button')}
                     title="나의 하루에서 제거"
                     onClick={() => dispatch(markAsNonTodayTask(task.id))}
                   >
                     <span className={cx('icon-wrapper')}>
-                      <i className="fas fa-times"></i>
+                      <i className="fas fa-times" />
                     </span>
                     <span className="sr-only">나의 하루에서 제거</span>
                   </button>
@@ -426,6 +430,7 @@ export default function DetailPanel() {
               )}
             >
               <button
+                type="button"
                 className={cx('section-item')}
                 onClick={(event) =>
                   !isActiveDeadlinePicker &&
@@ -439,7 +444,7 @@ export default function DetailPanel() {
               >
                 <span className={cx('button')}>
                   <span className={cx('icon-wrapper')}>
-                    <i className="far fa-calendar-alt"></i>
+                    <i className="far fa-calendar-alt" />
                   </span>
                 </span>
                 <span className={cx('section-title')}>
@@ -454,12 +459,13 @@ export default function DetailPanel() {
                   }}
                 >
                   <button
+                    type="button"
                     className={cx('button')}
                     title="기한 제거"
                     onClick={() => dispatch(unsetDeadline(task.id))}
                   >
                     <span className={cx('icon-wrapper')}>
-                      <i className="fas fa-times"></i>
+                      <i className="fas fa-times" />
                     </span>
                     <span className="sr-only">기한 제거</span>
                   </button>
@@ -482,9 +488,14 @@ export default function DetailPanel() {
           </div>
 
           <div className={cx('footer')}>
-            <button className={cx('button')} title="세부 정보 화면 숨기기" onClick={closeHandler}>
+            <button
+              type="button"
+              className={cx('button')}
+              title="세부 정보 화면 숨기기"
+              onClick={closeHandler}
+            >
               <span className={cx('icon-wrapper')}>
-                <i className="fas fa-columns"></i>
+                <i className="fas fa-columns" />
                 <span className="sr-only">세부 정보 화면 숨기기</span>
               </span>
             </button>
@@ -502,6 +513,7 @@ export default function DetailPanel() {
                   )}에 생성됨`}
             </span>
             <button
+              type="button"
               className={cx('button')}
               title="작업 삭제"
               onClick={() =>
@@ -512,7 +524,7 @@ export default function DetailPanel() {
               }
             >
               <span className={cx('icon-wrapper')}>
-                <i className="fas fa-trash-alt"></i>
+                <i className="fas fa-trash-alt" />
                 <span className="sr-only">작업 삭제</span>
               </span>
             </button>

@@ -6,12 +6,17 @@ import { SettingsPerPage } from '@/lib/types/store/todoSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
 import { openListOption, openOrderingCriterion } from '@/lib/store/todoSlice';
 import dayjs from '@/lib/plugins/dayjs';
-import styles from './PageToolbar.module.scss';
 import { ListOption, OrderingCriterion } from '@/components/menu';
+import styles from './PageToolbar.module.scss';
 
 const cx = classNames.bind(styles);
 
-export default function PageToolbar({ title = '', displayToday = false }) {
+type PageToolbarProps = {
+  title?: string;
+  displayToday?: boolean;
+};
+
+export default function PageToolbar({ title = '', displayToday = false }: PageToolbarProps) {
   const router = useRouter();
   const pageKey = router.pathname.replace(/^\/tasks\/?/, '') || 'inbox';
 
@@ -58,6 +63,7 @@ export default function PageToolbar({ title = '', displayToday = false }) {
           {functionsPerPage.listOption ? (
             <>
               <button
+                type="button"
                 className={cx('button', 'text-gray-500')}
                 title="목록 옵션"
                 onClick={(event) =>
@@ -71,7 +77,7 @@ export default function PageToolbar({ title = '', displayToday = false }) {
                 }
               >
                 <span className={cx('icon-wrapper')}>
-                  <i className="fas fa-ellipsis-h"></i>
+                  <i className="fas fa-ellipsis-h" />
                   <span className="sr-only">목록 옵션</span>
                 </span>
               </button>
@@ -89,6 +95,7 @@ export default function PageToolbar({ title = '', displayToday = false }) {
       {functionsPerPage.listOrdering ? (
         <div>
           <button
+            type="button"
             className={cx(
               'button',
               `text-${settingsPerPage.themeColor ? settingsPerPage.themeColor : 'blue'}-500`,
@@ -109,7 +116,7 @@ export default function PageToolbar({ title = '', displayToday = false }) {
             }}
           >
             <span className={cx('icon-wrapper', 'rotate-90')}>
-              <i className="fas fa-exchange-alt"></i>
+              <i className="fas fa-exchange-alt" />
             </span>
             <span className={cx('button-text')}>
               <span>정렬</span>

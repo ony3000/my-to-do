@@ -3,14 +3,19 @@ import { useRouter } from 'next/router';
 import invariant from 'tiny-invariant';
 import classNames from 'classnames/bind';
 import { isOneOf } from '@/lib/types/guard';
-import { SettingsPerPage } from '@/lib/types/store/todoSlice';
+import { TodoItem, SettingsPerPage } from '@/lib/types/store/todoSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
 import { createTodoItem } from '@/lib/store/todoSlice';
 import styles from './TaskInput.module.scss';
 
 const cx = classNames.bind(styles);
 
-export default function TaskInput({ placeholder = '작업 추가', itemProps = {} }) {
+type TaskInputProps = {
+  placeholder?: string;
+  itemProps?: Partial<TodoItem>;
+};
+
+export default function TaskInput({ placeholder = '작업 추가', itemProps = {} }: TaskInputProps) {
   const router = useRouter();
   const pageKey = router.pathname.replace(/^\/tasks\/?/, '') || 'inbox';
 
@@ -75,6 +80,7 @@ export default function TaskInput({ placeholder = '작업 추가', itemProps = {
   return (
     <div className={cx('container')}>
       <button
+        type="button"
         className={cx(
           'button',
           'is-left',
@@ -84,7 +90,7 @@ export default function TaskInput({ placeholder = '작업 추가', itemProps = {
         onClick={() => focusInput()}
       >
         <span className={cx('icon-wrapper')}>
-          <i className="fas fa-plus"></i>
+          <i className="fas fa-plus" />
           <span className="sr-only">작업 추가</span>
         </span>
       </button>
@@ -98,13 +104,14 @@ export default function TaskInput({ placeholder = '작업 추가', itemProps = {
         type="text"
         placeholder={placeholder}
         maxLength={255}
-        data-is-empty={true}
+        data-is-empty
         onKeyUp={(e) => keyUpHandler(e)}
         onInput={(e) => inputHandler(e)}
         onBlur={(e) => blurHandler(e)}
       />
 
       <button
+        type="button"
         className={cx(
           'button',
           'is-right',

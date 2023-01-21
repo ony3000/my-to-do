@@ -5,10 +5,10 @@ import { isOneOf } from '@/lib/types/guard';
 import { SettingsPerPage } from '@/lib/types/store/todoSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
 import { launchApp } from '@/lib/store/todoSlice';
-import styles from './AppContainer.module.scss';
 import { AppSplash } from '@/components/placeholder';
 import { AppHeader } from '@/components/toolbar';
 import { DetailPanel, NavigationDrawer, SettingPanel } from '@/components/panel';
+import styles from './AppContainer.module.scss';
 
 const cx = classNames.bind(styles);
 
@@ -79,7 +79,7 @@ export default function AppContainer({ children }: AppContainerProps) {
       })}
     >
       {!isAppReady && <AppSplash />}
-      {isAppReady && !isExpectedPage && <>{children}</>}
+      {isAppReady && !isExpectedPage && children}
       {isAppReady && isExpectedPage && (
         <>
           <AppHeader />

@@ -40,13 +40,14 @@ export default function OrderingIndicator() {
       case CREATION_DATE:
         return '만든 날짜순으로';
       default:
-      // nothing to do
+        return '정해진 기준으로';
     }
   };
 
   return settingsPerPage.ordering ? (
     <div className={cx('container')}>
       <button
+        type="button"
         className={cx('button', 'text-gray-500')}
         title="역순 정렬"
         onClick={() =>
@@ -59,9 +60,9 @@ export default function OrderingIndicator() {
       >
         <span className={cx('icon-wrapper')}>
           {settingsPerPage.ordering.direction === ASCENDING ? (
-            <i className="fas fa-chevron-up"></i>
+            <i className="fas fa-chevron-up" />
           ) : (
-            <i className="fas fa-chevron-down"></i>
+            <i className="fas fa-chevron-down" />
           )}
           <span className="sr-only">역순 정렬</span>
         </span>
@@ -73,6 +74,7 @@ export default function OrderingIndicator() {
         </span>
       </div>
       <button
+        type="button"
         className={cx('button', 'text-gray-500')}
         title="정렬 순서 옵션 제거"
         onClick={() =>
@@ -84,7 +86,7 @@ export default function OrderingIndicator() {
         }
       >
         <span className={cx('icon-wrapper')}>
-          <i className="fas fa-times"></i>
+          <i className="fas fa-times" />
           <span className="sr-only">정렬 순서 옵션 제거</span>
         </span>
       </button>
