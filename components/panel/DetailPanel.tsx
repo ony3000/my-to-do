@@ -198,12 +198,10 @@ export default function DetailPanel() {
   const importantHandler = ({ id, isImportant }: TodoItem) => {
     if (isImportant) {
       dispatch(markAsUnimportant(id));
+    } else if (generalSettings.moveImportantTask) {
+      dispatch(markAsImportantWithOrderingFlag(id));
     } else {
-      if (generalSettings.moveImportantTask) {
-        dispatch(markAsImportantWithOrderingFlag(id));
-      } else {
-        dispatch(markAsImportant(id));
-      }
+      dispatch(markAsImportant(id));
     }
   };
 

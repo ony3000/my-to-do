@@ -154,12 +154,10 @@ export default function TaskList({
   const importantHandler = ({ id, isImportant }: { id: string; isImportant: boolean }) => {
     if (isImportant) {
       dispatch(markAsUnimportant(id));
+    } else if (generalSettings.moveImportantTask) {
+      dispatch(markAsImportantWithOrderingFlag(id));
     } else {
-      if (generalSettings.moveImportantTask) {
-        dispatch(markAsImportantWithOrderingFlag(id));
-      } else {
-        dispatch(markAsImportant(id));
-      }
+      dispatch(markAsImportant(id));
     }
   };
 
