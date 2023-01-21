@@ -79,7 +79,7 @@ export default function AppContainer({ children }: AppContainerProps) {
       })}
     >
       {!isAppReady && <AppSplash />}
-      {isAppReady && !isExpectedPage && <>{children}</>}
+      {isAppReady && !isExpectedPage && children}
       {isAppReady && isExpectedPage && (
         <>
           <AppHeader />
