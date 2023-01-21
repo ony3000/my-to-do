@@ -231,7 +231,16 @@ export default function TaskList({
       </div>
 
       {filteredTodoItems.map(
-        ({ id, title, isComplete, subSteps, isImportant, isMarkedAsTodayTask, deadline, memo }) => {
+        ({
+          id,
+          title: taskTitle,
+          isComplete,
+          subSteps,
+          isImportant,
+          isMarkedAsTodayTask,
+          deadline,
+          memo,
+        }) => {
           const completedSubSteps = subSteps.filter((step) => step.isComplete);
 
           let deadlineTextColor = 'text-gray-500';
@@ -289,7 +298,7 @@ export default function TaskList({
                   className={cx('item-summary')}
                   onClick={() => dispatch(openDetailPanel(id))}
                 >
-                  <div className={cx('item-title')}>{title}</div>
+                  <div className={cx('item-title')}>{taskTitle}</div>
                   <div className={cx('item-metadata')}>
                     {isMarkedAsTodayTask && !isHideTodayIndicator ? (
                       <span className={cx('meta-indicator')}>

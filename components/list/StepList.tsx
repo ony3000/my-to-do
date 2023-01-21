@@ -93,7 +93,7 @@ export default function StepList({
         </div>
       </div>
 
-      {filteredTodoSteps.map(({ id, title, isComplete, taskId, taskTitle }) => (
+      {filteredTodoSteps.map(({ id, title: stepTitle, isComplete, taskId, taskTitle }) => (
         <div key={id} className={cx('item', { 'is-active': id === focusedTaskId })}>
           <div className={cx('item-body')}>
             <button
@@ -127,7 +127,7 @@ export default function StepList({
               className={cx('item-summary')}
               onClick={() => dispatch(openDetailPanel(taskId))}
             >
-              <div className={cx('item-title')}>{title}</div>
+              <div className={cx('item-title')}>{stepTitle}</div>
               <div className={cx('item-metadata')}>
                 <span className={cx('meta-indicator')}>
                   <span>{taskTitle}</span>
