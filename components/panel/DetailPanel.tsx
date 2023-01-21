@@ -105,7 +105,7 @@ export default function DetailPanel() {
 
       const computedStyle = window.getComputedStyle(element);
       const borderWidth =
-        parseInt(computedStyle.borderTopWidth) + parseInt(computedStyle.borderBottomWidth);
+        parseInt(computedStyle.borderTopWidth, 10) + parseInt(computedStyle.borderBottomWidth, 10);
       const newHeight = element.scrollHeight + borderWidth;
 
       element.style.setProperty('height', `${newHeight}px`);
@@ -164,7 +164,7 @@ export default function DetailPanel() {
 
     const computedStyle = window.getComputedStyle(element);
     const borderWidth =
-      parseInt(computedStyle.borderTopWidth) + parseInt(computedStyle.borderBottomWidth);
+      parseInt(computedStyle.borderTopWidth, 10) + parseInt(computedStyle.borderBottomWidth, 10);
     const newHeight = element.scrollHeight + borderWidth;
 
     element.style.setProperty('height', `${newHeight}px`);
