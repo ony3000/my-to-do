@@ -32,21 +32,19 @@ export default function StepList({
   const dispatch = useAppDispatch();
   const filteredTodoItems = useAppSelector(({ todo: state }) =>
     state.todoItems
-      .map<TodoItem>((item) => {
-        return {
-          ...item,
-          subSteps: item.subSteps.filter((step) =>
-            Object.entries(filter).every(([key, value]) => {
-              invariant(isOneOf(key, ['id', 'title', 'isComplete', 'createdAt']));
-              if (isRegExp(value)) {
-                invariant(isOneOf(key, ['id', 'title']));
-                return step[key].match(value);
-              }
-              return step[key] === value;
-            }),
-          ),
-        };
-      })
+      .map<TodoItem>((item) => ({
+        ...item,
+        subSteps: item.subSteps.filter((step) =>
+          Object.entries(filter).every(([key, value]) => {
+            invariant(isOneOf(key, ['id', 'title', 'isComplete', 'createdAt']));
+            if (isRegExp(value)) {
+              invariant(isOneOf(key, ['id', 'title']));
+              return step[key].match(value);
+            }
+            return step[key] === value;
+          }),
+        ),
+      }))
       .filter((item) => item.subSteps.length > 0)
       .filter((item) => !(item.isComplete && isHideCompletedItems)),
   );
