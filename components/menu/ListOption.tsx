@@ -14,7 +14,7 @@ import {
   showCompletedItems,
   hideCompletedItems,
 } from '@/lib/store/todoSlice';
-import { ThemePalette } from '@/components/menu';
+import ThemePalette from './ThemePalette';
 import styles from './ListOption.module.scss';
 
 const cx = classNames.bind(styles);
