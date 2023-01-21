@@ -27,7 +27,7 @@ export default function DeadlineCalendar({ taskId }: DeadlineCalendarProps) {
   const topPosition = deadlineCalendarPosition?.top || 0;
   const rightPosition = deadlineCalendarPosition?.right || 0;
 
-  const set__Deadline = (timestamp: number) => {
+  const setDeadlineHandler = (timestamp: number) => {
     dispatch(
       setDeadline({
         taskId,
@@ -130,7 +130,9 @@ export default function DeadlineCalendar({ taskId }: DeadlineCalendarProps) {
             <button
               type="button"
               className={cx('save-button')}
-              onClick={() => set__Deadline(Number(dayjs(calendarDate).endOf('day').format('x')))}
+              onClick={() =>
+                setDeadlineHandler(Number(dayjs(calendarDate).endOf('day').format('x')))
+              }
             >
               저장
             </button>
