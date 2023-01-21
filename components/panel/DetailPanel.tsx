@@ -225,7 +225,7 @@ export default function DetailPanel() {
   useEffect(() => {
     const flexibleSection = document.querySelector(`.${cx('flexible-section')}`);
 
-    const scrollHandler: EventListener = (event) => {
+    const scrollHandler: EventListener = () => {
       if (isActiveDeadlinePicker && flexibleSection) {
         dispatch(closeDeadlinePicker());
 

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import invariant from 'tiny-invariant';
 import classNames from 'classnames/bind';
-import { Dict, Nullable, OrderingCriterion, OrderingDirection } from '@/lib/types/common';
+import { Nullable, OrderingCriterion, OrderingDirection } from '@/lib/types/common';
 import { isRegExp, isOneOf } from '@/lib/types/guard';
 import { TodoItem, SettingsPerPage, FilteringCondition } from '@/lib/types/store/todoSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';

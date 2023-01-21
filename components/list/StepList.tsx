@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import invariant from 'tiny-invariant';
 import classNames from 'classnames/bind';
-import { Dict, Nullable } from '@/lib/types/common';
+import { Nullable } from '@/lib/types/common';
 import { isRegExp, isOneOf } from '@/lib/types/guard';
 import { TodoItemBase, TodoItem, FilteringCondition } from '@/lib/types/store/todoSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
