@@ -99,7 +99,7 @@ export default function TaskInput({ placeholder = '작업 추가', itemProps = {
         type="text"
         placeholder={placeholder}
         maxLength={255}
-        data-is-empty={true}
+        data-is-empty
         onKeyUp={(e) => keyUpHandler(e)}
         onInput={(e) => inputHandler(e)}
         onBlur={(e) => blurHandler(e)}

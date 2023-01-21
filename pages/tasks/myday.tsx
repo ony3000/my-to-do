@@ -16,7 +16,7 @@ export default function Myday() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <PageToolbar title="오늘 할 일" displayToday={true} />
+      <PageToolbar title="오늘 할 일" displayToday />
 
       <div className={cx('body')}>
         <OrderingIndicator />
@@ -33,7 +33,7 @@ export default function Myday() {
           <TaskList
             title={null}
             isCollapsible={false}
-            isHideTodayIndicator={true}
+            isHideTodayIndicator
             filter={{
               isComplete: false,
               isMarkedAsTodayTask: true,
@@ -42,7 +42,7 @@ export default function Myday() {
 
           <TaskList
             title="완료됨"
-            isHideTodayIndicator={true}
+            isHideTodayIndicator
             filter={{
               isComplete: true,
               isMarkedAsTodayTask: true,

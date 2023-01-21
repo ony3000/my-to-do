@@ -115,7 +115,7 @@ export default function StepInput({ placeholder = '다음 단계', taskId }: Ste
           type="text"
           placeholder={placeholder}
           maxLength={255}
-          data-is-empty={true}
+          data-is-empty
           onKeyUp={(e) => keyUpHandler(e)}
           onInput={(e) => inputHandler(e)}
           onBlur={(e) => blurHandler(e)}

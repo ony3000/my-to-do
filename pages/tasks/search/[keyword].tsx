@@ -50,7 +50,7 @@ export default function Search() {
             <TaskList
               title="작업"
               isCollapsible={false}
-              isHideForEmptyList={true}
+              isHideForEmptyList
               isHideCompletedItems={settingsPerPage.isHideCompletedItems}
               filter={{
                 title: pattern,
@@ -60,7 +60,7 @@ export default function Search() {
             <TaskList
               title="메모"
               isCollapsible={false}
-              isHideForEmptyList={true}
+              isHideForEmptyList
               isHideCompletedItems={settingsPerPage.isHideCompletedItems}
               filter={{
                 memo: pattern,
@@ -69,7 +69,7 @@ export default function Search() {
 
             <StepList
               isCollapsible={false}
-              isHideForEmptyList={true}
+              isHideForEmptyList
               isHideCompletedItems={settingsPerPage.isHideCompletedItems}
               filter={{
                 title: pattern,

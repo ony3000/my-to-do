@@ -40,8 +40,8 @@ export default function Planned() {
         <div className={cx('list-section')}>
           <TaskList
             title="이전"
-            isCollapsedInitially={true}
-            isHideForEmptyList={true}
+            isCollapsedInitially
+            isHideForEmptyList
             isHideCompletedItems={settingsPerPage.isHideCompletedItems}
             filter={{
               isComplete: false,
@@ -53,7 +53,7 @@ export default function Planned() {
 
           <TaskList
             title="오늘"
-            isHideForEmptyList={true}
+            isHideForEmptyList
             isHideCompletedItems={settingsPerPage.isHideCompletedItems}
             filter={{
               deadline: {
@@ -65,7 +65,7 @@ export default function Planned() {
 
           <TaskList
             title="내일"
-            isHideForEmptyList={true}
+            isHideForEmptyList
             isHideCompletedItems={settingsPerPage.isHideCompletedItems}
             filter={{
               deadline: {
@@ -79,7 +79,7 @@ export default function Planned() {
             title={`${midnightAfter2Days.format('M월 D일, ddd')} ~ ${midnightAfter6Days.format(
               'M월 D일, ddd',
             )}`}
-            isHideForEmptyList={true}
+            isHideForEmptyList
             isHideCompletedItems={settingsPerPage.isHideCompletedItems}
             filter={{
               deadline: {
@@ -91,7 +91,7 @@ export default function Planned() {
 
           <TaskList
             title="나중에"
-            isHideForEmptyList={true}
+            isHideForEmptyList
             isHideCompletedItems={settingsPerPage.isHideCompletedItems}
             filter={{
               deadline: {
