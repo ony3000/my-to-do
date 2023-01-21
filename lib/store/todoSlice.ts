@@ -124,7 +124,7 @@ const loadState = (): Dict => {
 };
 
 export const launchApp = createAsyncThunk('todo/launchApp', async () => {
-  const promise = new Promise<{ data: TodoAppState & Dict }>(async (resolve) => {
+  const promise = new Promise<{ data: TodoAppState & Dict }>((resolve) => {
     // API 호출로 데이터를 가져온다고 가정했을 때, 요청 완료되는 시간이 고정되어있지 않음을 나타냄
     const delay = 350 + Math.floor(Math.random() * 150);
 
