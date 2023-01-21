@@ -10,7 +10,7 @@ import styles from './inbox.module.scss'; // shared
 const cx = classNames.bind(styles);
 
 export default function Planned() {
-  const settingsPerPage = useAppSelector(({ todo: state }) => state.pageSettings['planned']);
+  const settingsPerPage = useAppSelector(({ todo: state }) => state.pageSettings.planned);
 
   const midnightToday = dayjs().startOf('day');
   const midnightTomorrow = midnightToday.add(1, 'day');

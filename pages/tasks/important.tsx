@@ -9,7 +9,7 @@ import styles from './inbox.module.scss'; // shared
 const cx = classNames.bind(styles);
 
 export default function Important() {
-  const settingsPerPage = useAppSelector(({ todo: state }) => state.pageSettings['important']);
+  const settingsPerPage = useAppSelector(({ todo: state }) => state.pageSettings.important);
 
   return (
     <main className={cx('main')}>
