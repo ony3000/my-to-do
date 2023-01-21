@@ -248,7 +248,7 @@ export default function DetailPanel() {
 
   return task ? (
     <Fragment key={task.id}>
-      <div className={cx('overlay')} onClick={closeHandler} />
+      <div className={cx('overlay')} onClick={closeHandler} aria-hidden="true" />
       <div className={cx('container')}>
         <div className={cx('body')}>
           <div className={cx('flexible-section')}>

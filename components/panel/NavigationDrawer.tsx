@@ -196,6 +196,7 @@ export default function NavigationDrawer() {
       <div
         className={cx('overlay', { 'is-active': isActiveSidebar })}
         onClick={() => dispatch(closeSidebar())}
+        aria-hidden="true"
       />
     </>
   );

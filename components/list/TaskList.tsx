@@ -216,6 +216,7 @@ export default function TaskList({
           { 'is-collapsed': isCollapsed },
         )}
         onClick={() => isCollapsible && setIsCollapsed(!isCollapsed)}
+        aria-hidden="true"
       >
         <div className={cx('headline-body')}>
           <span className={cx('icon-wrapper')}>
