@@ -24,6 +24,7 @@
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^17.0.0",
     "eslint-config-next": "13.1.1",
+    "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-react": "^7.32.1",
     "lodash.merge": "^4.6.2",
     "next": "13.1.1",
@@ -47,6 +48,7 @@
     "@types/tailwindcss": "^2.0.2",
     "@types/uuid": "^8.3.2",
     "eslint": "8.31.0",
+    "prettier": "2.8.3",
     "typescript": "4.9.4"
   }
 }
