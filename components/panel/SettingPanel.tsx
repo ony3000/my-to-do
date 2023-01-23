@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import invariant from 'tiny-invariant';
 import classNames from 'classnames';
+import { ToggleButton } from '@/components/button';
 import { IconContainer } from '@/components/layout';
 import { isOneOf } from '@/lib/types/guard';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
@@ -51,9 +52,6 @@ export default function SettingPanel() {
     },
   ];
 
-  const switchClassNames =
-    'group flex h-5 w-10 items-center rounded-full border border-solid px-[3px] outline-blue-500';
-  const thumbClassNames = 'inline-flex h-3 w-3 rounded-full';
   const buttonClassNames =
     'absolute top-3 right-1 inline-flex h-10 w-10 items-center p-1 text-gray-600 hover:bg-gray-200';
 
@@ -91,29 +89,11 @@ export default function SettingPanel() {
                   <div key={generalItem.key} className="flex flex-col">
                     <div className="py-1 text-[14px] font-semibold">{generalItem.text}</div>
                     <div className="inline-flex">
-                      <button
-                        type="button"
-                        className={classNames(
-                          switchClassNames,
-                          { 'border-gray-500 bg-white hover:border-gray-700': !isActiveGeneral },
-                          {
-                            'justify-end border-blue-500 bg-blue-500 hover:border-blue-600 hover:bg-blue-600':
-                              isActiveGeneral,
-                          },
-                        )}
-                        title={isActiveGeneral ? '끄기' : '켜기'}
+                      <ToggleButton
                         disabled={!isActiveSettingPanel}
-                        onClick={() => dispatch(conditionalAction)}
-                      >
-                        <span
-                          className={classNames(
-                            thumbClassNames,
-                            { 'bg-gray-500 group-hover:bg-gray-800': !isActiveGeneral },
-                            { 'bg-white': isActiveGeneral },
-                          )}
-                        />
-                        <span className="sr-only">{isActiveGeneral ? '끄기' : '켜기'}</span>
-                      </button>
+                        isActive={isActiveGeneral}
+                        onToggle={() => dispatch(conditionalAction)}
+                      />
                       <div className="mx-2 text-[14px]">{isActiveGeneral ? '켬' : '끔'}</div>
                     </div>
                   </div>
@@ -146,29 +126,11 @@ export default function SettingPanel() {
                   <div key={smartListItem.key} className="flex flex-col">
                     <div className="py-1 text-[14px] font-semibold">{smartListItem.text}</div>
                     <div className="inline-flex">
-                      <button
-                        type="button"
-                        className={classNames(
-                          switchClassNames,
-                          { 'border-gray-500 bg-white hover:border-gray-700': !isActiveSmartList },
-                          {
-                            'justify-end border-blue-500 bg-blue-500 hover:border-blue-600 hover:bg-blue-600':
-                              isActiveSmartList,
-                          },
-                        )}
-                        title={isActiveSmartList ? '끄기' : '켜기'}
+                      <ToggleButton
                         disabled={!isActiveSettingPanel}
-                        onClick={() => dispatch(conditionalAction)}
-                      >
-                        <span
-                          className={classNames(
-                            thumbClassNames,
-                            { 'bg-gray-500 group-hover:bg-gray-800': !isActiveSmartList },
-                            { 'bg-white': isActiveSmartList },
-                          )}
-                        />
-                        <span className="sr-only">{isActiveSmartList ? '끄기' : '켜기'}</span>
-                      </button>
+                        isActive={isActiveSmartList}
+                        onToggle={() => dispatch(conditionalAction)}
+                      />
                       <div className="mx-2 text-[14px]">{isActiveSmartList ? '켬' : '끔'}</div>
                     </div>
                   </div>
