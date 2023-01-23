@@ -14,4 +14,6 @@ export type OrderingCriterion = 'IMPORTANCE' | 'DEADLINE' | 'MYDAY' | 'TITLE' | 
 
 export type OrderingDirection = 'ASCENDING' | 'DESCENDING';
 
-export type ThemeColor = 'blue' | 'red' | 'violet' | 'lime' | 'amber';
+// TODO: Replace to enum
+/** @deprecated */
+export type LegacyThemeColor = 'blue' | 'red' | 'violet' | 'lime' | 'amber';

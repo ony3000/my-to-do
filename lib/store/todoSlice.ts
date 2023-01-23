@@ -7,7 +7,7 @@ import {
   ReactMouseEvent,
   OrderingCriterion,
   OrderingDirection,
-  ThemeColor,
+  LegacyThemeColor,
 } from '@/lib/types/common';
 import { isDict } from '@/lib/types/guard';
 import { TodoItemBase, TodoItem, TodoAppState } from '@/lib/types/store/todoSlice';
@@ -460,7 +460,7 @@ const todoSlice = createSlice({
       state,
       {
         payload: { pageKey, color },
-      }: PayloadAction<{ pageKey: 'all' | 'completed' | 'inbox'; color: ThemeColor }>,
+      }: PayloadAction<{ pageKey: 'all' | 'completed' | 'inbox'; color: LegacyThemeColor }>,
     ) {
       state.pageSettings[pageKey].themeColor = color;
       saveState(state);

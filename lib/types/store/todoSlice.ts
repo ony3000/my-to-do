@@ -3,7 +3,7 @@ import {
   ListOption,
   OrderingCriterion,
   OrderingDirection,
-  ThemeColor,
+  LegacyThemeColor,
 } from '@/lib/types/common';
 
 export type TodoItemBase = {
@@ -25,7 +25,7 @@ export type TodoItem = TodoItemBase & {
 };
 
 export type SettingsPerPage = {
-  themeColor?: ThemeColor;
+  themeColor?: LegacyThemeColor;
   isHideCompletedItems?: boolean;
   ordering?: Nullable<{
     criterion: OrderingCriterion;
