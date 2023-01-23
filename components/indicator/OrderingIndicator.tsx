@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import invariant from 'tiny-invariant';
+import { IconContainer } from '@/components/layout';
 import { OrderingCriterion } from '@/lib/types/common';
 import { isOneOf } from '@/lib/types/guard';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
@@ -42,7 +43,6 @@ export default function OrderingIndicator() {
 
   const buttonClassNames =
     'inline-flex h-6 w-6 items-center rounded-sm text-[14px] text-gray-500 hover:bg-gray-200 focus:shadow-[0_0_0_1px_#fff,0_0_0_3px_#3b82f6] focus:outline-none';
-  const iconClassNames = 'inline-flex h-6 w-6 items-center justify-center';
 
   return settingsPerPage.ordering ? (
     <div className="flex items-center justify-end px-4 py-2.5">
@@ -58,14 +58,14 @@ export default function OrderingIndicator() {
           )
         }
       >
-        <span className={iconClassNames}>
-          {settingsPerPage.ordering.direction === ASCENDING ? (
-            <i className="fas fa-chevron-up" />
-          ) : (
-            <i className="fas fa-chevron-down" />
-          )}
-          <span className="sr-only">역순 정렬</span>
-        </span>
+        <IconContainer
+          iconClassName={
+            settingsPerPage.ordering.direction === ASCENDING
+              ? 'fas fa-chevron-up'
+              : 'fas fa-chevron-down'
+          }
+          iconLabel="역순 정렬"
+        />
       </button>
       <div className="mx-[5px] text-[12px] font-bold">
         <span>{readableCriterion(settingsPerPage.ordering.criterion)} 정렬됨</span>
@@ -85,10 +85,7 @@ export default function OrderingIndicator() {
           )
         }
       >
-        <span className={iconClassNames}>
-          <i className="fas fa-times" />
-          <span className="sr-only">정렬 순서 옵션 제거</span>
-        </span>
+        <IconContainer iconClassName="fas fa-times" iconLabel="정렬 순서 옵션 제거" />
       </button>
     </div>
   ) : null;

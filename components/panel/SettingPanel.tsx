@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import invariant from 'tiny-invariant';
 import classNames from 'classnames';
+import { IconContainer } from '@/components/layout';
 import { isOneOf } from '@/lib/types/guard';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
 import {
@@ -55,7 +56,6 @@ export default function SettingPanel() {
   const thumbClassNames = 'inline-flex h-3 w-3 rounded-full';
   const buttonClassNames =
     'absolute top-3 right-1 inline-flex h-10 w-10 items-center p-1 text-gray-600 hover:bg-gray-200';
-  const iconClassNames = 'inline-flex h-8 w-8 items-center justify-center';
 
   return (
     <div
@@ -207,10 +207,7 @@ export default function SettingPanel() {
         disabled={!isActiveSettingPanel}
         onClick={() => dispatch(closeSettingPanel())}
       >
-        <span className={iconClassNames}>
-          <i className="fas fa-times" />
-          <span className="sr-only">창 닫기</span>
-        </span>
+        <IconContainer size="large" iconClassName="fas fa-times" iconLabel="창 닫기" />
       </button>
     </div>
   );

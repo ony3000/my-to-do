@@ -1,6 +1,7 @@
 import { useRef, FormEventHandler, FocusEventHandler } from 'react';
 import { useRouter } from 'next/router';
 import classNames from 'classnames';
+import { IconContainer } from '@/components/layout';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
 import { openSearchBox, closeSearchBox } from '@/lib/store/todoSlice';
 
@@ -56,7 +57,6 @@ export default function SearchBox() {
 
   const buttonClassNames =
     'h-8 w-8 items-center text-blue-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-blue-900';
-  const iconClassNames = 'inline-flex h-8 w-8 items-center justify-center';
 
   return (
     <div
@@ -72,10 +72,7 @@ export default function SearchBox() {
         title="검색"
         onClick={() => activateSearchBox()}
       >
-        <span className={iconClassNames}>
-          <i className="fas fa-search" />
-          <span className="sr-only">검색</span>
-        </span>
+        <IconContainer size="large" iconClassName="fas fa-search" iconLabel="검색" />
       </button>
       <input
         ref={$refs.input}
@@ -98,10 +95,7 @@ export default function SearchBox() {
         disabled={!isActiveSearchBox}
         onClick={() => deactivateSearchBox()}
       >
-        <span className={iconClassNames}>
-          <i className="fas fa-times" />
-          <span className="sr-only">검색 종료</span>
-        </span>
+        <IconContainer size="large" iconClassName="fas fa-times" iconLabel="검색 종료" />
       </button>
     </div>
   );
