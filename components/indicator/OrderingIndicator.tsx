@@ -41,7 +41,7 @@ export default function OrderingIndicator() {
   };
 
   const buttonClassNames =
-    'inline-flex h-6 w-6 items-center rounded-sm text-[14px] text-gray-500 hover:bg-gray-200 focus:outline focus:outline-2 focus:outline-offset-1 focus:outline-blue-500';
+    'inline-flex h-6 w-6 items-center rounded-sm text-[14px] text-gray-500 hover:bg-gray-200 focus:shadow-[0_0_0_1px_#fff,0_0_0_3px_#3b82f6] focus:outline-none';
   const iconClassNames = 'inline-flex h-6 w-6 items-center justify-center';
 
   return settingsPerPage.ordering ? (
