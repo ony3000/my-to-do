@@ -1,16 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import classNames from 'classnames/bind';
 import { isOneOf } from '@/lib/types/guard';
-import { SettingsPerPage } from '@/lib/types/store/todoSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
 import { launchApp } from '@/lib/store/todoSlice';
 import { AppSplash } from '@/components/placeholder';
 import { AppHeader } from '@/components/toolbar';
 import { DetailPanel, NavigationDrawer, SettingPanel } from '@/components/panel';
-import styles from './AppContainer.module.scss';
-
-const cx = classNames.bind(styles);
 
 type AppContainerProps = {
   children: JSX.Element;
@@ -31,9 +26,6 @@ export default function AppContainer({ children }: AppContainerProps) {
   ]);
   const dispatch = useAppDispatch();
   const isAppReady = useAppSelector(({ todo: state }) => state.isAppReady);
-  const settingsPerPage = useAppSelector<SettingsPerPage>(({ todo: state }) =>
-    isExpectedPage ? state.pageSettings[pageKey] : {},
-  );
   const [isRendered, setIsRendered] = useState(false);
 
   useEffect(() => {
@@ -51,11 +43,7 @@ export default function AppContainer({ children }: AppContainerProps) {
   }, [router, dispatch, isAppReady, isRendered]);
 
   return (
-    <div
-      className={cx('flex min-h-screen flex-col', {
-        [`is-${settingsPerPage?.themeColor}-theme`]: settingsPerPage?.themeColor,
-      })}
-    >
+    <div className="flex min-h-screen flex-col">
       {!isAppReady && <AppSplash />}
       {isAppReady && !isExpectedPage && children}
       {isAppReady && isExpectedPage && (
@@ -64,7 +52,7 @@ export default function AppContainer({ children }: AppContainerProps) {
 
           <SettingPanel />
 
-          <div className={cx('body')}>
+          <div className="relative flex flex-1 max-[770px]:pl-[51px]">
             <NavigationDrawer />
 
             <div className="flex-1 overflow-hidden">{children}</div>
