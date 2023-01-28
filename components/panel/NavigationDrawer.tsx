@@ -2,14 +2,13 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import invariant from 'tiny-invariant';
-import classNames from 'classnames/bind';
+import classNames from 'classnames';
+import { IconContainer } from '@/components/layout';
 import { isOneOf } from '@/lib/types/guard';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
 import { openSidebar, closeSidebar } from '@/lib/store/todoSlice';
 import dayjs from '@/lib/plugins/dayjs';
-import styles from './NavigationDrawer.module.scss';
-
-const cx = classNames.bind(styles);
+import { textColor, textBoldColor } from '@/lib/utils/styles';
 
 type AnchorItem = {
   isHideAutomatically: boolean;
@@ -90,7 +89,7 @@ export default function NavigationDrawer() {
         className: 'fas fa-infinity',
       },
       count: incompleteTodoItems.length,
-      textColor: `text-${pageSettings.all.themeColor}-700`,
+      textColor: textBoldColor(pageSettings.all.themeColor),
     },
     {
       isHideAutomatically: todoItems.filter((item) => item.isComplete).length === 0,
@@ -100,7 +99,7 @@ export default function NavigationDrawer() {
       icon: {
         className: 'far fa-check-circle',
       },
-      textColor: `text-${pageSettings.completed.themeColor}-700`,
+      textColor: textBoldColor(pageSettings.completed.themeColor),
     },
     {
       isHideAutomatically: false,
@@ -109,10 +108,10 @@ export default function NavigationDrawer() {
       href: '/tasks/inbox',
       hrefAliases: ['/tasks'],
       icon: {
-        className: `fas fa-home text-${pageSettings.inbox.themeColor}-500`,
+        className: `fas fa-home ${textColor(pageSettings.inbox.themeColor)}`,
       },
       count: incompleteTodoItems.length,
-      textColor: `text-${pageSettings.inbox.themeColor}-700`,
+      textColor: textBoldColor(pageSettings.inbox.themeColor),
     },
   ];
 
@@ -128,25 +127,27 @@ export default function NavigationDrawer() {
 
   return (
     <>
-      <div className={cx('container', { 'is-active': isActiveSidebar })}>
-        <div className={cx('sidebar-header')}>
+      <div
+        className={classNames(
+          'box-content border-r border-solid border-gray-200 bg-gray-100 transition-[width] duration-200 max-[770px]:absolute max-[770px]:top-0 max-[770px]:left-0 max-[770px]:z-[60] max-[770px]:h-full',
+          { 'w-[50px]': !isActiveSidebar },
+          { 'w-[200px] min-[1010px]:w-[290px]': isActiveSidebar },
+        )}
+      >
+        <div className="mt-3 flex h-12 items-center px-2">
           <button
             type="button"
-            className={cx('button')}
+            className="inline-flex h-8 w-8 items-center p-1 text-blue-500 hover:bg-white hover:shadow-[0_0_0_1px_#e4e4e7] focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-blue-900"
             title="사이드바 표시/숨기기"
             onClick={() => dispatch(isActiveSidebar ? closeSidebar() : openSidebar())}
           >
-            <span className={cx('icon-wrapper')}>
-              {isActiveSidebar ? (
-                <i className="fas fa-chevron-left" />
-              ) : (
-                <i className="fas fa-chevron-right" />
-              )}
-              <span className="sr-only">사이드바 표시/숨기기</span>
-            </span>
+            <IconContainer
+              iconClassName={isActiveSidebar ? 'fas fa-chevron-left' : 'fas fa-chevron-right'}
+              iconLabel="사이드바 표시/숨기기"
+            />
           </button>
         </div>
-        <div className={cx('sidebar-body')}>
+        <div className="mt-2 max-h-[calc(100%-68px)] overflow-y-auto overflow-x-hidden">
           <ul>
             {anchors.map((anchorItem) => {
               invariant(
@@ -164,25 +165,44 @@ export default function NavigationDrawer() {
                 isOneOf(anchorItem.key, ['myday', 'inbox']) ||
                 (smartListSettings[anchorItem.key] !== false &&
                   !(autoHideEmptyLists && anchorItem.isHideAutomatically));
+              const isActiveRoute =
+                router.pathname === anchorItem.href ||
+                anchorItem.hrefAliases?.includes(router.pathname);
 
               return isActiveSmartList ? (
                 <li
                   key={anchorItem.key}
-                  className={cx('sidebar-item', {
-                    'is-active':
-                      router.pathname === anchorItem.href ||
-                      anchorItem.hrefAliases?.includes(router.pathname),
-                  })}
+                  className={classNames(
+                    { 'hover:bg-gray-50': !isActiveRoute },
+                    { 'bg-gray-200 font-bold': isActiveRoute },
+                  )}
                 >
-                  <Link href={anchorItem.href} className={cx('sidebar-link')}>
-                    <span className={cx('icon-wrapper')}>
+                  <Link
+                    href={anchorItem.href}
+                    className="flex h-9 items-center overflow-hidden whitespace-nowrap px-3"
+                  >
+                    <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center text-gray-500">
                       <i className={anchorItem.icon.className} />
                     </span>
-                    <span className={cx('link-text', 'is-title', anchorItem.textColor)}>
+                    <span
+                      className={classNames(
+                        'ml-2 flex-1 text-[14px]',
+                        { hidden: !isActiveSidebar },
+                        { 'text-gray-700': !isActiveRoute },
+                        { [anchorItem.textColor ?? '']: isActiveRoute },
+                      )}
+                    >
                       {anchorItem.text}
                     </span>
                     {anchorItem.count ? (
-                      <span className={cx('link-text', anchorItem.textColor)}>
+                      <span
+                        className={classNames(
+                          'text-[14px]',
+                          { hidden: !isActiveSidebar },
+                          { 'text-gray-700': !isActiveRoute },
+                          { [anchorItem.textColor ?? '']: isActiveRoute },
+                        )}
+                      >
                         {anchorItem.count}
                       </span>
                     ) : null}
@@ -194,7 +214,14 @@ export default function NavigationDrawer() {
         </div>
       </div>
       <div
-        className={cx('overlay', { 'is-active': isActiveSidebar })}
+        className={classNames(
+          'hidden max-[770px]:absolute max-[770px]:top-0 max-[770px]:left-0 max-[770px]:block max-[770px]:h-full max-[770px]:w-full max-[770px]:bg-gray-700 max-[770px]:transition-opacity max-[770px]:duration-200',
+          { 'pointer-events-none max-[770px]:z-0 max-[770px]:opacity-0': !isActiveSidebar },
+          {
+            'max-[770px]:pointer-events-auto max-[770px]:z-50 max-[770px]:opacity-40':
+              isActiveSidebar,
+          },
+        )}
         onClick={() => dispatch(closeSidebar())}
         aria-hidden="true"
       />
