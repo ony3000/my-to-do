@@ -3,13 +3,13 @@ import classNames from 'classnames';
 type IconContainerProps = {
   size?: 'small' | 'medium' | 'large';
   iconClassName: string;
-  iconLabel: string;
+  iconLabel?: string;
 };
 
 export default function IconContainer({
   size = 'medium',
   iconClassName,
-  iconLabel,
+  iconLabel = undefined,
 }: IconContainerProps) {
   return (
     <span
@@ -21,7 +21,7 @@ export default function IconContainer({
       )}
     >
       <i className={iconClassName} />
-      <span className="sr-only">{iconLabel}</span>
+      {iconLabel !== undefined && <span className="sr-only">{iconLabel}</span>}
     </span>
   );
 }
