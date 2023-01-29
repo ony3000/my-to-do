@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import classNames from 'classnames';
 import { IconContainer } from '@/components/layout';
 import { Nullable, LegacyThemeColor } from '@/lib/types/common';
@@ -102,45 +103,62 @@ export function ListItem({
           <div className="text-[14px] text-gray-700">{title}</div>
           <div className="flex flex-wrap items-center text-[12px] leading-4 text-gray-500">
             {metadata.map((data) => {
+              let innerElement = null;
+
               switch (data.key) {
                 case 'todayTask':
-                  return data.value ? (
-                    <span className={metadataClassNames}>
-                      <IconContainer size="small" iconClassName="far fa-sun" />
-                      <span>오늘 할 일</span>
-                    </span>
-                  ) : null;
-                case 'subStepProgress':
-                  return data.value.totalCount > 0 ? (
-                    <span className={metadataClassNames}>
-                      <span>
-                        {data.value.completedCount}/{data.value.totalCount}
+                  if (data.value) {
+                    innerElement = (
+                      <span className={metadataClassNames}>
+                        <IconContainer size="small" iconClassName="far fa-sun" />
+                        <span>오늘 할 일</span>
                       </span>
-                    </span>
-                  ) : null;
+                    );
+                  }
+                  break;
+                case 'subStepProgress':
+                  if (data.value.totalCount > 0) {
+                    innerElement = (
+                      <span className={metadataClassNames}>
+                        <span>
+                          {data.value.completedCount}/{data.value.totalCount}
+                        </span>
+                      </span>
+                    );
+                  }
+                  break;
                 case 'deadline':
-                  return data.value.timestamp ? (
-                    <span className={classNames(metadataClassNames, data.value.className)}>
-                      <IconContainer size="small" iconClassName="far fa-calendar" />
-                      {data.value.element}
-                    </span>
-                  ) : null;
+                  if (data.value.timestamp) {
+                    innerElement = (
+                      <span className={classNames(metadataClassNames, data.value.className)}>
+                        <IconContainer size="small" iconClassName="far fa-calendar" />
+                        {data.value.element}
+                      </span>
+                    );
+                  }
+                  break;
                 case 'memo':
-                  return data.value ? (
-                    <span className={metadataClassNames}>
-                      <IconContainer size="small" iconClassName="far fa-sticky-note" />
-                      <span>노트</span>
-                    </span>
-                  ) : null;
+                  if (data.value) {
+                    innerElement = (
+                      <span className={metadataClassNames}>
+                        <IconContainer size="small" iconClassName="far fa-sticky-note" />
+                        <span>노트</span>
+                      </span>
+                    );
+                  }
+                  break;
                 case 'parentTitle':
-                  return (
+                  innerElement = (
                     <span className={metadataClassNames}>
                       <span>{data.value}</span>
                     </span>
                   );
+                  break;
                 default:
                   return null;
               }
+
+              return <Fragment key={data.key}>{innerElement}</Fragment>;
             })}
           </div>
         </button>
