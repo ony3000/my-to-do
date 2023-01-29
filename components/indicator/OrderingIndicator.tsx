@@ -42,7 +42,7 @@ export default function OrderingIndicator() {
   };
 
   const buttonClassNames =
-    'inline-flex h-6 w-6 items-center rounded-sm text-[14px] text-gray-500 hover:bg-gray-200 focus:shadow-[0_0_0_1px_#fff,0_0_0_3px_#3b82f6] focus:outline-none';
+    'focus:shadow-like-outline-3 inline-flex h-6 w-6 items-center rounded-sm text-[14px] text-gray-500 hover:bg-gray-200 focus:shadow-blue-500 focus:outline-none';
 
   return settingsPerPage.ordering ? (
     <div className="flex items-center justify-end px-4 py-2.5">

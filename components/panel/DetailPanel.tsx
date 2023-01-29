@@ -313,9 +313,9 @@ export default function DetailPanel() {
               {task.subSteps.map(({ id, title, isComplete }) => (
                 <div
                   key={id}
-                  className="group px-1 hover:bg-gray-100 hover:shadow-[0_-1px_0_0_#f4f4f5]"
+                  className="shadow-like-border-t group px-1 hover:bg-gray-100 hover:shadow-gray-100"
                 >
-                  <div className="ml-8 flex min-h-[42px] items-center text-[14px] text-gray-500 shadow-[inset_0_-1px_0_0_#e4e4e7] group-hover:shadow-none">
+                  <div className="shadow-inner-like-border-b ml-8 flex min-h-[42px] items-center text-[14px] text-gray-500 shadow-gray-200 group-hover:shadow-none">
                     <button
                       type="button"
                       className={classNames(

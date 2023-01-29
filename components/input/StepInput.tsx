@@ -88,7 +88,7 @@ export default function StepInput({ placeholder = '다음 단계', taskId }: Ste
   };
 
   const buttonClassNames =
-    'inline-flex h-8 w-8 items-center rounded-sm p-1 focus:shadow-[0_0_0_1px_#fff,0_0_0_3px_#3b82f6] focus:outline-none';
+    'focus:shadow-like-outline-3 inline-flex h-8 w-8 items-center rounded-sm p-1 focus:shadow-blue-500 focus:outline-none';
 
   return (
     <div className="px-1">

@@ -137,7 +137,7 @@ export default function NavigationDrawer() {
         <div className="mt-3 flex h-12 items-center px-2">
           <button
             type="button"
-            className="inline-flex h-8 w-8 items-center p-1 text-blue-500 hover:bg-white hover:shadow-[0_0_0_1px_#e4e4e7] focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-blue-900"
+            className="hover:shadow-like-outline-1 inline-flex h-8 w-8 items-center p-1 text-blue-500 hover:bg-white hover:shadow-gray-200 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-blue-900"
             title="사이드바 표시/숨기기"
             onClick={() => dispatch(isActiveSidebar ? closeSidebar() : openSidebar())}
           >

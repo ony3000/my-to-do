@@ -74,19 +74,19 @@ export function ListItem({
   onToggleStar = undefined,
 }: ListItemProps) {
   const buttonClassNames =
-    'inline-flex h-8 w-8 items-center rounded-sm p-1 focus:shadow-[0_0_0_1px_#fff,0_0_0_3px_#3b82f6] focus:outline-none';
+    'focus:shadow-like-outline-3 inline-flex h-8 w-8 items-center rounded-sm p-1 focus:shadow-blue-500 focus:outline-none';
   const metadataClassNames =
     'before:mx-1.5 before:text-gray-500 before:content-["•"] first:before:hidden';
 
   return (
     <div
       className={classNames(
-        'min-h-[52px] px-4',
-        { 'group hover:bg-gray-100 hover:shadow-[0_1px_0_0_#f4f4f5]': !isActive },
-        { 'bg-lightBlue-100 shadow-[0_1px_0_0_#e0f2fe]': isActive },
+        'shadow-like-border-b min-h-[52px] px-4',
+        { 'group hover:bg-gray-100 hover:shadow-gray-100': !isActive },
+        { 'bg-lightBlue-100 shadow-lightBlue-100': isActive },
       )}
     >
-      <div className="flex items-center shadow-[inset_0_1px_0_0_#e4e4e7] group-hover:relative group-hover:shadow-[inset_0_1px_0_0_#f4f4f5,0_1px_0_0_#f4f4f5]">
+      <div className="shadow-inner-like-border-t flex items-center shadow-gray-200 group-hover:relative group-hover:shadow-[inset_0_1px_0_0_#f4f4f5,0_1px_0_0_#f4f4f5]">
         <button
           type="button"
           className={classNames(buttonClassNames, '-ml-1', textColor(baseColor))}

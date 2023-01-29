@@ -61,7 +61,7 @@ export default function SearchBox() {
   return (
     <div
       className={classNames(
-        'mx-2.5 flex min-w-0 max-w-[400px] flex-1 rounded-sm hover:bg-white hover:shadow-[0_0_0_1px_#fff]',
+        'hover:shadow-like-outline-1 mx-2.5 flex min-w-0 max-w-[400px] flex-1 rounded-sm hover:bg-white hover:shadow-white',
         { 'bg-blue-200': !isActiveSearchBox },
         { 'bg-white': isActiveSearchBox },
       )}

@@ -53,6 +53,7 @@
 
   &:focus {
     outline: none;
+    // TODO: Replace to shadow-like-outline-3 shadow-blue-500
     box-shadow: 0 0 0 1px theme('colors.white'), 0 0 0 3px theme('colors.blue.500');
   }
 }

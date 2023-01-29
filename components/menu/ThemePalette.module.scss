@@ -16,6 +16,7 @@
 .container {
   position: absolute;
   border-radius: 2px;
+  // TODO: Replace to shadow-elevation
   box-shadow: rgb(0 0 0 / 13%) 0px 3.2px 7.2px 0px, rgb(0 0 0 / 11%) 0px 0.6px 1.8px 0px;
   background-color: theme('colors.white');
   padding: 16px;
@@ -38,11 +39,13 @@ $colors: 'blue', 'red', 'violet', 'lime', 'amber';
       background-color: theme('colors.#{$color}.500');
 
       &:hover {
+        // TODO: Replace to shadow-like-outline-2 shadow-#{$color}-500
         box-shadow: 0 0 0 1px theme('colors.white'), 0 0 0 2px theme('colors.#{$color}.500');
       }
 
       &:focus {
         outline: none;
+        // TODO: Replace to shadow-like-outline-3 shadow-black
         box-shadow: 0 0 0 1px theme('colors.white'), 0 0 0 3px theme('colors.black');
       }
     }

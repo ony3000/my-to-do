@@ -77,10 +77,10 @@ export default function TaskInput({ placeholder = '작업 추가', itemProps = {
   };
 
   const buttonClassNames =
-    'inline-flex h-8 w-8 items-center rounded-sm p-1 focus:shadow-[0_0_0_1px_#fff,0_0_0_3px_#3b82f6] focus:outline-none';
+    'focus:shadow-like-outline-3 inline-flex h-8 w-8 items-center rounded-sm p-1 focus:shadow-blue-500 focus:outline-none';
 
   return (
-    <div className="flex h-full items-center shadow-[0_1px_0_0_#e4e4e7]">
+    <div className="shadow-like-border-b flex h-full items-center shadow-gray-200">
       <button
         type="button"
         className={classNames(buttonClassNames, '-ml-1', textColor(settingsPerPage.themeColor))}
