@@ -179,11 +179,9 @@ export default function NavigationDrawer() {
                 >
                   <Link
                     href={anchorItem.href}
-                    className="flex h-9 items-center overflow-hidden whitespace-nowrap px-3"
+                    className="flex h-9 items-center overflow-hidden whitespace-nowrap px-3 text-gray-500"
                   >
-                    <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center text-gray-500">
-                      <i className={anchorItem.icon.className} />
-                    </span>
+                    <IconContainer iconClassName={anchorItem.icon.className} />
                     <span
                       className={classNames(
                         'ml-2 flex-1 text-[14px]',

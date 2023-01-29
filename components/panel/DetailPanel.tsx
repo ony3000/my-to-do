@@ -389,9 +389,7 @@ export default function DetailPanel() {
                     'text-blue-500': task.isMarkedAsTodayTask,
                   })}
                 >
-                  <span className="inline-flex h-6 w-6 items-center justify-center">
-                    <i className="far fa-sun" />
-                  </span>
+                  <IconContainer iconClassName="far fa-sun" />
                 </span>
                 <span className={classNames('mx-2', { 'text-blue-500': task.isMarkedAsTodayTask })}>
                   나의 하루에 {task.isMarkedAsTodayTask ? '추가됨' : '추가'}
@@ -438,9 +436,7 @@ export default function DetailPanel() {
                     { 'text-red-600': !task.isComplete && task.deadline && isOverdue },
                   )}
                 >
-                  <span className="inline-flex h-6 w-6 items-center justify-center">
-                    <i className="far fa-calendar-alt" />
-                  </span>
+                  <IconContainer iconClassName="far fa-calendar-alt" />
                 </span>
                 <span
                   className={classNames(

@@ -14,7 +14,7 @@ export default function IconContainer({
   return (
     <span
       className={classNames(
-        'inline-flex items-center justify-center',
+        'inline-flex shrink-0 items-center justify-center',
         { 'h-4 w-4': size === 'small' },
         { 'h-6 w-6': size === 'medium' },
         { 'h-8 w-8': size === 'large' },
