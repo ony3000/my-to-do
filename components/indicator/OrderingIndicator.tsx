@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import invariant from 'tiny-invariant';
 import { IconContainer } from '@/components/layout';
-import { OrderingCriterion } from '@/lib/types/common';
+import { LegacyOrderingCriterion } from '@/lib/types/common';
 import { isOneOf } from '@/lib/types/guard';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
 import {
@@ -24,7 +24,7 @@ export default function OrderingIndicator() {
   const dispatch = useAppDispatch();
   const settingsPerPage = useAppSelector(({ todo: state }) => state.pageSettings[pageKey]);
 
-  const readableCriterion = (criterion: OrderingCriterion) => {
+  const readableCriterion = (criterion: LegacyOrderingCriterion) => {
     switch (criterion) {
       case IMPORTANCE:
         return '중요도별로';

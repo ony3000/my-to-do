@@ -5,8 +5,8 @@ import merge from 'lodash.merge';
 import {
   Dict,
   ReactMouseEvent,
-  OrderingCriterion,
-  OrderingDirection,
+  LegacyOrderingCriterion,
+  LegacyOrderingDirection,
   LegacyThemeColor,
 } from '@/lib/types/common';
 import { isDict } from '@/lib/types/guard';
@@ -168,13 +168,9 @@ export const openListOption = createAsyncThunk<
 
 export const openThemePalette = createAsyncThunk<
   { top: number; left: number },
-  { event: ReactMouseEvent<HTMLButtonElement>; selector: string }
->('todo/openThemePalette', ({ event, selector }) => {
-  const option = event.currentTarget.closest(selector);
-
-  invariant(option, '요소를 찾을 수 없습니다.');
-
-  const { top, left, width } = option.getBoundingClientRect();
+  { event: ReactMouseEvent<HTMLButtonElement> }
+>('todo/openThemePalette', ({ event }) => {
+  const { top, left, width } = event.currentTarget.getBoundingClientRect();
   const paletteWidth = 282;
   const paletteHeight = 82;
   const palettePosition = {
@@ -239,13 +235,9 @@ export const openDeadlinePicker = createAsyncThunk<
 
 export const openDeadlineCalendar = createAsyncThunk<
   { top: number; right: number },
-  { event: ReactMouseEvent<HTMLButtonElement>; selector: string }
->('todo/openDeadlineCalendar', ({ event, selector }) => {
-  const button = event.currentTarget.closest(selector);
-
-  invariant(button, '요소를 찾을 수 없습니다.');
-
-  const { top, left } = button.getBoundingClientRect();
+  { event: ReactMouseEvent<HTMLButtonElement> }
+>('todo/openDeadlineCalendar', ({ event }) => {
+  const { top, left } = event.currentTarget.getBoundingClientRect();
   const calendarWidth = 220;
   const calendarHeight = 371;
   const calendarPosition = {
@@ -471,8 +463,8 @@ const todoSlice = createSlice({
         payload: { pageKey, criterion, direction },
       }: PayloadAction<{
         pageKey: 'myday' | 'inbox';
-        criterion: OrderingCriterion;
-        direction: OrderingDirection;
+        criterion: LegacyOrderingCriterion;
+        direction: LegacyOrderingDirection;
       }>,
     ) {
       state.pageSettings[pageKey].ordering = {

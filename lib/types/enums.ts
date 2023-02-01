@@ -5,3 +5,10 @@ export enum ThemeColor {
   Lime = 'lime',
   Amber = 'amber',
 }
+
+export enum DeadlineType {
+  Today = 'today',
+  Tomorrow = 'tomorrow',
+  NextWeek = 'next_week',
+  ChooseDate = 'choose_date',
+}

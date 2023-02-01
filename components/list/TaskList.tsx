@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import invariant from 'tiny-invariant';
-import { Nullable, OrderingCriterion, OrderingDirection } from '@/lib/types/common';
+import { Nullable, LegacyOrderingCriterion, LegacyOrderingDirection } from '@/lib/types/common';
 import { isRegExp, isOneOf } from '@/lib/types/guard';
 import { TodoItem, SettingsPerPage, FilteringCondition } from '@/lib/types/store/todoSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
@@ -116,8 +116,8 @@ export default function TaskList({
       criterion,
       direction,
     }: {
-      criterion: OrderingCriterion;
-      direction: OrderingDirection;
+      criterion: LegacyOrderingCriterion;
+      direction: LegacyOrderingDirection;
     },
     former: TodoItem,
     latter: TodoItem,

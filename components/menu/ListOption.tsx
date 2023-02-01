@@ -1,8 +1,7 @@
-import { useRef, useEffect } from 'react';
+import { Fragment, useRef, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import invariant from 'tiny-invariant';
-import classNames from 'classnames/bind';
-import { ListOption as ListOptionType } from '@/lib/types/common';
+import { LegacyListOption as ListOptionType } from '@/lib/types/common';
 import { isOneOf } from '@/lib/types/guard';
 import { SettingsPerPage } from '@/lib/types/store/todoSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
@@ -14,10 +13,8 @@ import {
   showCompletedItems,
   hideCompletedItems,
 } from '@/lib/store/todoSlice';
+import { MenuLayer, MenuContainer, MenuItem } from './parts';
 import ThemePalette from './ThemePalette';
-import styles from './ListOption.module.scss';
-
-const cx = classNames.bind(styles);
 
 type ListOptionProps = {
   availableOptions: ListOptionType[];
@@ -67,9 +64,9 @@ export default function ListOption({ availableOptions = [] }: ListOptionProps) {
   useEffect(() => {
     const clickHandler: EventListener = (event) => {
       if (isActiveListOption && $refs.container.current && event.target instanceof HTMLElement) {
-        const optionContainer = event.target.closest(`.${$refs.container.current.className}`);
+        const hasTarget = $refs.container.current.contains(event.target);
 
-        if (optionContainer === null) {
+        if (!hasTarget) {
           dispatch(closeListOption());
         }
       }
@@ -83,82 +80,59 @@ export default function ListOption({ availableOptions = [] }: ListOptionProps) {
   });
 
   return isActiveListOption ? (
-    <div className={cx('fixed-layer')}>
-      <div className={cx('visible-layer')}>
-        <div
-          ref={$refs.container}
-          className={cx('container')}
-          style={{
-            top: `${topPosition}px`,
-            left: `${leftPosition}px`,
-          }}
-        >
-          <div className={cx('title')}>목록 옵션</div>
-          <ul>
-            {availableOptions.map((option) => {
-              let elements = null;
+    <MenuLayer>
+      <MenuContainer
+        ref={$refs.container}
+        title="목록 옵션"
+        style={{
+          top: `${topPosition}px`,
+          left: `${leftPosition}px`,
+        }}
+      >
+        <ul>
+          {availableOptions.map((option) => {
+            let innerElement = null;
 
-              switch (option) {
-                case CHANGE_THEME:
-                  elements = (
-                    <>
-                      <button
-                        type="button"
-                        className={cx('option-button')}
-                        onClick={(event) =>
-                          !isActiveThemePalette &&
-                          dispatch(
-                            openThemePalette({
-                              event,
-                              selector: `.${cx('option-button')}`,
-                            }),
-                          )
-                        }
-                      >
-                        <span className={cx('icon-wrapper')}>
-                          <i className="fas fa-palette" />
-                        </span>
-                        <span className={cx('option-text')}>테마 변경</span>
-                        <span className={cx('icon-wrapper')}>
-                          <i className="fas fa-chevron-right" />
-                        </span>
-                      </button>
+            // becomes to MenuItem
+            switch (option) {
+              case CHANGE_THEME:
+                innerElement = (
+                  <MenuItem
+                    type={CHANGE_THEME}
+                    onClick={(event) =>
+                      !isActiveThemePalette &&
+                      dispatch(
+                        openThemePalette({
+                          event,
+                        }),
+                      )
+                    }
+                  />
+                );
+                break;
+              case TOGGLE_COMPLETED_ITEMS:
+                innerElement = (
+                  <MenuItem
+                    type={TOGGLE_COMPLETED_ITEMS}
+                    onClick={() => toggleCompletedItems()}
+                    title={
+                      settingsPerPage.isHideCompletedItems
+                        ? '완료된 작업 표시'
+                        : '완료된 작업 숨기기'
+                    }
+                  />
+                );
+                break;
+              default:
+                return null;
+            }
 
-                      <ThemePalette />
-                    </>
-                  );
-                  break;
-                case TOGGLE_COMPLETED_ITEMS:
-                  elements = (
-                    <button
-                      type="button"
-                      className={cx('option-button')}
-                      onClick={() => toggleCompletedItems()}
-                    >
-                      <span className={cx('icon-wrapper')}>
-                        <i className="far fa-check-circle" />
-                      </span>
-                      <span className={cx('option-text')}>
-                        {settingsPerPage.isHideCompletedItems
-                          ? '완료된 작업 표시'
-                          : '완료된 작업 숨기기'}
-                      </span>
-                    </button>
-                  );
-                  break;
-                default:
-                // nothing to do
-              }
+            return <Fragment key={option}>{innerElement}</Fragment>;
+          })}
+        </ul>
 
-              return (
-                <li key={option} className={cx('option-item')}>
-                  {elements}
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      </div>
-    </div>
+        {availableOptions.includes(CHANGE_THEME) && <ThemePalette />}
+      </MenuContainer>
+    </MenuLayer>
   ) : null;
 }
