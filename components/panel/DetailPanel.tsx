@@ -108,12 +108,12 @@ export default function DetailPanel() {
 
       element.style.setProperty('height', `${newHeight}px`);
 
-      const closestSection = element.closest('#title-section-trigger');
+      const titleSection = document.querySelector('#title-section-trigger');
 
-      if ($refs.separator.current && closestSection) {
+      if ($refs.separator.current && titleSection) {
         $refs.separator.current.style.setProperty(
           'top',
-          `${closestSection.getBoundingClientRect().height}px`,
+          `${titleSection.getBoundingClientRect().height}px`,
         );
       }
     },
@@ -417,14 +417,12 @@ export default function DetailPanel() {
             <div className={classNames(sectionClassNames, 'border border-solid border-gray-200')}>
               <button
                 type="button"
-                id="section-item-trigger"
                 className="min-h-[52px] flex-1 px-2 text-left"
                 onClick={(event) =>
                   !isActiveDeadlinePicker &&
                   dispatch(
                     openDeadlinePicker({
                       event,
-                      selector: '#section-item-trigger',
                     }),
                   )
                 }

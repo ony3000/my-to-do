@@ -37,9 +37,9 @@ export default function ThemePalette() {
   useEffect(() => {
     const clickHandler: EventListener = (event) => {
       if (isActiveThemePalette && $refs.container.current && event.target instanceof HTMLElement) {
-        const optionContainer = event.target.closest(`.${$refs.container.current.className}`);
+        const hasTarget = $refs.container.current.contains(event.target);
 
-        if (optionContainer === null) {
+        if (!hasTarget) {
           dispatch(closeThemePalette());
         }
       }

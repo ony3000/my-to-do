@@ -54,9 +54,9 @@ export default function DeadlineCalendar({ taskId }: DeadlineCalendarProps) {
         $refs.container.current &&
         event.target instanceof HTMLElement
       ) {
-        const pickerContainer = event.target.closest(`.${$refs.container.current.className}`);
+        const hasTarget = $refs.container.current.contains(event.target);
 
-        if (pickerContainer === null) {
+        if (!hasTarget) {
           dispatch(closeDeadlineCalendar());
         }
       }

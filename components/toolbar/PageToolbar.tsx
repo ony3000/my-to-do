@@ -71,7 +71,6 @@ export default function PageToolbar({ title = '', displayToday = false }: PageTo
                   dispatch(
                     openListOption({
                       event,
-                      selector: `.${cx('button')}`,
                     }),
                   )
                 }
@@ -106,7 +105,6 @@ export default function PageToolbar({ title = '', displayToday = false }: PageTo
               dispatch(
                 openOrderingCriterion({
                   event,
-                  selector: `.${cx('button')}`,
                 }),
               )
             }
