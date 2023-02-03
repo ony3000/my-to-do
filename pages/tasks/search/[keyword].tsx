@@ -1,14 +1,11 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import invariant from 'tiny-invariant';
-import classNames from 'classnames/bind';
 import { useAppSelector } from '@/lib/hooks/index';
+import { PageContainer, PageBody, TaskListSection } from '@/components/layout';
 import { PageToolbar } from '@/components/toolbar';
 import { StepList, TaskList } from '@/components/list';
 import { NoDataPlaceholder } from '@/components/placeholder';
-import styles from '../inbox.module.scss'; // shared
-
-const cx = classNames.bind(styles);
 
 export default function Search() {
   const router = useRouter();
@@ -32,7 +29,7 @@ export default function Search() {
   });
 
   return (
-    <main className={cx('main')}>
+    <PageContainer>
       <Head>
         <title>&ldquo;{keyword}&rdquo; 검색 중 - To Do</title>
         <link rel="icon" href="/favicon.ico" />
@@ -45,8 +42,8 @@ export default function Search() {
       {visibleTodoItems.length === 0 ? (
         <NoDataPlaceholder />
       ) : (
-        <div className={cx('body')}>
-          <div className={cx('list-section')}>
+        <PageBody>
+          <TaskListSection>
             <TaskList
               title="작업"
               isCollapsible={false}
@@ -75,11 +72,9 @@ export default function Search() {
                 title: pattern,
               }}
             />
-
-            <div className={cx('list-background')} />
-          </div>
-        </div>
+          </TaskListSection>
+        </PageBody>
       )}
-    </main>
+    </PageContainer>
   );
 }

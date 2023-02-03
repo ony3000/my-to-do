@@ -1,14 +1,11 @@
 import Head from 'next/head';
-import classNames from 'classnames/bind';
+import { PageContainer } from '@/components/layout';
 import { PageToolbar } from '@/components/toolbar';
 import { NoDataPlaceholder } from '@/components/placeholder';
-import styles from '../inbox.module.scss'; // shared
-
-const cx = classNames.bind(styles);
 
 export default function Search() {
   return (
-    <main className={cx('main')}>
+    <PageContainer>
       <Head>
         <title>&ldquo;&rdquo; 검색 중 - To Do</title>
         <link rel="icon" href="/favicon.ico" />
@@ -17,6 +14,6 @@ export default function Search() {
       <PageToolbar title="&ldquo;&rdquo; 검색 중" />
 
       <NoDataPlaceholder />
-    </main>
+    </PageContainer>
   );
 }

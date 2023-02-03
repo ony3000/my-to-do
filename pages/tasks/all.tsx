@@ -1,15 +1,12 @@
 import Head from 'next/head';
-import classNames from 'classnames/bind';
+import { PageContainer, PageBody, TaskInputSection, TaskListSection } from '@/components/layout';
 import { PageToolbar } from '@/components/toolbar';
 import { TaskInput } from '@/components/input';
 import { TaskList } from '@/components/list';
-import styles from './inbox.module.scss'; // shared
-
-const cx = classNames.bind(styles);
 
 export default function All() {
   return (
-    <main className={cx('main')}>
+    <PageContainer>
       <Head>
         <title>모두 - To Do</title>
         <link rel="icon" href="/favicon.ico" />
@@ -17,21 +14,19 @@ export default function All() {
 
       <PageToolbar title="모두" />
 
-      <div className={cx('body')}>
-        <div className={cx('input-section')}>
+      <PageBody>
+        <TaskInputSection>
           <TaskInput />
-        </div>
+        </TaskInputSection>
 
-        <div className={cx('list-section')}>
+        <TaskListSection>
           <TaskList
             filter={{
               isComplete: false,
             }}
           />
-
-          <div className={cx('list-background')} />
-        </div>
-      </div>
-    </main>
+        </TaskListSection>
+      </PageBody>
+    </PageContainer>
   );
 }
