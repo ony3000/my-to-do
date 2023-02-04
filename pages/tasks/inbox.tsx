@@ -1,16 +1,13 @@
 import Head from 'next/head';
-import classNames from 'classnames/bind';
+import { PageContainer, PageBody, TaskInputSection, TaskListSection } from '@/components/layout';
 import { PageToolbar } from '@/components/toolbar';
 import { OrderingIndicator } from '@/components/indicator';
 import { TaskInput } from '@/components/input';
 import { TaskList } from '@/components/list';
-import styles from './inbox.module.scss';
-
-const cx = classNames.bind(styles);
 
 export default function Inbox() {
   return (
-    <main className={cx('main')}>
+    <PageContainer>
       <Head>
         <title>Tasks - To Do</title>
         <link rel="icon" href="/favicon.ico" />
@@ -18,14 +15,14 @@ export default function Inbox() {
 
       <PageToolbar title="Tasks" />
 
-      <div className={cx('body')}>
+      <PageBody>
         <OrderingIndicator />
 
-        <div className={cx('input-section')}>
+        <TaskInputSection>
           <TaskInput />
-        </div>
+        </TaskInputSection>
 
-        <div className={cx('list-section')}>
+        <TaskListSection>
           <TaskList
             title={null}
             isCollapsible={false}
@@ -40,10 +37,8 @@ export default function Inbox() {
               isComplete: true,
             }}
           />
-
-          <div className={cx('list-background')} />
-        </div>
-      </div>
-    </main>
+        </TaskListSection>
+      </PageBody>
+    </PageContainer>
   );
 }

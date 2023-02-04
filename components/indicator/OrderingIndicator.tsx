@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import invariant from 'tiny-invariant';
-import classNames from 'classnames/bind';
-import { OrderingCriterion } from '@/lib/types/common';
+import { IconContainer } from '@/components/layout';
+import { LegacyOrderingCriterion } from '@/lib/types/common';
 import { isOneOf } from '@/lib/types/guard';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
 import {
@@ -14,9 +14,6 @@ import {
   reverseOrderingCriterion,
   unsetOrderingCriterion,
 } from '@/lib/store/todoSlice';
-import styles from './OrderingIndicator.module.scss';
-
-const cx = classNames.bind(styles);
 
 export default function OrderingIndicator() {
   const router = useRouter();
@@ -27,7 +24,7 @@ export default function OrderingIndicator() {
   const dispatch = useAppDispatch();
   const settingsPerPage = useAppSelector(({ todo: state }) => state.pageSettings[pageKey]);
 
-  const readableCriterion = (criterion: OrderingCriterion) => {
+  const readableCriterion = (criterion: LegacyOrderingCriterion) => {
     switch (criterion) {
       case IMPORTANCE:
         return '중요도별로';
@@ -44,11 +41,14 @@ export default function OrderingIndicator() {
     }
   };
 
+  const buttonClassNames =
+    'focus:shadow-like-outline-3 inline-flex h-6 w-6 items-center rounded-sm text-[14px] text-gray-500 hover:bg-gray-200 focus:shadow-blue-500 focus:outline-none';
+
   return settingsPerPage.ordering ? (
-    <div className={cx('container')}>
+    <div className="flex items-center justify-end px-4 py-2.5">
       <button
         type="button"
-        className={cx('button', 'text-gray-500')}
+        className={buttonClassNames}
         title="역순 정렬"
         onClick={() =>
           dispatch(
@@ -58,16 +58,16 @@ export default function OrderingIndicator() {
           )
         }
       >
-        <span className={cx('icon-wrapper')}>
-          {settingsPerPage.ordering.direction === ASCENDING ? (
-            <i className="fas fa-chevron-up" />
-          ) : (
-            <i className="fas fa-chevron-down" />
-          )}
-          <span className="sr-only">역순 정렬</span>
-        </span>
+        <IconContainer
+          iconClassName={
+            settingsPerPage.ordering.direction === ASCENDING
+              ? 'fas fa-chevron-up'
+              : 'fas fa-chevron-down'
+          }
+          iconLabel="역순 정렬"
+        />
       </button>
-      <div className={cx('description')}>
+      <div className="mx-[5px] text-[12px] font-bold">
         <span>{readableCriterion(settingsPerPage.ordering.criterion)} 정렬됨</span>
         <span className="sr-only">
           , {settingsPerPage.ordering.direction === ASCENDING ? '오름차순' : '내림차순'}으로 정렬됨
@@ -75,7 +75,7 @@ export default function OrderingIndicator() {
       </div>
       <button
         type="button"
-        className={cx('button', 'text-gray-500')}
+        className={buttonClassNames}
         title="정렬 순서 옵션 제거"
         onClick={() =>
           dispatch(
@@ -85,10 +85,7 @@ export default function OrderingIndicator() {
           )
         }
       >
-        <span className={cx('icon-wrapper')}>
-          <i className="fas fa-times" />
-          <span className="sr-only">정렬 순서 옵션 제거</span>
-        </span>
+        <IconContainer iconClassName="fas fa-times" iconLabel="정렬 순서 옵션 제거" />
       </button>
     </div>
   ) : null;

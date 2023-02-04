@@ -5,13 +5,10 @@ export default function NoDataPlaceholder() {
     <div className="flex flex-1 flex-col items-center justify-center overflow-hidden text-center">
       <div className="-mb-6 flex flex-col items-center">
         <a
-          className="aspect-w-1 aspect-h-1 inline-flex"
+          className="aspect-w-1 aspect-h-1 inline-flex w-[400px]"
           href="https://storyset.com/data"
           target="_blank"
           rel="noreferrer"
-          style={{
-            width: 400,
-          }}
         >
           <Image
             src="/images/no_data.svg"

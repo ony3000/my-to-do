@@ -1,14 +1,13 @@
 import { useRef, KeyboardEventHandler, FormEventHandler, FocusEventHandler } from 'react';
 import { useRouter } from 'next/router';
 import invariant from 'tiny-invariant';
-import classNames from 'classnames/bind';
+import classNames from 'classnames';
+import { IconContainer } from '@/components/layout';
 import { isOneOf } from '@/lib/types/guard';
 import { SettingsPerPage } from '@/lib/types/store/todoSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
 import { createSubStep } from '@/lib/store/todoSlice';
-import styles from './StepInput.module.scss';
-
-const cx = classNames.bind(styles);
+import { textColor, placeholderColor } from '@/lib/utils/styles';
 
 type StepInputProps = {
   placeholder?: string;
@@ -88,29 +87,26 @@ export default function StepInput({ placeholder = '다음 단계', taskId }: Ste
     }
   };
 
+  const buttonClassNames =
+    'focus:shadow-like-outline-3 inline-flex h-8 w-8 items-center rounded-sm p-1 focus:shadow-blue-500 focus:outline-none';
+
   return (
-    <div className={cx('container')}>
-      <div className={cx('body')}>
+    <div className="px-1">
+      <div className="flex h-10 items-center">
         <button
           type="button"
-          className={cx(
-            'button',
-            `text-${settingsPerPage.themeColor ? settingsPerPage.themeColor : 'blue'}-500`,
-          )}
+          className={classNames(buttonClassNames, textColor(settingsPerPage.themeColor))}
           title="작업 추가"
           onClick={() => focusInput()}
         >
-          <span className={cx('icon-wrapper')}>
-            <i className="fas fa-plus" />
-            <span className="sr-only">작업 추가</span>
-          </span>
+          <IconContainer iconClassName="fas fa-plus" iconLabel="작업 추가" />
         </button>
 
         <input
           ref={$refs.input}
-          className={cx(
-            'input',
-            `placeholder-${settingsPerPage.themeColor ? settingsPerPage.themeColor : 'blue'}-500`,
+          className={classNames(
+            'peer flex-1 px-1.5 py-1 text-[14px] text-gray-700 focus:placeholder-gray-500',
+            placeholderColor(settingsPerPage.themeColor),
           )}
           type="text"
           placeholder={placeholder}
@@ -123,15 +119,15 @@ export default function StepInput({ placeholder = '다음 단계', taskId }: Ste
 
         <button
           type="button"
-          className={cx(
-            'button',
-            'is-submit',
-            `text-${settingsPerPage.themeColor ? settingsPerPage.themeColor : 'blue'}-500`,
+          className={classNames(
+            buttonClassNames,
+            'text-[12px] peer-data-[is-empty=true]:hidden',
+            textColor(settingsPerPage.themeColor),
           )}
           title="추가"
           onClick={() => createStep()}
         >
-          <span className={cx('icon-wrapper')}>
+          <span className="inline-flex h-6 w-6 items-center justify-center">
             <span>추가</span>
           </span>
         </button>

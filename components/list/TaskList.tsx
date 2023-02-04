@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import invariant from 'tiny-invariant';
-import classNames from 'classnames/bind';
-import { Nullable, OrderingCriterion, OrderingDirection } from '@/lib/types/common';
+import { Nullable, LegacyOrderingCriterion, LegacyOrderingDirection } from '@/lib/types/common';
 import { isRegExp, isOneOf } from '@/lib/types/guard';
 import { TodoItem, SettingsPerPage, FilteringCondition } from '@/lib/types/store/todoSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
@@ -22,9 +21,7 @@ import {
   markAsUnimportant,
 } from '@/lib/store/todoSlice';
 import dayjs from '@/lib/plugins/dayjs';
-import styles from './TaskList.module.scss';
-
-const cx = classNames.bind(styles);
+import { ListHeadline, ListItem } from './parts';
 
 type TaskListProps = {
   title?: Nullable<string>;
@@ -119,8 +116,8 @@ export default function TaskList({
       criterion,
       direction,
     }: {
-      criterion: OrderingCriterion;
-      direction: OrderingDirection;
+      criterion: LegacyOrderingCriterion;
+      direction: LegacyOrderingDirection;
     },
     former: TodoItem,
     latter: TodoItem,
@@ -205,164 +202,87 @@ export default function TaskList({
   }
 
   return isHideForEmptyList && filteredTodoItems.length === 0 ? null : (
-    <div className={cx('container')}>
-      <div
-        className={cx(
-          'headline',
-          { 'is-visible': title !== null },
-          { 'is-collapsible': isCollapsible },
-          { 'is-collapsed': isCollapsed },
-        )}
+    <div className="relative mx-2">
+      <ListHeadline
+        title={title}
+        isCollapsible={isCollapsible}
+        isCollapsed={isCollapsed}
         onClick={() => isCollapsible && setIsCollapsed(!isCollapsed)}
-        aria-hidden="true"
-      >
-        <div className={cx('headline-body')}>
-          <span className={cx('icon-wrapper')}>
-            {isCollapsed ? (
-              <i className="fas fa-chevron-right" />
-            ) : (
-              <i className="fas fa-chevron-down" />
-            )}
-          </span>
-          <span className={cx('headline-title')}>{title ?? '작업'}</span>
-        </div>
-      </div>
+      />
 
-      {filteredTodoItems.map(
-        ({
-          id,
-          title: taskTitle,
-          isComplete,
-          subSteps,
-          isImportant,
-          isMarkedAsTodayTask,
-          deadline,
-          memo,
-        }) => {
-          const completedSubSteps = subSteps.filter((step) => step.isComplete);
+      {!isCollapsed &&
+        filteredTodoItems.map(
+          ({
+            id,
+            title: taskTitle,
+            isComplete,
+            subSteps,
+            isImportant,
+            isMarkedAsTodayTask,
+            deadline,
+            memo,
+          }) => {
+            const completedSubSteps = subSteps.filter((step) => step.isComplete);
 
-          let deadlineTextColor = 'text-gray-500';
-          let deadlineElement = null;
+            let deadlineTextColor = 'text-gray-500';
+            let deadlineElement = null;
 
-          if (deadline) {
-            if (deadline < Number(midnightToday.format('x'))) {
-              if (!isComplete) {
-                deadlineTextColor = 'text-red-600';
+            if (deadline) {
+              if (deadline < Number(midnightToday.format('x'))) {
+                if (!isComplete) {
+                  deadlineTextColor = 'text-red-600';
+                }
+
+                deadlineElement = <span>지연, {dayjs(deadline, 'x').format('M월 D일, ddd')}</span>;
+              } else if (deadline < Number(midnightTomorrow.format('x'))) {
+                if (!isComplete) {
+                  deadlineTextColor = 'text-blue-500';
+                }
+
+                deadlineElement = <span>오늘까지</span>;
+              } else if (deadline < Number(midnightAfter2Days.format('x'))) {
+                deadlineElement = <span>내일까지</span>;
+              } else {
+                deadlineElement = <span>{dayjs(deadline, 'x').format('M월 D일, ddd')}까지</span>;
               }
-
-              deadlineElement = <span>지연, {dayjs(deadline, 'x').format('M월 D일, ddd')}</span>;
-            } else if (deadline < Number(midnightTomorrow.format('x'))) {
-              if (!isComplete) {
-                deadlineTextColor = 'text-blue-500';
-              }
-
-              deadlineElement = <span>오늘까지</span>;
-            } else if (deadline < Number(midnightAfter2Days.format('x'))) {
-              deadlineElement = <span>내일까지</span>;
-            } else {
-              deadlineElement = <span>{dayjs(deadline, 'x').format('M월 D일, ddd')}까지</span>;
             }
-          }
 
-          return (
-            <div key={id} className={cx('item', { 'is-active': id === focusedTaskId })}>
-              <div className={cx('item-body')}>
-                <button
-                  type="button"
-                  className={cx(
-                    'item-button',
-                    'is-left',
-                    `text-${settingsPerPage.themeColor ? settingsPerPage.themeColor : 'blue'}-500`,
-                  )}
-                  title={isComplete ? '완료되지 않음으로 표시' : '완료됨으로 표시'}
-                  onClick={() =>
-                    dispatch(isComplete ? markAsIncomplete(id) : markAsCompleteWithOrderingFlag(id))
-                  }
-                >
-                  <span className={cx('icon-wrapper')}>
-                    {isComplete ? (
-                      <i className="fas fa-check-circle" />
-                    ) : (
-                      <i className="far fa-circle" />
-                    )}
-                    <span className="sr-only">
-                      {isComplete ? '완료되지 않음으로 표시' : '완료됨으로 표시'}
-                    </span>
-                  </span>
-                </button>
-
-                <button
-                  type="button"
-                  className={cx('item-summary')}
-                  onClick={() => dispatch(openDetailPanel(id))}
-                >
-                  <div className={cx('item-title')}>{taskTitle}</div>
-                  <div className={cx('item-metadata')}>
-                    {isMarkedAsTodayTask && !isHideTodayIndicator ? (
-                      <span className={cx('meta-indicator')}>
-                        <span className={cx('meta-icon-wrapper')}>
-                          <i className="far fa-sun" />
-                        </span>
-                        <span>오늘 할 일</span>
-                      </span>
-                    ) : null}
-                    {subSteps.length ? (
-                      <span className={cx('meta-indicator')}>
-                        <span>
-                          {completedSubSteps.length}/{subSteps.length}
-                        </span>
-                      </span>
-                    ) : null}
-                    {deadline ? (
-                      <span className={cx('meta-indicator', deadlineTextColor)}>
-                        <span className={cx('meta-icon-wrapper')}>
-                          <i className="far fa-calendar" />
-                        </span>
-                        {deadlineElement}
-                      </span>
-                    ) : null}
-                    {memo ? (
-                      <span className={cx('meta-indicator')}>
-                        <span className={cx('meta-icon-wrapper')}>
-                          <i className="far fa-sticky-note" />
-                        </span>
-                        <span>노트</span>
-                      </span>
-                    ) : null}
-                  </div>
-                </button>
-
-                <button
-                  type="button"
-                  className={cx(
-                    'item-button',
-                    'is-right',
-                    isImportant
-                      ? `text-${
-                          settingsPerPage.themeColor ? settingsPerPage.themeColor : 'blue'
-                        }-500`
-                      : 'text-gray-400 hover:text-black',
-                  )}
-                  title={isImportant ? '중요도를 제거합니다.' : '작업을 중요로 표시합니다.'}
-                  onClick={() =>
-                    importantHandler({
-                      id,
-                      isImportant,
-                    })
-                  }
-                >
-                  <span className={cx('icon-wrapper')}>
-                    {isImportant ? <i className="fas fa-star" /> : <i className="far fa-star" />}
-                    <span className="sr-only">
-                      {isImportant ? '중요도를 제거합니다.' : '작업을 중요로 표시합니다.'}
-                    </span>
-                  </span>
-                </button>
-              </div>
-            </div>
-          );
-        },
-      )}
+            return (
+              <ListItem
+                key={id}
+                baseColor={settingsPerPage.themeColor}
+                title={taskTitle}
+                metadata={[
+                  { key: 'todayTask', value: isMarkedAsTodayTask && !isHideTodayIndicator },
+                  {
+                    key: 'subStepProgress',
+                    value: {
+                      completedCount: completedSubSteps.length,
+                      totalCount: subSteps.length,
+                    },
+                  },
+                  {
+                    key: 'deadline',
+                    value: {
+                      timestamp: deadline,
+                      className: deadlineTextColor,
+                      element: deadlineElement,
+                    },
+                  },
+                  { key: 'memo', value: memo },
+                ]}
+                isActive={id === focusedTaskId}
+                isComplete={isComplete}
+                isImportant={isImportant}
+                onToggleCheck={() =>
+                  dispatch(isComplete ? markAsIncomplete(id) : markAsCompleteWithOrderingFlag(id))
+                }
+                onClick={() => dispatch(openDetailPanel(id))}
+                onToggleStar={() => importantHandler({ id, isImportant })}
+              />
+            );
+          },
+        )}
     </div>
   );
 }

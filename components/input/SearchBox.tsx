@@ -1,11 +1,9 @@
 import { useRef, FormEventHandler, FocusEventHandler } from 'react';
 import { useRouter } from 'next/router';
-import classNames from 'classnames/bind';
+import classNames from 'classnames';
+import { IconContainer } from '@/components/layout';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
 import { openSearchBox, closeSearchBox } from '@/lib/store/todoSlice';
-import styles from './SearchBox.module.scss';
-
-const cx = classNames.bind(styles);
 
 export default function SearchBox() {
   const router = useRouter();
@@ -57,22 +55,28 @@ export default function SearchBox() {
     }
   };
 
+  const buttonClassNames =
+    'h-8 w-8 items-center text-blue-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-blue-900';
+
   return (
-    <div className={cx('container', { 'is-active': isActiveSearchBox })}>
+    <div
+      className={classNames(
+        'hover:shadow-like-outline-1 mx-2.5 flex min-w-0 max-w-[400px] flex-1 rounded-sm hover:bg-white hover:shadow-white',
+        { 'bg-blue-200': !isActiveSearchBox },
+        { 'bg-white': isActiveSearchBox },
+      )}
+    >
       <button
         type="button"
-        className={cx('button', 'is-opener')}
+        className={classNames(buttonClassNames, 'inline-flex', { 'flex-1': !isActiveSearchBox })}
         title="검색"
         onClick={() => activateSearchBox()}
       >
-        <span className={cx('icon-wrapper')}>
-          <i className="fas fa-search" />
-          <span className="sr-only">검색</span>
-        </span>
+        <IconContainer size="large" iconClassName="fas fa-search" iconLabel="검색" />
       </button>
       <input
         ref={$refs.input}
-        className={cx('input')}
+        className={classNames('min-w-0 flex-1 px-2.5 text-sm', { hidden: !isActiveSearchBox })}
         type="text"
         placeholder="검색"
         disabled={!isActiveSearchBox}
@@ -82,15 +86,16 @@ export default function SearchBox() {
       />
       <button
         type="button"
-        className={cx('button', 'is-closer')}
+        className={classNames(
+          buttonClassNames,
+          { hidden: !isActiveSearchBox },
+          { 'inline-flex': isActiveSearchBox },
+        )}
         title="검색 종료"
         disabled={!isActiveSearchBox}
         onClick={() => deactivateSearchBox()}
       >
-        <span className={cx('icon-wrapper')}>
-          <i className="fas fa-times" />
-          <span className="sr-only">검색 종료</span>
-        </span>
+        <IconContainer size="large" iconClassName="fas fa-times" iconLabel="검색 종료" />
       </button>
     </div>
   );

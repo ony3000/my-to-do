@@ -1,14 +1,11 @@
 import Head from 'next/head';
-import classNames from 'classnames/bind';
+import { PageContainer, PageBody, TaskListSection } from '@/components/layout';
 import { PageToolbar } from '@/components/toolbar';
 import { TaskList } from '@/components/list';
-import styles from './inbox.module.scss'; // shared
-
-const cx = classNames.bind(styles);
 
 export default function Completed() {
   return (
-    <main className={cx('main')}>
+    <PageContainer>
       <Head>
         <title>완료됨 - To Do</title>
         <link rel="icon" href="/favicon.ico" />
@@ -16,17 +13,15 @@ export default function Completed() {
 
       <PageToolbar title="완료됨" />
 
-      <div className={cx('body')}>
-        <div className={cx('list-section')}>
+      <PageBody>
+        <TaskListSection>
           <TaskList
             filter={{
               isComplete: true,
             }}
           />
-
-          <div className={cx('list-background')} />
-        </div>
-      </div>
-    </main>
+        </TaskListSection>
+      </PageBody>
+    </PageContainer>
   );
 }

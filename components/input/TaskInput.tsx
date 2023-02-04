@@ -1,14 +1,13 @@
 import { useRef, KeyboardEventHandler, FormEventHandler, FocusEventHandler } from 'react';
 import { useRouter } from 'next/router';
 import invariant from 'tiny-invariant';
-import classNames from 'classnames/bind';
+import classNames from 'classnames';
+import { IconContainer } from '@/components/layout';
 import { isOneOf } from '@/lib/types/guard';
 import { TodoItem, SettingsPerPage } from '@/lib/types/store/todoSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
 import { createTodoItem } from '@/lib/store/todoSlice';
-import styles from './TaskInput.module.scss';
-
-const cx = classNames.bind(styles);
+import { textColor, placeholderColor } from '@/lib/utils/styles';
 
 type TaskInputProps = {
   placeholder?: string;
@@ -77,29 +76,25 @@ export default function TaskInput({ placeholder = '작업 추가', itemProps = {
     }
   };
 
+  const buttonClassNames =
+    'focus:shadow-like-outline-3 inline-flex h-8 w-8 items-center rounded-sm p-1 focus:shadow-blue-500 focus:outline-none';
+
   return (
-    <div className={cx('container')}>
+    <div className="shadow-like-border-b flex h-full items-center shadow-gray-200">
       <button
         type="button"
-        className={cx(
-          'button',
-          'is-left',
-          `text-${settingsPerPage.themeColor ? settingsPerPage.themeColor : 'blue'}-500`,
-        )}
+        className={classNames(buttonClassNames, '-ml-1', textColor(settingsPerPage.themeColor))}
         title="작업 추가"
         onClick={() => focusInput()}
       >
-        <span className={cx('icon-wrapper')}>
-          <i className="fas fa-plus" />
-          <span className="sr-only">작업 추가</span>
-        </span>
+        <IconContainer iconClassName="fas fa-plus" iconLabel="작업 추가" />
       </button>
 
       <input
         ref={$refs.input}
-        className={cx(
-          'input',
-          `placeholder-${settingsPerPage.themeColor ? settingsPerPage.themeColor : 'blue'}-500`,
+        className={classNames(
+          'peer mx-1 h-full flex-1 p-2 text-[14px] text-gray-700 focus:placeholder-gray-500',
+          placeholderColor(settingsPerPage.themeColor),
         )}
         type="text"
         placeholder={placeholder}
@@ -112,16 +107,15 @@ export default function TaskInput({ placeholder = '작업 추가', itemProps = {
 
       <button
         type="button"
-        className={cx(
-          'button',
-          'is-right',
-          'is-submit',
-          `text-${settingsPerPage.themeColor ? settingsPerPage.themeColor : 'blue'}-500`,
+        className={classNames(
+          buttonClassNames,
+          '-mr-1 text-[12px] peer-data-[is-empty=true]:hidden',
+          textColor(settingsPerPage.themeColor),
         )}
         title="추가"
         onClick={() => createTask()}
       >
-        <span className={cx('icon-wrapper')}>
+        <span className="inline-flex h-6 w-6 items-center justify-center">
           <span>추가</span>
         </span>
       </button>

@@ -5,9 +5,9 @@ import merge from 'lodash.merge';
 import {
   Dict,
   ReactMouseEvent,
-  OrderingCriterion,
-  OrderingDirection,
-  ThemeColor,
+  LegacyOrderingCriterion,
+  LegacyOrderingDirection,
+  LegacyThemeColor,
 } from '@/lib/types/common';
 import { isDict } from '@/lib/types/guard';
 import { TodoItemBase, TodoItem, TodoAppState } from '@/lib/types/store/todoSlice';
@@ -150,13 +150,9 @@ export const launchApp = createAsyncThunk('todo/launchApp', async () => {
 
 export const openListOption = createAsyncThunk<
   { top: number; left: number },
-  { event: ReactMouseEvent<HTMLButtonElement>; selector: string }
->('todo/openListOption', ({ event, selector }) => {
-  const button = event.currentTarget.closest(selector);
-
-  invariant(button, '요소를 찾을 수 없습니다.');
-
-  const { top, left, width, height } = button.getBoundingClientRect();
+  { event: ReactMouseEvent<HTMLButtonElement> }
+>('todo/openListOption', ({ event }) => {
+  const { top, left, width, height } = event.currentTarget.getBoundingClientRect();
   const optionWidth = 200;
   const optionPosition = {
     top: Math.floor(top + height - 2),
@@ -168,13 +164,9 @@ export const openListOption = createAsyncThunk<
 
 export const openThemePalette = createAsyncThunk<
   { top: number; left: number },
-  { event: ReactMouseEvent<HTMLButtonElement>; selector: string }
->('todo/openThemePalette', ({ event, selector }) => {
-  const option = event.currentTarget.closest(selector);
-
-  invariant(option, '요소를 찾을 수 없습니다.');
-
-  const { top, left, width } = option.getBoundingClientRect();
+  { event: ReactMouseEvent<HTMLButtonElement> }
+>('todo/openThemePalette', ({ event }) => {
+  const { top, left, width } = event.currentTarget.getBoundingClientRect();
   const paletteWidth = 282;
   const paletteHeight = 82;
   const palettePosition = {
@@ -192,13 +184,9 @@ export const openThemePalette = createAsyncThunk<
 
 export const openOrderingCriterion = createAsyncThunk<
   { top: number; left: number } | { top: number; right: number },
-  { event: ReactMouseEvent<HTMLButtonElement>; selector: string }
->('todo/openOrderingCriterion', ({ event, selector }) => {
-  const button = event.currentTarget.closest(selector);
-
-  invariant(button, '요소를 찾을 수 없습니다.');
-
-  const { top, left, width, height } = button.getBoundingClientRect();
+  { event: ReactMouseEvent<HTMLButtonElement> }
+>('todo/openOrderingCriterion', ({ event }) => {
+  const { top, left, width, height } = event.currentTarget.getBoundingClientRect();
   const criterionWidth = 200;
   const topPosition = Math.floor(top + height - 2);
   const leftPosition = Math.floor(left + width / 2 - criterionWidth / 2);
@@ -212,17 +200,13 @@ export const openOrderingCriterion = createAsyncThunk<
 
 export const openDeadlinePicker = createAsyncThunk<
   { top: number; right: number },
-  { event: ReactMouseEvent<HTMLButtonElement>; selector: string }
->('todo/openDeadlinePicker', ({ event, selector }) => {
-  const button = event.currentTarget.closest(selector);
-
-  invariant(button, '요소를 찾을 수 없습니다.');
-
-  const section = button.parentElement;
+  { event: ReactMouseEvent<HTMLButtonElement> }
+>('todo/openDeadlinePicker', ({ event }) => {
+  const section = event.currentTarget.parentElement;
 
   invariant(section, '요소를 찾을 수 없습니다.');
 
-  const { top, left, height } = button.getBoundingClientRect();
+  const { top, left, height } = event.currentTarget.getBoundingClientRect();
   const pickerWidth = 200;
   const pickerHeight = 217;
   const pickerPosition = {
@@ -239,13 +223,9 @@ export const openDeadlinePicker = createAsyncThunk<
 
 export const openDeadlineCalendar = createAsyncThunk<
   { top: number; right: number },
-  { event: ReactMouseEvent<HTMLButtonElement>; selector: string }
->('todo/openDeadlineCalendar', ({ event, selector }) => {
-  const button = event.currentTarget.closest(selector);
-
-  invariant(button, '요소를 찾을 수 없습니다.');
-
-  const { top, left } = button.getBoundingClientRect();
+  { event: ReactMouseEvent<HTMLButtonElement> }
+>('todo/openDeadlineCalendar', ({ event }) => {
+  const { top, left } = event.currentTarget.getBoundingClientRect();
   const calendarWidth = 220;
   const calendarHeight = 371;
   const calendarPosition = {
@@ -460,7 +440,7 @@ const todoSlice = createSlice({
       state,
       {
         payload: { pageKey, color },
-      }: PayloadAction<{ pageKey: 'all' | 'completed' | 'inbox'; color: ThemeColor }>,
+      }: PayloadAction<{ pageKey: 'all' | 'completed' | 'inbox'; color: LegacyThemeColor }>,
     ) {
       state.pageSettings[pageKey].themeColor = color;
       saveState(state);
@@ -471,8 +451,8 @@ const todoSlice = createSlice({
         payload: { pageKey, criterion, direction },
       }: PayloadAction<{
         pageKey: 'myday' | 'inbox';
-        criterion: OrderingCriterion;
-        direction: OrderingDirection;
+        criterion: LegacyOrderingCriterion;
+        direction: LegacyOrderingDirection;
       }>,
     ) {
       state.pageSettings[pageKey].ordering = {

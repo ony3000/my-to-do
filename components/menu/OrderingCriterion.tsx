@@ -1,8 +1,10 @@
-import { useRef, useEffect } from 'react';
+import { Fragment, useRef, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import invariant from 'tiny-invariant';
-import classNames from 'classnames/bind';
-import { OrderingCriterion as OrderingCriterionType, OrderingDirection } from '@/lib/types/common';
+import {
+  LegacyOrderingCriterion as OrderingCriterionType,
+  LegacyOrderingDirection,
+} from '@/lib/types/common';
 import { isOneOf } from '@/lib/types/guard';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
 import {
@@ -16,9 +18,7 @@ import {
   closeOrderingCriterion,
   setOrderingCriterion,
 } from '@/lib/store/todoSlice';
-import styles from './ListOption.module.scss'; // shared
-
-const cx = classNames.bind(styles);
+import { MenuLayer, MenuContainer, MenuItem } from './parts';
 
 type OrderingCriterionProps = {
   availableCriterions: OrderingCriterionType[];
@@ -49,7 +49,7 @@ export default function OrderingCriterion({ availableCriterions = [] }: Ordering
     direction,
   }: {
     criterion: OrderingCriterionType;
-    direction: OrderingDirection;
+    direction: LegacyOrderingDirection;
   }) => {
     if (
       settingsPerPage.ordering === null ||
@@ -74,9 +74,9 @@ export default function OrderingCriterion({ availableCriterions = [] }: Ordering
         $refs.container.current &&
         event.target instanceof HTMLElement
       ) {
-        const criterionContainer = event.target.closest(`.${$refs.container.current.className}`);
+        const hasTarget = $refs.container.current.contains(event.target);
 
-        if (criterionContainer === null) {
+        if (!hasTarget) {
           dispatch(closeOrderingCriterion());
         }
       }
@@ -90,131 +90,94 @@ export default function OrderingCriterion({ availableCriterions = [] }: Ordering
   });
 
   return isActiveOrderingCriterion ? (
-    <div className={cx('fixed-layer')}>
-      <div className={cx('visible-layer')}>
-        <div
-          ref={$refs.container}
-          className={cx('container')}
-          style={{
-            top: `${topPosition}px`,
-            right: rightPosition ? `${rightPosition}px` : '',
-            left: leftPosition ? `${leftPosition}px` : '',
-          }}
-        >
-          <div className={cx('title')}>정렬 기준</div>
-          <ul>
-            {availableCriterions.map((option) => {
-              let elements = null;
+    <MenuLayer>
+      <MenuContainer
+        ref={$refs.container}
+        title="정렬 기준"
+        style={{
+          top: `${topPosition}px`,
+          right: rightPosition ? `${rightPosition}px` : '',
+          left: leftPosition ? `${leftPosition}px` : '',
+        }}
+      >
+        <ul>
+          {availableCriterions.map((option) => {
+            let innerElement = null;
 
-              switch (option) {
-                case IMPORTANCE:
-                  elements = (
-                    <button
-                      type="button"
-                      className={cx('option-button')}
-                      onClick={() =>
-                        setOrderingCriterionToDefault({
-                          criterion: option,
-                          direction: DESCENDING,
-                        })
-                      }
-                    >
-                      <span className={cx('icon-wrapper')}>
-                        <i className="far fa-star" />
-                      </span>
-                      <span className={cx('option-text')}>중요도</span>
-                    </button>
-                  );
-                  break;
-                case DEADLINE:
-                  elements = (
-                    <button
-                      type="button"
-                      className={cx('option-button')}
-                      onClick={() =>
-                        setOrderingCriterionToDefault({
-                          criterion: option,
-                          direction: ASCENDING,
-                        })
-                      }
-                    >
-                      <span className={cx('icon-wrapper')}>
-                        <i className="far fa-calendar-alt" />
-                      </span>
-                      <span className={cx('option-text')}>기한</span>
-                    </button>
-                  );
-                  break;
-                case MYDAY:
-                  elements = (
-                    <button
-                      type="button"
-                      className={cx('option-button')}
-                      onClick={() =>
-                        setOrderingCriterionToDefault({
-                          criterion: option,
-                          direction: DESCENDING,
-                        })
-                      }
-                    >
-                      <span className={cx('icon-wrapper')}>
-                        <i className="far fa-sun" />
-                      </span>
-                      <span className={cx('option-text')}>나의 하루에 추가됨</span>
-                    </button>
-                  );
-                  break;
-                case TITLE:
-                  elements = (
-                    <button
-                      type="button"
-                      className={cx('option-button')}
-                      onClick={() =>
-                        setOrderingCriterionToDefault({
-                          criterion: option,
-                          direction: ASCENDING,
-                        })
-                      }
-                    >
-                      <span className={cx('icon-wrapper', 'rotate-90')}>
-                        <i className="fas fa-exchange-alt" />
-                      </span>
-                      <span className={cx('option-text')}>제목</span>
-                    </button>
-                  );
-                  break;
-                case CREATION_DATE:
-                  elements = (
-                    <button
-                      type="button"
-                      className={cx('option-button')}
-                      onClick={() =>
-                        setOrderingCriterionToDefault({
-                          criterion: option,
-                          direction: DESCENDING,
-                        })
-                      }
-                    >
-                      <span className={cx('icon-wrapper')}>
-                        <i className="far fa-calendar-plus" />
-                      </span>
-                      <span className={cx('option-text')}>만든 날짜</span>
-                    </button>
-                  );
-                  break;
-                default:
-                // nothing to do
-              }
+            switch (option) {
+              case IMPORTANCE:
+                innerElement = (
+                  <MenuItem
+                    type={IMPORTANCE}
+                    onClick={() =>
+                      setOrderingCriterionToDefault({
+                        criterion: option,
+                        direction: DESCENDING,
+                      })
+                    }
+                  />
+                );
+                break;
+              case DEADLINE:
+                innerElement = (
+                  <MenuItem
+                    type={DEADLINE}
+                    onClick={() =>
+                      setOrderingCriterionToDefault({
+                        criterion: option,
+                        direction: ASCENDING,
+                      })
+                    }
+                  />
+                );
+                break;
+              case MYDAY:
+                innerElement = (
+                  <MenuItem
+                    type={MYDAY}
+                    onClick={() =>
+                      setOrderingCriterionToDefault({
+                        criterion: option,
+                        direction: DESCENDING,
+                      })
+                    }
+                  />
+                );
+                break;
+              case TITLE:
+                innerElement = (
+                  <MenuItem
+                    type={TITLE}
+                    onClick={() =>
+                      setOrderingCriterionToDefault({
+                        criterion: option,
+                        direction: ASCENDING,
+                      })
+                    }
+                  />
+                );
+                break;
+              case CREATION_DATE:
+                innerElement = (
+                  <MenuItem
+                    type={CREATION_DATE}
+                    onClick={() =>
+                      setOrderingCriterionToDefault({
+                        criterion: option,
+                        direction: DESCENDING,
+                      })
+                    }
+                  />
+                );
+                break;
+              default:
+                return null;
+            }
 
-              return (
-                <li key={option} className={cx('option-item')}>
-                  {elements}
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      </div>
-    </div>
+            return <Fragment key={option}>{innerElement}</Fragment>;
+          })}
+        </ul>
+      </MenuContainer>
+    </MenuLayer>
   ) : null;
 }

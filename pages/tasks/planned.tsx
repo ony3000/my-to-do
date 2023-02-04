@@ -1,13 +1,10 @@
 import Head from 'next/head';
-import classNames from 'classnames/bind';
 import dayjs from '@/lib/plugins/dayjs';
 import { useAppSelector } from '@/lib/hooks/index';
+import { PageContainer, PageBody, TaskInputSection, TaskListSection } from '@/components/layout';
 import { PageToolbar } from '@/components/toolbar';
 import { TaskInput } from '@/components/input';
 import { TaskList } from '@/components/list';
-import styles from './inbox.module.scss'; // shared
-
-const cx = classNames.bind(styles);
 
 export default function Planned() {
   const settingsPerPage = useAppSelector(({ todo: state }) => state.pageSettings.planned);
@@ -19,7 +16,7 @@ export default function Planned() {
   const midnightAfter7Days = midnightToday.add(7, 'day');
 
   return (
-    <main className={cx('main')}>
+    <PageContainer>
       <Head>
         <title>계획된 일정 - To Do</title>
         <link rel="icon" href="/favicon.ico" />
@@ -27,17 +24,17 @@ export default function Planned() {
 
       <PageToolbar title="계획된 일정" />
 
-      <div className={cx('body')}>
-        <div className={cx('input-section')}>
+      <PageBody>
+        <TaskInputSection>
           <TaskInput
             placeholder="기한이 오늘인 작업 추가"
             itemProps={{
               deadline: Number(midnightTomorrow.format('x')) - 1,
             }}
           />
-        </div>
+        </TaskInputSection>
 
-        <div className={cx('list-section')}>
+        <TaskListSection>
           <TaskList
             title="이전"
             isCollapsedInitially
@@ -99,10 +96,8 @@ export default function Planned() {
               },
             }}
           />
-
-          <div className={cx('list-background')} />
-        </div>
-      </div>
-    </main>
+        </TaskListSection>
+      </PageBody>
+    </PageContainer>
   );
 }

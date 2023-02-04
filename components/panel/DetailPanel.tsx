@@ -1,7 +1,8 @@
 import { Fragment, useState, useRef, useEffect, useCallback, MouseEventHandler } from 'react';
 import { useRouter } from 'next/router';
 import invariant from 'tiny-invariant';
-import classNames from 'classnames/bind';
+import classNames from 'classnames';
+import { IconContainer } from '@/components/layout';
 import { ReactFocusEvent } from '@/lib/types/common';
 import { isOneOf } from '@/lib/types/guard';
 import { TodoItem, SettingsPerPage } from '@/lib/types/store/todoSlice';
@@ -27,9 +28,7 @@ import {
 import dayjs from '@/lib/plugins/dayjs';
 import { StepInput } from '@/components/input';
 import { DeadlinePicker } from '@/components/menu';
-import styles from './DetailPanel.module.scss';
-
-const cx = classNames.bind(styles);
+import { textColor } from '@/lib/utils/styles';
 
 export default function DetailPanel() {
   const router = useRouter();
@@ -109,12 +108,12 @@ export default function DetailPanel() {
 
       element.style.setProperty('height', `${newHeight}px`);
 
-      const closestSection = element.closest(`.${cx('title-section')}`);
+      const titleSection = document.querySelector('#title-section-trigger');
 
-      if ($refs.separator.current && closestSection) {
+      if ($refs.separator.current && titleSection) {
         $refs.separator.current.style.setProperty(
           'top',
-          `${closestSection.getBoundingClientRect().height}px`,
+          `${titleSection.getBoundingClientRect().height}px`,
         );
       }
     },
@@ -221,7 +220,7 @@ export default function DetailPanel() {
   }, [task, isActivated, $refs.titleArea, $refs.memoArea, titleInputHandler]);
 
   useEffect(() => {
-    const flexibleSection = document.querySelector(`.${cx('flexible-section')}`);
+    const flexibleSection = document.querySelector('#flexible-section-trigger');
 
     const scrollHandler: EventListener = () => {
       if (isActiveDeadlinePicker && flexibleSection) {
@@ -244,20 +243,32 @@ export default function DetailPanel() {
     };
   });
 
+  const buttonClassNames =
+    'inline-flex h-8 w-8 items-center p-1 focus:rounded-sm focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-blue-500';
+  const sectionClassNames =
+    'my-2.5 flex rounded-sm bg-white text-[14px] text-gray-500 hover:bg-gray-100';
+
   return task ? (
     <Fragment key={task.id}>
-      <div className={cx('overlay')} onClick={closeHandler} aria-hidden="true" />
-      <div className={cx('container')}>
-        <div className={cx('body')}>
-          <div className={cx('flexible-section')}>
-            <div className={cx('title-section')}>
-              <div className={cx('title-body')}>
+      <div
+        className="pointer-events-none hidden max-[770px]:pointer-events-auto max-[770px]:absolute max-[770px]:top-0 max-[770px]:left-0 max-[770px]:z-[70] max-[770px]:block max-[770px]:h-full max-[770px]:w-full max-[770px]:bg-gray-700 max-[770px]:opacity-40 max-[770px]:transition-opacity max-[770px]:duration-200"
+        onClick={closeHandler}
+        aria-hidden="true"
+      />
+      <div className="box-content h-[calc(100vh-48px)] w-[calc(100%-50px)] max-w-[360px] border-l border-solid border-gray-200 bg-gray-100 transition-[width] duration-200 max-[770px]:absolute max-[770px]:top-0 max-[770px]:right-0 max-[770px]:z-[80] max-[770px]:h-full">
+        <div className="flex h-full flex-col bg-gray-100">
+          <div
+            id="flexible-section-trigger"
+            className="mt-2.5 flex-1 overflow-y-auto overflow-x-hidden px-2.5 pb-4"
+          >
+            <div
+              id="title-section-trigger"
+              className="sticky top-0 z-10 rounded-t-sm border border-b-0 border-solid border-gray-200 bg-white px-2.5 pb-0.5"
+            >
+              <div className="flex min-h-[52px] items-center">
                 <button
                   type="button"
-                  className={cx(
-                    'button',
-                    `text-${settingsPerPage.themeColor ? settingsPerPage.themeColor : 'blue'}-500`,
-                  )}
+                  className={classNames(buttonClassNames, textColor(settingsPerPage.themeColor))}
                   title={task.isComplete ? '완료되지 않음으로 표시' : '완료됨으로 표시'}
                   onClick={() =>
                     dispatch(
@@ -267,20 +278,14 @@ export default function DetailPanel() {
                     )
                   }
                 >
-                  <span className={cx('icon-wrapper')}>
-                    {task.isComplete ? (
-                      <i className="fas fa-check-circle" />
-                    ) : (
-                      <i className="far fa-circle" />
-                    )}
-                  </span>
-                  <span className="sr-only">
-                    {task.isComplete ? '완료되지 않음으로 표시' : '완료됨으로 표시'}
-                  </span>
+                  <IconContainer
+                    iconClassName={task.isComplete ? 'fas fa-check-circle' : 'far fa-circle'}
+                    iconLabel={task.isComplete ? '완료되지 않음으로 표시' : '완료됨으로 표시'}
+                  />
                 </button>
                 <textarea
                   ref={$refs.titleArea}
-                  className={cx('title-input')}
+                  className="my-2.5 h-8 w-full resize-none border-0 py-1 px-1.5 font-semibold text-gray-700 hover:bg-gray-100"
                   defaultValue={task.title}
                   maxLength={255}
                   onInput={(e) => titleInputHandler(e.currentTarget)}
@@ -288,41 +293,35 @@ export default function DetailPanel() {
                 />
                 <button
                   type="button"
-                  className={cx(
-                    'button',
-                    task.isImportant
-                      ? `text-${
-                          settingsPerPage.themeColor ? settingsPerPage.themeColor : 'blue'
-                        }-500`
-                      : 'text-gray-500',
+                  className={classNames(
+                    buttonClassNames,
+                    task.isImportant ? textColor(settingsPerPage.themeColor) : 'text-gray-500',
                   )}
                   title={task.isImportant ? '중요도를 제거합니다.' : '작업을 중요로 표시합니다.'}
                   onClick={() => importantHandler(task)}
                 >
-                  <span className={cx('icon-wrapper')}>
-                    {task.isImportant ? (
-                      <i className="fas fa-star" />
-                    ) : (
-                      <i className="far fa-star" />
-                    )}
-                  </span>
-                  <span className="sr-only">
-                    {task.isImportant ? '중요도를 제거합니다.' : '작업을 중요로 표시합니다.'}
-                  </span>
+                  <IconContainer
+                    iconClassName={task.isImportant ? 'fas fa-star' : 'far fa-star'}
+                    iconLabel={
+                      task.isImportant ? '중요도를 제거합니다.' : '작업을 중요로 표시합니다.'
+                    }
+                  />
                 </button>
               </div>
             </div>
-            <div className={cx('step-section')}>
+            <div className="border-x border-solid border-gray-200 bg-white px-1.5 pb-0.5">
               {task.subSteps.map(({ id, title, isComplete }) => (
-                <div key={id} className={cx('step-item')}>
-                  <div className={cx('step-body')}>
+                <div
+                  key={id}
+                  className="shadow-like-border-t group px-1 hover:bg-gray-100 hover:shadow-gray-100"
+                >
+                  <div className="shadow-inner-like-border-b ml-8 flex min-h-[42px] items-center text-[14px] text-gray-500 shadow-gray-200 group-hover:shadow-none">
                     <button
                       type="button"
-                      className={cx(
-                        'button',
-                        `text-${
-                          settingsPerPage.themeColor ? settingsPerPage.themeColor : 'blue'
-                        }-500`,
+                      className={classNames(
+                        buttonClassNames,
+                        '-ml-8',
+                        textColor(settingsPerPage.themeColor),
                       )}
                       title={isComplete ? '완료되지 않음으로 표시' : '완료됨으로 표시'}
                       onClick={() =>
@@ -335,20 +334,14 @@ export default function DetailPanel() {
                         )
                       }
                     >
-                      <span className={cx('icon-wrapper')}>
-                        {isComplete ? (
-                          <i className="fas fa-check-circle" />
-                        ) : (
-                          <i className="far fa-circle" />
-                        )}
-                      </span>
-                      <span className="sr-only">
-                        {isComplete ? '완료되지 않음으로 표시' : '완료됨으로 표시'}
-                      </span>
+                      <IconContainer
+                        iconClassName={isComplete ? 'fas fa-check-circle' : 'far fa-circle'}
+                        iconLabel={isComplete ? '완료되지 않음으로 표시' : '완료됨으로 표시'}
+                      />
                     </button>
                     <input
-                      className={cx(
-                        'step-title-input',
+                      className={classNames(
+                        'w-full bg-transparent px-1.5 py-1',
                         { 'line-through': isComplete },
                         { 'text-gray-700': !isComplete },
                       )}
@@ -358,7 +351,7 @@ export default function DetailPanel() {
                     />
                     <button
                       type="button"
-                      className={cx('button')}
+                      className={buttonClassNames}
                       title="단계 삭제"
                       onClick={() =>
                         removeHandler({
@@ -370,104 +363,93 @@ export default function DetailPanel() {
                         })
                       }
                     >
-                      <span className={cx('icon-wrapper')}>
-                        <i className="fas fa-times" />
-                      </span>
-                      <span className="sr-only">단계 삭제</span>
+                      <IconContainer iconClassName="fas fa-times" iconLabel="단계 삭제" />
                     </button>
                   </div>
                 </div>
               ))}
               <StepInput taskId={task.id} />
             </div>
-            <div ref={$refs.separator} className={cx('separator')} />
+            <div
+              ref={$refs.separator}
+              className="sticky z-10 h-0.5 rounded-b-sm border border-t-0 border-solid border-gray-200 bg-white"
+            />
 
-            <div className={cx('general-section', { 'is-active': task.isMarkedAsTodayTask })}>
+            <div className={classNames(sectionClassNames, 'border border-solid border-gray-200')}>
               <button
                 type="button"
-                className={cx('section-item')}
+                className="min-h-[52px] flex-1 px-2 text-left"
                 onClick={() =>
                   !task.isMarkedAsTodayTask && dispatch(markAsTodayTaskWithOrderingFlag(task.id))
                 }
                 disabled={task.isMarkedAsTodayTask}
               >
-                <span className={cx('button')}>
-                  <span className={cx('icon-wrapper')}>
-                    <i className="far fa-sun" />
-                  </span>
+                <span
+                  className={classNames('inline-flex h-8 w-8 items-center p-1', {
+                    'text-blue-500': task.isMarkedAsTodayTask,
+                  })}
+                >
+                  <IconContainer iconClassName="far fa-sun" />
                 </span>
-                <span className={cx('section-title')}>
+                <span className={classNames('mx-2', { 'text-blue-500': task.isMarkedAsTodayTask })}>
                   나의 하루에 {task.isMarkedAsTodayTask ? '추가됨' : '추가'}
                 </span>
               </button>
               {task.isMarkedAsTodayTask ? (
-                <div
-                  style={{
-                    padding: '0 8px',
-                    alignSelf: 'center',
-                  }}
-                >
+                <div className="self-center px-2">
                   <button
                     type="button"
-                    className={cx('button')}
+                    className={buttonClassNames}
                     title="나의 하루에서 제거"
                     onClick={() => dispatch(markAsNonTodayTask(task.id))}
                   >
-                    <span className={cx('icon-wrapper')}>
-                      <i className="fas fa-times" />
-                    </span>
-                    <span className="sr-only">나의 하루에서 제거</span>
+                    <IconContainer iconClassName="fas fa-times" iconLabel="나의 하루에서 제거" />
                   </button>
                 </div>
               ) : null}
             </div>
 
-            <div
-              className={cx(
-                'general-section',
-                { 'is-active': !task.isComplete && task.deadline },
-                { 'has-error': !task.isComplete && isOverdue },
-              )}
-            >
+            <div className={classNames(sectionClassNames, 'border border-solid border-gray-200')}>
               <button
                 type="button"
-                className={cx('section-item')}
+                className="min-h-[52px] flex-1 px-2 text-left"
                 onClick={(event) =>
                   !isActiveDeadlinePicker &&
                   dispatch(
                     openDeadlinePicker({
                       event,
-                      selector: `.${cx('section-item')}`,
                     }),
                   )
                 }
               >
-                <span className={cx('button')}>
-                  <span className={cx('icon-wrapper')}>
-                    <i className="far fa-calendar-alt" />
-                  </span>
+                <span
+                  className={classNames(
+                    'inline-flex h-8 w-8 items-center p-1',
+                    { 'text-blue-500': !task.isComplete && task.deadline && !isOverdue },
+                    { 'text-red-600': !task.isComplete && task.deadline && isOverdue },
+                  )}
+                >
+                  <IconContainer iconClassName="far fa-calendar-alt" />
                 </span>
-                <span className={cx('section-title')}>
+                <span
+                  className={classNames(
+                    'mx-2',
+                    { 'text-blue-500': !task.isComplete && task.deadline && !isOverdue },
+                    { 'text-red-600': !task.isComplete && task.deadline && isOverdue },
+                  )}
+                >
                   {task.deadline ? deadlineElement : '기한 설정'}
                 </span>
               </button>
               {task.deadline ? (
-                <div
-                  style={{
-                    padding: '0 8px',
-                    alignSelf: 'center',
-                  }}
-                >
+                <div className="self-center px-2">
                   <button
                     type="button"
-                    className={cx('button')}
+                    className={buttonClassNames}
                     title="기한 제거"
                     onClick={() => dispatch(unsetDeadline(task.id))}
                   >
-                    <span className={cx('icon-wrapper')}>
-                      <i className="fas fa-times" />
-                    </span>
-                    <span className="sr-only">기한 제거</span>
+                    <IconContainer iconClassName="fas fa-times" iconLabel="기한 제거" />
                   </button>
                 </div>
               ) : null}
@@ -475,10 +457,10 @@ export default function DetailPanel() {
               {isActiveDeadlinePicker && <DeadlinePicker taskId={task.id} />}
             </div>
 
-            <div className={cx('general-section', 'has-no-border')}>
+            <div className={sectionClassNames}>
               <textarea
                 ref={$refs.memoArea}
-                className={cx('memo-input')}
+                className="min-h-[86px] w-full resize-none rounded-sm border border-solid border-gray-200 p-4 text-[13px] font-medium leading-[normal] outline-none hover:border-gray-300 focus:border-blue-500"
                 placeholder="메모 추가"
                 defaultValue={task.memo}
                 onInput={(e) => memoInputHandler(e.currentTarget)}
@@ -487,19 +469,16 @@ export default function DetailPanel() {
             </div>
           </div>
 
-          <div className={cx('footer')}>
+          <div className="flex min-h-[38px] items-center justify-between border-t border-solid border-gray-200 bg-gray-100 px-2.5">
             <button
               type="button"
-              className={cx('button')}
+              className={classNames(buttonClassNames, 'text-gray-500 hover:bg-white')}
               title="세부 정보 화면 숨기기"
               onClick={closeHandler}
             >
-              <span className={cx('icon-wrapper')}>
-                <i className="fas fa-columns" />
-                <span className="sr-only">세부 정보 화면 숨기기</span>
-              </span>
+              <IconContainer iconClassName="fas fa-columns" iconLabel="세부 정보 화면 숨기기" />
             </button>
-            <span className={cx('date')}>
+            <span className="text-[12px] text-gray-500">
               {task.isComplete && task.completedAt
                 ? `${dayjs(task.completedAt, 'x').format(
                     task.completedAt < Number(midnightThisYear.format('x'))
@@ -514,7 +493,7 @@ export default function DetailPanel() {
             </span>
             <button
               type="button"
-              className={cx('button')}
+              className={classNames(buttonClassNames, 'text-gray-500 hover:bg-white')}
               title="작업 삭제"
               onClick={() =>
                 removeHandler({
@@ -523,10 +502,7 @@ export default function DetailPanel() {
                 })
               }
             >
-              <span className={cx('icon-wrapper')}>
-                <i className="fas fa-trash-alt" />
-                <span className="sr-only">작업 삭제</span>
-              </span>
+              <IconContainer iconClassName="fas fa-trash-alt" iconLabel="작업 삭제" />
             </button>
           </div>
         </div>

@@ -1,9 +1,9 @@
 import {
   Nullable,
-  ListOption,
-  OrderingCriterion,
-  OrderingDirection,
-  ThemeColor,
+  LegacyListOption,
+  LegacyOrderingCriterion,
+  LegacyOrderingDirection,
+  LegacyThemeColor,
 } from '@/lib/types/common';
 
 export type TodoItemBase = {
@@ -25,11 +25,11 @@ export type TodoItem = TodoItemBase & {
 };
 
 export type SettingsPerPage = {
-  themeColor?: ThemeColor;
+  themeColor?: LegacyThemeColor;
   isHideCompletedItems?: boolean;
   ordering?: Nullable<{
-    criterion: OrderingCriterion;
-    direction: OrderingDirection;
+    criterion: LegacyOrderingCriterion;
+    direction: LegacyOrderingDirection;
   }>;
 };
 
@@ -83,34 +83,34 @@ export type TodoAppState = {
   toolbarFunctions: {
     myday: {
       listOption?: null;
-      listOrdering: OrderingCriterion[];
+      listOrdering: LegacyOrderingCriterion[];
     };
     important: {
-      listOption: ListOption[];
+      listOption: LegacyListOption[];
       listOrdering?: null;
     };
     planned: {
-      listOption: ListOption[];
+      listOption: LegacyListOption[];
       listOrdering?: null;
     };
     all: {
-      listOption: ListOption[];
+      listOption: LegacyListOption[];
       listOrdering?: null;
     };
     completed: {
-      listOption: ListOption[];
+      listOption: LegacyListOption[];
       listOrdering?: null;
     };
     inbox: {
-      listOption: ListOption[];
-      listOrdering: OrderingCriterion[];
+      listOption: LegacyListOption[];
+      listOrdering: LegacyOrderingCriterion[];
     };
     search: {
-      listOption: ListOption[];
+      listOption: LegacyListOption[];
       listOrdering?: null;
     };
     'search/[keyword]': {
-      listOption: ListOption[];
+      listOption: LegacyListOption[];
       listOrdering?: null;
     };
   };
