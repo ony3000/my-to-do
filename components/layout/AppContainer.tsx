@@ -30,17 +30,13 @@ export default function AppContainer({ children }: AppContainerProps) {
 
   useEffect(() => {
     if (!isRendered) {
-      if (router.pathname === '/') {
-        router.replace('/tasks');
-      }
-
       if (!isAppReady) {
         dispatch(launchApp());
       }
 
       setIsRendered(true);
     }
-  }, [router, dispatch, isAppReady, isRendered]);
+  }, [dispatch, isAppReady, isRendered]);
 
   return (
     <div className="flex min-h-screen flex-col">
