@@ -263,7 +263,7 @@ export default function DetailPanel() {
           >
             <div
               id="title-section-trigger"
-              className="sticky top-0 z-10 rounded-t-sm border border-b-0 border-solid border-gray-200 bg-white px-2.5 pb-[2px]"
+              className="sticky top-0 z-10 rounded-t-sm border border-b-0 border-solid border-gray-200 bg-white px-2.5 pb-0.5"
             >
               <div className="flex min-h-[52px] items-center">
                 <button
@@ -309,7 +309,7 @@ export default function DetailPanel() {
                 </button>
               </div>
             </div>
-            <div className="border-x border-solid border-gray-200 bg-white px-1.5 pb-[2px]">
+            <div className="border-x border-solid border-gray-200 bg-white px-1.5 pb-0.5">
               {task.subSteps.map(({ id, title, isComplete }) => (
                 <div
                   key={id}
@@ -372,7 +372,7 @@ export default function DetailPanel() {
             </div>
             <div
               ref={$refs.separator}
-              className="sticky z-10 h-[2px] rounded-b-sm border border-t-0 border-solid border-gray-200 bg-white"
+              className="sticky z-10 h-0.5 rounded-b-sm border border-t-0 border-solid border-gray-200 bg-white"
             />
 
             <div className={classNames(sectionClassNames, 'border border-solid border-gray-200')}>

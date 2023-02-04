@@ -33,10 +33,10 @@ export const MenuContainer = forwardRef(function ForwardedMenuContainer(
   return (
     <div
       ref={ref}
-      className="shadow-elevation absolute min-w-[200px] max-w-[290px] rounded-sm bg-white py-[6px]"
+      className="shadow-elevation absolute min-w-[200px] max-w-[290px] rounded-sm bg-white py-1.5"
       style={style}
     >
-      <div className="mb-[6px] border-b border-solid border-gray-200 p-2 pb-3 text-center text-[14px] font-semibold text-gray-700">
+      <div className="mb-1.5 border-b border-solid border-gray-200 p-2 pb-3 text-center text-[14px] font-semibold text-gray-700">
         {title}
       </div>
       {children}

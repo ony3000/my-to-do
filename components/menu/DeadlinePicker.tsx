@@ -108,7 +108,7 @@ export default function DeadlinePicker({ taskId }: DeadlinePickerProps) {
             type={DeadlineType.NextWeek}
             onClick={() => setFixedDeadline(Number(midnightNextTuesday.format('x')) - 1)}
           />
-          <li className="my-[6px] border-b border-solid border-black/[.08] bg-white" />
+          <li className="my-1.5 border-b border-solid border-black/[.08] bg-white" />
           <MenuItem
             type={DeadlineType.ChooseDate}
             onClick={(event) =>
