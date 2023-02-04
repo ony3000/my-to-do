@@ -1,15 +1,14 @@
 import { useRouter } from 'next/router';
 import invariant from 'tiny-invariant';
-import classNames from 'classnames/bind';
+import classNames from 'classnames';
+import { IconContainer } from '@/components/layout';
+import { ListOption, OrderingCriterion } from '@/components/menu';
 import { isOneOf } from '@/lib/types/guard';
 import { SettingsPerPage } from '@/lib/types/store/todoSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks/index';
 import { openListOption, openOrderingCriterion } from '@/lib/store/todoSlice';
 import dayjs from '@/lib/plugins/dayjs';
-import { ListOption, OrderingCriterion } from '@/components/menu';
-import styles from './PageToolbar.module.scss';
-
-const cx = classNames.bind(styles);
+import { textColor } from '@/lib/utils/styles';
 
 type PageToolbarProps = {
   title?: string;
@@ -47,14 +46,25 @@ export default function PageToolbar({ title = '', displayToday = false }: PageTo
   const isActiveListOption = listOptionPosition !== null;
   const isActiveOrderingCriterion = orderingCriterionPosition !== null;
 
+  const buttonClassNames = classNames(
+    'focus:shadow-like-outline-3 inline-flex h-8 w-8 items-center rounded-sm p-1 hover:bg-gray-200 focus:shadow-blue-500 focus:outline-none',
+    { 'my-2': displayToday },
+  );
+
   return (
-    <div className={cx('container', { 'is-displaying-today': displayToday })}>
-      <div className={cx('flexible-section')}>
-        <div className={cx('headline')}>
+    <div
+      className={classNames(
+        'flex px-4 pt-3',
+        { 'h-[60px] items-center': !displayToday },
+        { 'h-auto min-h-[60px] items-start': displayToday },
+      )}
+    >
+      <div className={classNames('flex-1', { 'my-[3px]': displayToday })}>
+        <div className="flex items-center">
           <h1
-            className={cx(
-              'list-title',
-              `text-${settingsPerPage.themeColor ? settingsPerPage.themeColor : 'blue'}-500`,
+            className={classNames(
+              'truncate px-2 py-1.5 text-[20px] font-semibold',
+              textColor(settingsPerPage.themeColor),
             )}
           >
             {title}
@@ -64,7 +74,7 @@ export default function PageToolbar({ title = '', displayToday = false }: PageTo
             <>
               <button
                 type="button"
-                className={cx('button', 'text-gray-500')}
+                className={classNames(buttonClassNames, 'text-gray-500')}
                 title="목록 옵션"
                 onClick={(event) =>
                   !isActiveListOption &&
@@ -75,10 +85,7 @@ export default function PageToolbar({ title = '', displayToday = false }: PageTo
                   )
                 }
               >
-                <span className={cx('icon-wrapper')}>
-                  <i className="fas fa-ellipsis-h" />
-                  <span className="sr-only">목록 옵션</span>
-                </span>
+                <IconContainer iconClassName="fas fa-ellipsis-h" iconLabel="목록 옵션" />
               </button>
 
               <ListOption availableOptions={functionsPerPage.listOption} />
@@ -87,7 +94,9 @@ export default function PageToolbar({ title = '', displayToday = false }: PageTo
         </div>
 
         {displayToday ? (
-          <div className={cx('today')}>{midnightToday.format('M월 D일, dddd')}</div>
+          <div className="px-2 pb-1 text-[12px] font-extralight">
+            {midnightToday.format('M월 D일, dddd')}
+          </div>
         ) : null}
       </div>
 
@@ -95,10 +104,7 @@ export default function PageToolbar({ title = '', displayToday = false }: PageTo
         <div>
           <button
             type="button"
-            className={cx(
-              'button',
-              `text-${settingsPerPage.themeColor ? settingsPerPage.themeColor : 'blue'}-500`,
-            )}
+            className={classNames(buttonClassNames, textColor(settingsPerPage.themeColor))}
             title="정렬 기준"
             onClick={(event) =>
               !isActiveOrderingCriterion &&
@@ -113,10 +119,10 @@ export default function PageToolbar({ title = '', displayToday = false }: PageTo
               width: 'auto',
             }}
           >
-            <span className={cx('icon-wrapper', 'rotate-90')}>
+            <span className="inline-flex h-6 w-6 rotate-90 items-center justify-center">
               <i className="fas fa-exchange-alt" />
             </span>
-            <span className={cx('button-text')}>
+            <span className="text-[14px] max-[899px]:hidden">
               <span>정렬</span>
               <span className="sr-only">&nbsp;기준</span>
             </span>

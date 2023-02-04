@@ -1,0 +1,61 @@
+.react-datepicker.deadline-calendar {
+  border: none;
+
+  .react-datepicker__header {
+    padding: 12px;
+    padding-bottom: 0;
+    border: none;
+    background-color: transparent;
+  }
+
+  .react-datepicker__month {
+    margin: 12px;
+    margin-top: 0;
+  }
+
+  .react-datepicker__day-name,
+  .react-datepicker__day,
+  .react-datepicker__time-name {
+    margin: 0;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    width: 28px;
+    height: 28px;
+    color: theme('colors.gray.700');
+    background-color: transparent;
+    border-radius: 2px;
+
+    .day-wrapper {
+      display: inline-flex;
+      width: 24px;
+      height: 24px;
+      justify-content: center;
+      align-items: center;
+      border-radius: 2px;
+    }
+  }
+
+  .react-datepicker__day {
+    &:hover {
+      background-color: theme('colors.gray.100');
+    }
+
+    &:active {
+      background-color: theme('colors.gray.200');
+    }
+  }
+
+  .react-datepicker__day--selected {
+    .day-wrapper {
+      background-color: theme('colors.blue.500');
+      color: theme('colors.white');
+    }
+  }
+
+  .react-datepicker__day--outside-month {
+    color: theme('colors.gray.500');
+    pointer-events: none;
+  }
+}
