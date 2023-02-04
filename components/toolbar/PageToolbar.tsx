@@ -47,7 +47,7 @@ export default function PageToolbar({ title = '', displayToday = false }: PageTo
   const isActiveOrderingCriterion = orderingCriterionPosition !== null;
 
   const buttonClassNames = classNames(
-    'focus:shadow-like-outline-3 inline-flex h-8 w-8 items-center rounded-sm p-1 hover:bg-gray-200 focus:shadow-blue-500 focus:outline-none',
+    'focus:shadow-like-outline-3 inline-flex h-8 items-center rounded-sm p-1 hover:bg-gray-200 focus:shadow-blue-500 focus:outline-none',
     { 'my-2': displayToday },
   );
 
@@ -74,7 +74,7 @@ export default function PageToolbar({ title = '', displayToday = false }: PageTo
             <>
               <button
                 type="button"
-                className={classNames(buttonClassNames, 'text-gray-500')}
+                className={classNames(buttonClassNames, 'w-8 text-gray-500')}
                 title="목록 옵션"
                 onClick={(event) =>
                   !isActiveListOption &&
@@ -104,7 +104,11 @@ export default function PageToolbar({ title = '', displayToday = false }: PageTo
         <div>
           <button
             type="button"
-            className={classNames(buttonClassNames, textColor(settingsPerPage.themeColor))}
+            className={classNames(
+              buttonClassNames,
+              'min-w-[32px]',
+              textColor(settingsPerPage.themeColor),
+            )}
             title="정렬 기준"
             onClick={(event) =>
               !isActiveOrderingCriterion &&
@@ -114,10 +118,6 @@ export default function PageToolbar({ title = '', displayToday = false }: PageTo
                 }),
               )
             }
-            style={{
-              minWidth: '2rem',
-              width: 'auto',
-            }}
           >
             <span className="inline-flex h-6 w-6 rotate-90 items-center justify-center">
               <i className="fas fa-exchange-alt" />

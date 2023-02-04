@@ -144,15 +144,7 @@ export function MenuItem({ type, onClick, title = undefined }: MenuItemProps) {
           <button type="button" className={buttonClassNames} onClick={onClick}>
             <span className={classNames(iconClassNames, 'relative')}>
               <i className="far fa-calendar" />
-              <i
-                className="fas fa-square"
-                style={{
-                  position: 'absolute',
-                  top: '50%',
-                  left: '50%',
-                  transform: 'translate(-50%, -50%) scale(0.25)',
-                }}
-              />
+              <i className="fas fa-square absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 scale-[.25]" />
             </span>
             <span className={titleClassNames}>오늘</span>
           </button>
@@ -164,15 +156,7 @@ export function MenuItem({ type, onClick, title = undefined }: MenuItemProps) {
           <button type="button" className={buttonClassNames} onClick={onClick}>
             <span className={classNames(iconClassNames, 'relative')}>
               <i className="far fa-calendar" />
-              <i
-                className="fas fa-arrow-right"
-                style={{
-                  position: 'absolute',
-                  top: 'calc(50% + 2px)',
-                  left: '50%',
-                  transform: 'translate(-50%, -50%) scale(0.55)',
-                }}
-              />
+              <i className="fas fa-arrow-right absolute top-[calc(50%+2px)] left-1/2 -translate-x-1/2 -translate-y-1/2 scale-[.55]" />
             </span>
             <span className={titleClassNames}>내일</span>
           </button>
@@ -184,15 +168,7 @@ export function MenuItem({ type, onClick, title = undefined }: MenuItemProps) {
           <button type="button" className={buttonClassNames} onClick={onClick}>
             <span className={classNames(iconClassNames, 'relative')}>
               <i className="far fa-calendar" />
-              <i
-                className="fas fa-angle-double-right"
-                style={{
-                  position: 'absolute',
-                  top: 'calc(50% + 1px)',
-                  left: '50%',
-                  transform: 'translate(-50%, -50%) scale(0.6)',
-                }}
-              />
+              <i className="fas fa-angle-double-right absolute top-[calc(50%+1px)] left-1/2 -translate-x-1/2 -translate-y-1/2 scale-[.6]" />
             </span>
             <span className={titleClassNames}>다음 주</span>
           </button>
@@ -204,16 +180,7 @@ export function MenuItem({ type, onClick, title = undefined }: MenuItemProps) {
           <button type="button" className={buttonClassNames} onClick={onClick}>
             <span className={classNames(iconClassNames, 'relative')}>
               <i className="far fa-calendar-alt" />
-              <i
-                className="far fa-clock"
-                style={{
-                  position: 'absolute',
-                  top: 'calc(50% + 6px)',
-                  left: 'calc(50% + 6px)',
-                  transform: 'translate(-50%, -50%) scale(0.6)',
-                  backgroundColor: '#fff',
-                }}
-              />
+              <i className="far fa-clock absolute top-[calc(50%+6px)] left-[calc(50%+6px)] -translate-x-1/2 -translate-y-1/2 scale-[.6] bg-white" />
             </span>
             <span className={titleClassNames}>날짜 선택</span>
             <span className={iconClassNames}>

@@ -396,12 +396,7 @@ export default function DetailPanel() {
                 </span>
               </button>
               {task.isMarkedAsTodayTask ? (
-                <div
-                  style={{
-                    padding: '0 8px',
-                    alignSelf: 'center',
-                  }}
-                >
+                <div className="self-center px-2">
                   <button
                     type="button"
                     className={buttonClassNames}
@@ -447,12 +442,7 @@ export default function DetailPanel() {
                 </span>
               </button>
               {task.deadline ? (
-                <div
-                  style={{
-                    padding: '0 8px',
-                    alignSelf: 'center',
-                  }}
-                >
+                <div className="self-center px-2">
                   <button
                     type="button"
                     className={buttonClassNames}
