@@ -1,4 +1,4 @@
-import { Fragment, useRef, useEffect } from 'react';
+import { Fragment, useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import invariant from 'tiny-invariant';
 import { LegacyListOption as ListOptionType } from '@/lib/types/common';
@@ -10,6 +10,7 @@ import {
   TOGGLE_COMPLETED_ITEMS,
   closeListOption,
   openThemePalette,
+  closeThemePalette,
   showCompletedItems,
   hideCompletedItems,
 } from '@/lib/store/todoSlice';
@@ -42,6 +43,7 @@ export default function ListOption({ availableOptions = [] }: ListOptionProps) {
   const settingsPerPage = useAppSelector<SettingsPerPage>(
     ({ todo: state }) => state.pageSettings[pageKey],
   );
+  const [isRendered, setIsRendered] = useState(false);
   const $refs = {
     container: useRef<HTMLDivElement>(null),
   };
@@ -62,24 +64,35 @@ export default function ListOption({ availableOptions = [] }: ListOptionProps) {
   };
 
   useEffect(() => {
+    if (!isRendered) {
+      setIsRendered(true);
+    }
+  }, [isRendered]);
+
+  useEffect(() => {
     const clickHandler: EventListener = (event) => {
       if (isActiveListOption && $refs.container.current && event.target instanceof HTMLElement) {
         const hasTarget = $refs.container.current.contains(event.target);
 
         if (!hasTarget) {
+          dispatch(closeThemePalette());
           dispatch(closeListOption());
         }
       }
     };
 
-    document.addEventListener('click', clickHandler);
+    if (isRendered) {
+      document.addEventListener('click', clickHandler);
+    }
 
     return () => {
-      document.removeEventListener('click', clickHandler);
+      if (isRendered) {
+        document.removeEventListener('click', clickHandler);
+      }
     };
   });
 
-  return isActiveListOption ? (
+  return (
     <MenuLayer>
       <MenuContainer
         ref={$refs.container}
@@ -131,8 +144,8 @@ export default function ListOption({ availableOptions = [] }: ListOptionProps) {
           })}
         </ul>
 
-        {availableOptions.includes(CHANGE_THEME) && <ThemePalette />}
+        {availableOptions.includes(CHANGE_THEME) && isActiveThemePalette && <ThemePalette />}
       </MenuContainer>
     </MenuLayer>
-  ) : null;
+  );
 }
