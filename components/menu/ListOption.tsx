@@ -90,7 +90,7 @@ export default function ListOption({ availableOptions = [] }: ListOptionProps) {
         document.removeEventListener('click', clickHandler);
       }
     };
-  });
+  }, [dispatch, isRendered, $refs.container, isActiveListOption]);
 
   return (
     <MenuLayer>

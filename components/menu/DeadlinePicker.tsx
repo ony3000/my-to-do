@@ -83,7 +83,7 @@ export default function DeadlinePicker({ taskId }: DeadlinePickerProps) {
         document.removeEventListener('click', clickHandler);
       }
     };
-  });
+  }, [dispatch, isRendered, $refs.container, isActiveDeadlinePicker, isActiveDeadlineCalendar]);
 
   return (
     <MenuLayer>

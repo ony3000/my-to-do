@@ -98,7 +98,7 @@ export default function OrderingCriterion({ availableCriterions = [] }: Ordering
         document.removeEventListener('click', clickHandler);
       }
     };
-  });
+  }, [dispatch, isRendered, $refs.container, isActiveOrderingCriterion]);
 
   return (
     <MenuLayer>

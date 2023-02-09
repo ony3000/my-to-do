@@ -58,7 +58,7 @@ export default function ThemePalette() {
         document.removeEventListener('click', clickHandler);
       }
     };
-  });
+  }, [dispatch, isRendered, $refs.container, isActiveThemePalette]);
 
   return (
     <div className="invisible fixed top-0 left-0 z-[1000000] min-h-screen w-full">
