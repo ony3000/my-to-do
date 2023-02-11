@@ -81,12 +81,12 @@ export function ListItem({
   return (
     <div
       className={classNames(
-        'shadow-like-border-b min-h-[52px] px-4',
+        'shadow-like-border-b min-h-[52px] px-4 [&:hover+*>*]:shadow-transparent',
         { 'group hover:bg-gray-100 hover:shadow-gray-100': !isActive },
         { 'bg-lightBlue-100 shadow-lightBlue-100': isActive },
       )}
     >
-      <div className="shadow-inner-like-border-t flex items-center shadow-gray-200 group-hover:relative group-hover:shadow-[inset_0_1px_0_0_#f4f4f5,0_1px_0_0_#f4f4f5]">
+      <div className="shadow-inner-like-border-t flex items-center shadow-gray-200 group-hover:shadow-transparent">
         <button
           type="button"
           className={classNames(buttonClassNames, '-ml-1', textColor(baseColor))}
