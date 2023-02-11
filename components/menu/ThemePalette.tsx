@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import invariant from 'tiny-invariant';
 import classNames from 'classnames';
@@ -16,6 +16,7 @@ export default function ThemePalette() {
   const dispatch = useAppDispatch();
   const themePalettePosition = useAppSelector(({ todo: state }) => state.themePalettePosition);
   const settingsPerPage = useAppSelector(({ todo: state }) => state.pageSettings[pageKey]);
+  const [isRendered, setIsRendered] = useState(false);
   const $refs = {
     container: useRef<HTMLDivElement>(null),
   };
@@ -32,6 +33,12 @@ export default function ThemePalette() {
   };
 
   useEffect(() => {
+    if (!isRendered) {
+      setIsRendered(true);
+    }
+  }, [isRendered]);
+
+  useEffect(() => {
     const clickHandler: EventListener = (event) => {
       if (isActiveThemePalette && $refs.container.current && event.target instanceof HTMLElement) {
         const hasTarget = $refs.container.current.contains(event.target);
@@ -42,14 +49,18 @@ export default function ThemePalette() {
       }
     };
 
-    document.addEventListener('click', clickHandler);
+    if (isRendered) {
+      document.addEventListener('click', clickHandler);
+    }
 
     return () => {
-      document.removeEventListener('click', clickHandler);
+      if (isRendered) {
+        document.removeEventListener('click', clickHandler);
+      }
     };
-  });
+  }, [dispatch, isRendered, $refs.container, isActiveThemePalette]);
 
-  return isActiveThemePalette ? (
+  return (
     <div className="invisible fixed top-0 left-0 z-[1000000] min-h-screen w-full">
       <div className="visible relative">
         <div
@@ -83,5 +94,5 @@ export default function ThemePalette() {
         </div>
       </div>
     </div>
-  ) : null;
+  );
 }

@@ -88,7 +88,7 @@ export default function PageToolbar({ title = '', displayToday = false }: PageTo
                 <IconContainer iconClassName="fas fa-ellipsis-h" iconLabel="목록 옵션" />
               </button>
 
-              <ListOption availableOptions={functionsPerPage.listOption} />
+              {isActiveListOption && <ListOption availableOptions={functionsPerPage.listOption} />}
             </>
           ) : null}
         </div>
@@ -128,7 +128,9 @@ export default function PageToolbar({ title = '', displayToday = false }: PageTo
             </span>
           </button>
 
-          <OrderingCriterion availableCriterions={functionsPerPage.listOrdering} />
+          {isActiveOrderingCriterion && (
+            <OrderingCriterion availableCriterions={functionsPerPage.listOrdering} />
+          )}
         </div>
       ) : null}
     </div>

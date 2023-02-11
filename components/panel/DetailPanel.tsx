@@ -241,7 +241,7 @@ export default function DetailPanel() {
         flexibleSection.removeEventListener('scroll', scrollHandler);
       }
     };
-  });
+  }, [dispatch, isActiveDeadlinePicker, isActiveDeadlineCalendar]);
 
   const buttonClassNames =
     'inline-flex h-8 w-8 items-center p-1 focus:rounded-sm focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-blue-500';

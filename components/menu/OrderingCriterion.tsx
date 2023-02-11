@@ -1,4 +1,4 @@
-import { Fragment, useRef, useEffect } from 'react';
+import { Fragment, useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import invariant from 'tiny-invariant';
 import {
@@ -35,6 +35,7 @@ export default function OrderingCriterion({ availableCriterions = [] }: Ordering
     ({ todo: state }) => state.orderingCriterionPosition,
   );
   const settingsPerPage = useAppSelector(({ todo: state }) => state.pageSettings[pageKey]);
+  const [isRendered, setIsRendered] = useState(false);
   const $refs = {
     container: useRef<HTMLDivElement>(null),
   };
@@ -68,6 +69,12 @@ export default function OrderingCriterion({ availableCriterions = [] }: Ordering
   };
 
   useEffect(() => {
+    if (!isRendered) {
+      setIsRendered(true);
+    }
+  }, [isRendered]);
+
+  useEffect(() => {
     const clickHandler: EventListener = (event) => {
       if (
         isActiveOrderingCriterion &&
@@ -82,14 +89,18 @@ export default function OrderingCriterion({ availableCriterions = [] }: Ordering
       }
     };
 
-    document.addEventListener('click', clickHandler);
+    if (isRendered) {
+      document.addEventListener('click', clickHandler);
+    }
 
     return () => {
-      document.removeEventListener('click', clickHandler);
+      if (isRendered) {
+        document.removeEventListener('click', clickHandler);
+      }
     };
-  });
+  }, [dispatch, isRendered, $refs.container, isActiveOrderingCriterion]);
 
-  return isActiveOrderingCriterion ? (
+  return (
     <MenuLayer>
       <MenuContainer
         ref={$refs.container}
@@ -179,5 +190,5 @@ export default function OrderingCriterion({ availableCriterions = [] }: Ordering
         </ul>
       </MenuContainer>
     </MenuLayer>
-  ) : null;
+  );
 }

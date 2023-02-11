@@ -67,7 +67,7 @@ export default function DeadlineCalendar({ taskId }: DeadlineCalendarProps) {
         document.removeEventListener('click', clickHandler);
       }
     };
-  });
+  }, [dispatch, isRendered, $refs.container, isActiveDeadlineCalendar]);
 
   return (
     <div className="invisible fixed top-0 left-0 z-[1000000] min-h-screen w-full">
