@@ -78,7 +78,16 @@ export default function DetailPanel() {
 
   if (task?.deadline) {
     if (task.deadline < Number(midnightToday.format('x'))) {
-      deadlineElement = <span>지연, {dayjs(task.deadline, 'x').format('M월 D일, ddd')}</span>;
+      deadlineElement = (
+        <span>
+          지연,{' '}
+          {dayjs(task.deadline, 'x').format(
+            task.deadline < Number(midnightThisYear.format('x'))
+              ? 'YYYY년 M월 D일, ddd'
+              : 'M월 D일, ddd',
+          )}
+        </span>
+      );
       isOverdue = true;
     } else if (task.deadline < Number(midnightTomorrow.format('x'))) {
       deadlineElement = <span>오늘까지</span>;

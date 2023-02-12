@@ -107,6 +107,7 @@ export default function TaskList({
   const focusedTaskId = useAppSelector(({ todo: state }) => state.focusedTaskId);
   const [isCollapsed, setIsCollapsed] = useState(isCollapsedInitially || false);
 
+  const midnightThisYear = dayjs().startOf('year');
   const midnightToday = dayjs().startOf('day');
   const midnightTomorrow = midnightToday.add(1, 'day');
   const midnightAfter2Days = midnightToday.add(2, 'day');
@@ -233,7 +234,16 @@ export default function TaskList({
                   deadlineTextColor = 'text-red-600';
                 }
 
-                deadlineElement = <span>지연, {dayjs(deadline, 'x').format('M월 D일, ddd')}</span>;
+                deadlineElement = (
+                  <span>
+                    지연,{' '}
+                    {dayjs(deadline, 'x').format(
+                      deadline < Number(midnightThisYear.format('x'))
+                        ? 'YYYY년 M월 D일, ddd'
+                        : 'M월 D일, ddd',
+                    )}
+                  </span>
+                );
               } else if (deadline < Number(midnightTomorrow.format('x'))) {
                 if (!isComplete) {
                   deadlineTextColor = 'text-blue-500';
