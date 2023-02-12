@@ -108,6 +108,7 @@ export default function TaskList({
   const [isCollapsed, setIsCollapsed] = useState(isCollapsedInitially || false);
 
   const midnightThisYear = dayjs().startOf('year');
+  const midnightNextYear = midnightThisYear.add(1, 'year');
   const midnightToday = dayjs().startOf('day');
   const midnightTomorrow = midnightToday.add(1, 'day');
   const midnightAfter2Days = midnightToday.add(2, 'day');
@@ -253,7 +254,16 @@ export default function TaskList({
               } else if (deadline < Number(midnightAfter2Days.format('x'))) {
                 deadlineElement = <span>내일까지</span>;
               } else {
-                deadlineElement = <span>{dayjs(deadline, 'x').format('M월 D일, ddd')}까지</span>;
+                deadlineElement = (
+                  <span>
+                    {dayjs(deadline, 'x').format(
+                      deadline >= Number(midnightNextYear.format('x'))
+                        ? 'YYYY년 M월 D일, ddd'
+                        : 'M월 D일, ddd',
+                    )}
+                    까지
+                  </span>
+                );
               }
             }
 
