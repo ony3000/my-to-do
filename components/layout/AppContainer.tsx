@@ -26,6 +26,10 @@ export default function AppContainer({ children }: AppContainerProps) {
   ]);
   const dispatch = useAppDispatch();
   const isAppReady = useAppSelector(({ todo: state }) => state.isAppReady);
+  const focusedTaskId = useAppSelector(({ todo: state }) => state.focusedTaskId);
+  const task = useAppSelector(({ todo: state }) =>
+    state.todoItems.find(({ id }) => id === focusedTaskId),
+  );
   const [isRendered, setIsRendered] = useState(false);
 
   useEffect(() => {
@@ -53,7 +57,7 @@ export default function AppContainer({ children }: AppContainerProps) {
 
             <div className="flex-1 overflow-hidden">{children}</div>
 
-            <DetailPanel />
+            <DetailPanel key={task?.id} />
           </div>
         </>
       )}

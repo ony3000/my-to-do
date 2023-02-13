@@ -1,4 +1,4 @@
-import { Fragment, useState, useRef, useEffect, useCallback, MouseEventHandler } from 'react';
+import { useState, useRef, useEffect, useCallback, MouseEventHandler } from 'react';
 import { useRouter } from 'next/router';
 import invariant from 'tiny-invariant';
 import classNames from 'classnames';
@@ -268,7 +268,7 @@ export default function DetailPanel() {
     'my-2.5 flex rounded-sm bg-white text-[14px] text-gray-500 hover:bg-gray-100';
 
   return task ? (
-    <Fragment key={task.id}>
+    <>
       <div
         className="pointer-events-none hidden max-[770px]:pointer-events-auto max-[770px]:absolute max-[770px]:top-0 max-[770px]:left-0 max-[770px]:z-[70] max-[770px]:block max-[770px]:h-full max-[770px]:w-full max-[770px]:bg-gray-700 max-[770px]:opacity-40 max-[770px]:transition-opacity max-[770px]:duration-200"
         onClick={closeHandler}
@@ -526,6 +526,6 @@ export default function DetailPanel() {
           </div>
         </div>
       </div>
-    </Fragment>
+    </>
   ) : null;
 }
