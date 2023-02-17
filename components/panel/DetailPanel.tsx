@@ -60,7 +60,7 @@ export default function DetailPanel() {
   const deadlineCalendarPosition = useAppSelector(
     ({ todo: state }) => state.deadlineCalendarPosition,
   );
-  const [isActivated, setIsActivated] = useState(false);
+  const [isRendered, setIsRendered] = useState(false);
   const $refs = {
     titleArea: useRef<HTMLTextAreaElement>(null),
     separator: useRef<HTMLDivElement>(null),
@@ -225,18 +225,17 @@ export default function DetailPanel() {
   };
 
   useEffect(() => {
-    if (task && !isActivated) {
+    if (!isRendered) {
       if ($refs.titleArea.current) {
         titleInputHandler($refs.titleArea.current);
       }
       if ($refs.memoArea.current) {
         memoInputHandler($refs.memoArea.current);
       }
-      setIsActivated(true);
-    } else if (!task && isActivated) {
-      setIsActivated(false);
+
+      setIsRendered(true);
     }
-  }, [task, isActivated, $refs.titleArea, $refs.memoArea, titleInputHandler]);
+  }, [isRendered, $refs.titleArea, $refs.memoArea, titleInputHandler]);
 
   useEffect(() => {
     const flexibleSection = document.querySelector('#flexible-section-trigger');
