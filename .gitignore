@@ -285,3 +285,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# testing-library
+test-providers/output.css
