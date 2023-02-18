@@ -9,7 +9,7 @@
     "start": "next start -p 5000",
     "lint": "next lint",
     "compile:css": "tailwindcss -i ./lib/styles/globals.css -o test-providers/output.css",
-    "test": "yarn compile:css && jest --ci"
+    "test": "yarn compile:css && jest --ci --passWithNoTests"
   },
   "repository": "https://github.com/ony3000/my-to-do.git",
   "author": "Hyeonjong <nianelo4@gmail.com>",
