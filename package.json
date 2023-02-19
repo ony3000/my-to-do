@@ -9,7 +9,8 @@
     "start": "next start -p 5000",
     "lint": "next lint",
     "compile:css": "tailwindcss -i ./lib/styles/globals.css -o test-providers/output.css -c tailwind-with-jest.config.js",
-    "test": "yarn compile:css && jest --ci --passWithNoTests"
+    "test": "yarn compile:css && jest --ci --passWithNoTests",
+    "cypress": "cypress open"
   },
   "repository": "https://github.com/ony3000/my-to-do.git",
   "author": "Hyeonjong <nianelo4@gmail.com>",
@@ -54,6 +55,7 @@
     "@types/react-dom": "18.0.10",
     "@types/tailwindcss": "^2.0.2",
     "@types/uuid": "^8.3.2",
+    "cypress": "^12.6.0",
     "eslint": "8.31.0",
     "prettier": "2.8.3",
     "prettier-plugin-tailwindcss": "0.2.1",
