@@ -21,6 +21,11 @@ import './commands';
 
 import { mount } from 'cypress/react18';
 
+import '@fortawesome/fontawesome-free/css/all.css';
+import 'react-datepicker/dist/react-datepicker.css';
+import '@/lib/styles/globals.css';
+import '@/lib/styles/react-datepicker.scss';
+
 // Augment the Cypress namespace to include type definitions for
 // your custom command.
 // Alternatively, can be defined in cypress/support/component.d.ts

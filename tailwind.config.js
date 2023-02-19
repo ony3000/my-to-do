@@ -9,6 +9,7 @@ module.exports = {
     './pages/**/*.{js,ts,jsx,tsx}',
     './components/**/*.{js,ts,jsx,tsx}',
     './lib/**/*.{js,ts,jsx,tsx}',
+    './cypress/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
     columns: {
