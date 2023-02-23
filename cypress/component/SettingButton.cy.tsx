@@ -1,7 +1,6 @@
 import type { ComponentProps } from 'react';
-import { Provider } from 'react-redux';
 import colors from 'tailwindcss/colors';
-import { store } from '@/lib/store/index';
+import { getStore } from '@/lib/store/index';
 import SettingButton from './SettingButton';
 import { colorHex2regex } from './utils';
 
@@ -11,23 +10,25 @@ function MockHeader({ children }: ComponentProps<'div'>) {
 
 describe('SettingButton', () => {
   it('should mount', () => {
+    const store = getStore();
+
     cy.mount(
-      <Provider store={store}>
-        <MockHeader>
-          <SettingButton />
-        </MockHeader>
-      </Provider>,
+      <MockHeader>
+        <SettingButton />
+      </MockHeader>,
+      { reduxStore: store },
     );
     cy.get('button').contains('설정');
   });
 
   it('버튼 클릭 시 변화하는 스타일 확인 (1)', () => {
+    const store = getStore();
+
     cy.mount(
-      <Provider store={store}>
-        <MockHeader>
-          <SettingButton />
-        </MockHeader>
-      </Provider>,
+      <MockHeader>
+        <SettingButton />
+      </MockHeader>,
+      { reduxStore: store },
     );
     cy.get('button').click();
 
@@ -38,12 +39,13 @@ describe('SettingButton', () => {
   });
 
   it('버튼 클릭 시 변화하는 스타일 확인 (2)', () => {
+    const store = getStore();
+
     cy.mount(
-      <Provider store={store}>
-        <MockHeader>
-          <SettingButton />
-        </MockHeader>
-      </Provider>,
+      <MockHeader>
+        <SettingButton />
+      </MockHeader>,
+      { reduxStore: store },
     );
     cy.get('button').click();
 

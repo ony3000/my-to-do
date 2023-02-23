@@ -19,7 +19,12 @@ import './commands';
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
 
+import type { MountOptions, MountReturn } from 'cypress/react18';
 import { mount } from 'cypress/react18';
+import type { EnhancedStore } from '@reduxjs/toolkit';
+import { Provider } from 'react-redux';
+import type { RootState } from '@/lib/store';
+import { getStore } from '@/lib/store';
 
 import '@fortawesome/fontawesome-free/css/all.css';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -33,12 +38,27 @@ import '@/lib/styles/react-datepicker.scss';
 declare global {
   namespace Cypress {
     interface Chainable {
-      mount: typeof mount;
+      /**
+       * Mounts a React node
+       * @param component React Node to mount
+       * @param options Additional options to pass into mount
+       */
+      mount(
+        component: React.ReactNode,
+        options?: MountOptions & { reduxStore?: EnhancedStore<RootState> },
+      ): Cypress.Chainable<MountReturn>;
     }
   }
 }
 
-Cypress.Commands.add('mount', mount);
+Cypress.Commands.add('mount', (component, options = {}) => {
+  // Use the default store if one is not provided
+  const { reduxStore = getStore(), ...mountOptions } = options;
+
+  const wrapped = <Provider store={reduxStore}>{component}</Provider>;
+
+  return mount(wrapped, mountOptions);
+});
 
 // Example use:
 // cy.mount(<MyComponent />)
