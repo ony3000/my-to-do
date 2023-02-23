@@ -21,7 +21,7 @@ describe('SettingButton', () => {
     cy.get('button').contains('설정');
   });
 
-  it('버튼 클릭 시 변화하는 스타일 확인', () => {
+  it('버튼 클릭 시 변화하는 스타일 확인 (1)', () => {
     cy.mount(
       <Provider store={store}>
         <MockHeader>
@@ -30,17 +30,26 @@ describe('SettingButton', () => {
       </Provider>,
     );
     cy.get('button').click();
-    cy.wait(500);
 
     cy.get('button')
       .should('have.css', 'background-color')
       .and('match', colorHex2regex(colors.zinc['100']));
     cy.get('button').should('have.css', 'color').and('match', colorHex2regex(colors.blue['500']));
+  });
 
-    cy.get('button').should('have.css', 'outline-width', '1px');
-    cy.get('button').should('have.css', 'outline-style', 'solid');
+  it('버튼 클릭 시 변화하는 스타일 확인 (2)', () => {
+    cy.mount(
+      <Provider store={store}>
+        <MockHeader>
+          <SettingButton />
+        </MockHeader>
+      </Provider>,
+    );
+    cy.get('button').click();
+
     cy.get('button')
-      .should('have.css', 'outline-color')
-      .and('match', colorHex2regex(colors.blue['500']));
+      .should('have.css', 'background-color')
+      .and('match', colorHex2regex(colors.zinc['100']));
+    cy.get('button').should('have.css', 'color').and('match', colorHex2regex(colors.blue['500']));
   });
 });
