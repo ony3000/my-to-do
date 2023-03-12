@@ -11,16 +11,16 @@ Clone coding: [Microsoft To Do](https://todo.microsoft.com/)<br>
 
 ```bash
 # install dependencies
-$ yarn install
+$ pnpm install
 
 # serve with hot reload at localhost:5000
-$ yarn dev
+$ pnpm run dev
 
 # build for production
-$ yarn build
+$ pnpm run build
 
 # launch server in production mode
-$ yarn start
+$ pnpm run start
 ```
 
 ## Production Server Management
@@ -41,7 +41,7 @@ $ sudo systemctl start my-to-do.service
 ```bash
 $ git fetch
 $ git checkout (RELEASE_VERSION)
-$ yarn install
-$ yarn build
+$ pnpm install
+$ pnpm run build
 $ sudo systemctl restart my-to-do.service
 ```
