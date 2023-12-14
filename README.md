@@ -5,8 +5,8 @@ Clone coding: [Microsoft To Do](https://todo.microsoft.com/)<br>
 
 ## Requirements
 
-- Node 16
-- [pnpm v7](https://pnpm.io/)
+- Node 18
+- [pnpm 8.5.1](https://pnpm.io/)
 
 ## Build Setup
 
